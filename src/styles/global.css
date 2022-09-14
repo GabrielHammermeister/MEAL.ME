@@ -1,0 +1,24 @@
+:root {
+  font-family: "Poppins";
+
+  --white: #fff;
+  --gray: rgba(255, 255, 255, 0.5);
+  --orange: #ff6b35;
+  --light-orange: #fb986a;
+  --beige: #efefd0;
+  --blue: #004e89;
+  --light-blue: #1a659e;
+  --background-light: #64c5b1;
+  --text-dark: #144339;
+  --text-light: #50a593;
+  --text-dark-blue: #101038;
+}
+
+* {
+  font-family: Poppins;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
