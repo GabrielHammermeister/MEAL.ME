@@ -15,16 +15,22 @@ const Sidebar = () => {
         <ul>
           <NavLink
             to="/home"
-            className={({ isActive }) => (isActive ? "activeLink" : "")}
+            className={({ isActive }) => (isActive ? "activeLink" : "nav-link")}
           >
             Home
           </NavLink>
 
           <NavLink
             to="/meals"
-            className={({ isActive }) => (isActive ? "activeLink" : "")}
+            className={({ isActive }) => (isActive ? "activeLink" : "nav-link")}
           >
             Meals
+          </NavLink>
+          <NavLink
+            to="/ingredients"
+            className={({ isActive }) => (isActive ? "activeLink" : "nav-link")}
+          >
+            Ingredients
           </NavLink>
 
           {/* {currentUser ? (
@@ -39,18 +45,26 @@ const Sidebar = () => {
         </ul>
       </div>
 
-      <Typography variant="caption" className="copyright">
-        Copyright ©{new Date().getFullYear()} All rights reserved | This website
-        is made by{" "}
-        <a
-          href="https://www.linkedin.com/in/gabriel-hammer/"
-          rel="noreferrer"
-          target="_blank"
-          className="copyright__linkedin-link"
+      <footer className="nav-footer">
+        <NavLink
+          to="/login"
+          className={({ isActive }) => (isActive ? "activeLink" : "nav-link")}
         >
-          Gabriel Hammer.
-        </a>
-      </Typography>
+          Login
+        </NavLink>
+        <Typography variant="caption" className="copyright">
+          Copyright ©{new Date().getFullYear()} All rights reserved | This
+          website is made by{" "}
+          <a
+            href="https://www.linkedin.com/in/gabriel-hammer/"
+            rel="noreferrer"
+            target="_blank"
+            className="copyright__linkedin-link"
+          >
+            Gabriel Hammer.
+          </a>
+        </Typography>
+      </footer>
     </nav>
   );
 };

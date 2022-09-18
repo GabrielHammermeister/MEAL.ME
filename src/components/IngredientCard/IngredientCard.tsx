@@ -10,69 +10,27 @@ import {
 import React from "react";
 import { useState } from "react";
 import { useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import carrotsSrc from "@/assets/carrots.jpg";
+import { ROUTES } from "@/router/Router";
 
 function IngredientCard() {
-  //   const [imageUrl, setImageUrl] = useState("");
-
-  //   useEffect(() => {
-  //     getImageByQuery(name)
-  //       .then((res) => {
-  //         setImageUrl(res.photos[0].src.tiny);
-  //       })
-  //       .catch((err) => console.error(err));
-  //   });
+  const navigate = useNavigate();
+  const goToIngredient = () => {
+    return navigate("5");
+  };
 
   return (
-    // <Card
-    //     className="card"
-    //     style={{ maxWidth: '500px', minHeight: '200px', display: 'flex' }}
-    // >
-    //     <CardActionArea>
-    //         <Link to={`/ingredient/${id}`}>
-    //             <CardMedia
-    //                 style={{
-    //                     width: '100%',
-    //                     height: '100%',
-    //                     backgroundColor: 'var(--light-orange)',
-    //                 }}
-    //                 image={imageUrl}
-    //             />
-    //         </Link>
-    //     </CardActionArea>
-    //     <div
-    //         style={{
-    //             display: 'flex',
-    //             flexDirection: 'column',
-    //             justifyContent: 'space-between',
-    //             minWidth: '140px',
-    //         }}
-    //     >
-    //         <CardContent>
-    //             <Typography gutterBottom variant="body1">
-    //                 {name}
-    //             </Typography>
-    //         </CardContent>
-    //         <CardActions>
-    //             <Link to={`/ingredient/${id}`}>
-    //                 <Button size="small" color="primary">
-    //                     Learn More
-    //                 </Button>
-    //             </Link>
-    //         </CardActions>
-    //     </div>
-    // </Card>
-
     <Card sx={{ maxWidth: 345 }}>
-      <CardActionArea>
+      <CardActionArea onClick={goToIngredient}>
         <CardMedia
           component="img"
           height="140"
-          image="/carrots.jpg"
-          alt="green iguana"
+          image={carrotsSrc}
+          alt="carrots"
         />
         <CardContent>
-          <Typography gutterBottom variant="h5" component="div">
+          <Typography variant="h5" component="div">
             Carrots
           </Typography>
           <Typography variant="body2" color="text.secondary">
@@ -81,8 +39,8 @@ function IngredientCard() {
         </CardContent>
       </CardActionArea>
       <CardActions>
-        <Button size="small" color="primary">
-          Share
+        <Button size="small" color="primary" onClick={goToIngredient}>
+          SEE MORE
         </Button>
       </CardActions>
     </Card>

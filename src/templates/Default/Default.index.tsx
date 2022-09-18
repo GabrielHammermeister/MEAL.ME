@@ -7,7 +7,7 @@ type DefaultTemplateProps = {
 };
 
 const DefaultTemplate = ({ children }: DefaultTemplateProps) => {
-  const [header, content] = React.Children.toArray(children);
+  const [header, ...content] = React.Children.toArray(children);
   return (
     <div className="grid-container">
       <Sidebar />
