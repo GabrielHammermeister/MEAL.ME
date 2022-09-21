@@ -3,7 +3,7 @@ import React, { useState } from "react";
 export const IngredientContext =
   React.createContext<IngredientContextValues | null>(null);
 
-type Ingredient = {};
+export type Ingredient = {};
 
 export interface IngredientContextValues {
   ingredients: Ingredient[];
