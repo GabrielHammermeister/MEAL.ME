@@ -30,33 +30,41 @@ const IngredientPage = () => {
 
       <div className="grid-dashboard">
         <Paper>
-          <Box p={2}>
+          <Box
+            p={2}
+            display="flex"
+            flexDirection="column"
+            justifyContent="space-between"
+            height="100%"
+          >
             <Typography variant="subtitle2">Macro Nutrients</Typography>
 
-            <MacroProgressBar
-              name={"Proteins"}
-              macroNutrient={{
-                amount: 10,
-                unit: "g",
-              }}
-              percent={20}
-            />
-            <MacroProgressBar
-              name={"Carbohydrates"}
-              macroNutrient={{
-                amount: 30,
-                unit: "g",
-              }}
-              percent={30}
-            />
-            <MacroProgressBar
-              name={"Fats"}
-              macroNutrient={{
-                amount: 40,
-                unit: "g",
-              }}
-              percent={50}
-            />
+            <Box>
+              <MacroProgressBar
+                name={"Proteins"}
+                macroNutrient={{
+                  amount: 10,
+                  unit: "g",
+                }}
+                percent={20}
+              />
+              <MacroProgressBar
+                name={"Carbohydrates"}
+                macroNutrient={{
+                  amount: 30,
+                  unit: "g",
+                }}
+                percent={30}
+              />
+              <MacroProgressBar
+                name={"Fats"}
+                macroNutrient={{
+                  amount: 40,
+                  unit: "g",
+                }}
+                percent={50}
+              />
+            </Box>
             <Typography variant="overline">Total calories: 330 kcal</Typography>
           </Box>
         </Paper>

@@ -7,19 +7,17 @@ import DisplayIngredients from "@/components/DisplayIngredients/DisplayIngredien
 
 const FindIngredientsPage = () => {
   return (
-    <IngredientProvider>
-      <DefaultTemplate>
-        <Typography variant="h4">Find Ingredients</Typography>
-        <div>
-          <div className="input-wrapper">
-            <Box bgcolor={"white"} p={2} borderRadius={1}>
-              <SearchIngredient />
-            </Box>
-          </div>
-          <DisplayIngredients />
+    <DefaultTemplate>
+      <Typography variant="h4">Find Ingredients</Typography>
+      <div>
+        <div className="input-wrapper">
+          <Box bgcolor={"white"} p={2} borderRadius={1}>
+            <SearchIngredient />
+          </Box>
         </div>
-      </DefaultTemplate>
-    </IngredientProvider>
+        <DisplayIngredients />
+      </div>
+    </DefaultTemplate>
   );
 };
 

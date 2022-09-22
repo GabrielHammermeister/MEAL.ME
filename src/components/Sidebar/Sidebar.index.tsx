@@ -14,7 +14,7 @@ const Sidebar = () => {
         </Typography>
         <ul>
           <NavLink
-            to="/home"
+            to="/"
             className={({ isActive }) => (isActive ? "activeLink" : "nav-link")}
           >
             Home

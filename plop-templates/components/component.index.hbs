@@ -1,0 +1,23 @@
+import React from "react";
+
+// Styles
+import "./{{pascalCase name}}.styles.css"
+
+interface {{pascalCase name}}Props {
+  imgSrc: string;
+  imgAlt: string;
+  title: string;
+  description: string;
+  handleOnClickButton: () => void;
+  buttonLabel: string;
+}
+
+const {{pascalCase name}} = (props: {{pascalCase name}}Props) => {
+  return (
+    <div>
+      <h1>{{pascalCase name}}</h1>
+    </div>
+  );
+};
+
+export default {{pascalCase name}};
