@@ -19,7 +19,7 @@ A pagina vai recarregar ao realizar alguma mudança no código.
 ## Como Iniciar o Site
 
  1. Clone o repositório com o comando `git clone https://github.com/GabrielHammermeister/meal.me.git`
- 2. Mova para o diretório `root` 
- 3. Escreva o comando `yarn install` na pasta `root` do projeto
- 4. Execute o comando `yarn dev` na pasta `root` do projeto
+ 2. Mova para o diretório `raiz` `meal.me`
+ 3. Execute o comando `yarn install` na pasta `meal.me` do projeto
+ 4. Execute o comando `yarn dev` na pasta `meal.me` do projeto
  5. O projeto estará sendo executado na porta `5173`
