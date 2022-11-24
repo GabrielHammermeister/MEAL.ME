@@ -23,12 +23,14 @@ import { generateKey } from "@/utils/generateKey";
 import { toArray } from "lodash";
 
 type Nutrients = Array<{ name: string; amount: number; unit: string }>;
+type Nutrient = { name: string; amount: number; unit: string };
+type Macros = Array<Nutrient>;
 
 const IngredientPage = () => {
   const { id: ingredientId } = useParams();
-  const [macros, setMacros] = useState([]);
-  const [totalCalories, setTotalCalories] = useState();
-  const [caloricBreakdown, setCaloricBreakdown] = useState();
+  const [macros, setMacros] = useState<Macros>([]);
+  const [totalCalories, setTotalCalories] = useState<Nutrient>();
+  const [caloricBreakdown, setCaloricBreakdown] = useState<number[]>();
   const [ingredientName, setIngredientName] = useState("-");
 
   console.log(
@@ -60,6 +62,8 @@ const IngredientPage = () => {
         data: { nutrition, name },
       } = await getInformationById(ingredientId);
       setIngredientName(name);
+      //@ts-ignore
+
       setCaloricBreakdown(toArray(nutrition.caloricBreakdown));
 
       filterMacros(nutrition.nutrients);
@@ -87,17 +91,18 @@ const IngredientPage = () => {
             <Typography variant="subtitle2">Macro Nutrients</Typography>
 
             <Box>
-              {macros.map((macro, index) => (
-                <MacroProgressBar
-                  key={generateKey()}
-                  name={macro.name}
-                  macroNutrient={{
-                    amount: macro.amount,
-                    unit: macro.unit,
-                  }}
-                  percent={caloricBreakdown[index]}
-                />
-              ))}
+              {caloricBreakdown &&
+                macros.map((macro, index) => (
+                  <MacroProgressBar
+                    key={generateKey()}
+                    name={macro.name}
+                    macroNutrient={{
+                      amount: macro.amount,
+                      unit: macro.unit,
+                    }}
+                    percent={caloricBreakdown[index]}
+                  />
+                ))}
             </Box>
             {totalCalories && (
               <Typography variant="overline">
@@ -138,15 +143,6 @@ const IngredientPage = () => {
                   </TableCell>
                 </TableRow>
               ))}
-
-              {/* <TableRow>
-                <TableCell>Carbs </TableCell>
-                <TableCell>30 g</TableCell>
-              </TableRow>
-              <TableRow>
-              <TableCell>Fats </TableCell>
-              <TableCell>40 g</TableCell>
-            </TableRow> */}
             </TableBody>
           </Table>
         </TableContainer>

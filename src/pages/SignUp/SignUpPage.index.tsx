@@ -27,7 +27,7 @@ const SignUpPage = () => {
 
   const navigate = useNavigate();
 
-  const handleUserSignUp = (event) => {
+  const handleUserSignUp = (event: { preventDefault: () => void }) => {
     event.preventDefault();
     createUserWithEmailAndPassword(firebaseAuth, email, password)
       .then((userCredentials) => {
