@@ -1,0 +1,6 @@
+.dashboard-container {
+    height: 100%;
+    display: grid;
+    grid-template: 4fr 6fr / 1fr 1fr;
+    gap: 20px;
+}
