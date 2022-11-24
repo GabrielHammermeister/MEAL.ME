@@ -13,28 +13,24 @@ import { useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import carrotsSrc from "@/assets/carrots.jpg";
 import { ROUTES } from "@/router/Router";
+import { Ingredient } from "@/providers/Ingredient.provider";
 
-function IngredientCard() {
+type IngredientCardProps = {
+  ingredient: Ingredient;
+};
+
+function IngredientCard({ ingredient }: IngredientCardProps) {
   const navigate = useNavigate();
   const goToIngredient = () => {
-    return navigate("5");
+    return navigate(String(ingredient.id));
   };
 
   return (
     <Card sx={{ maxWidth: 345 }}>
       <CardActionArea onClick={goToIngredient}>
-        <CardMedia
-          component="img"
-          height="140"
-          image={carrotsSrc}
-          alt="carrots"
-        />
         <CardContent>
           <Typography variant="h5" component="div">
-            Carrots
-          </Typography>
-          <Typography variant="body2" color="text.secondary">
-            Lorem ipsum dolor, sit amet.
+            {ingredient.name}
           </Typography>
         </CardContent>
       </CardActionArea>

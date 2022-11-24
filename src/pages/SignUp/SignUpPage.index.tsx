@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import DefaultTemplate from "@/templates/Default/Default.index";
 import {
   Avatar,
@@ -14,8 +14,31 @@ import {
 } from "@mui/material";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import { ROUTES } from "@/router/Router";
+import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
+import { firebaseAuth } from "@/services/firebase/initializer";
+import { Password } from "@mui/icons-material";
+import { useNavigate } from "react-router-dom";
 
 const SignUpPage = () => {
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+
+  const navigate = useNavigate();
+
+  const handleUserSignUp = (event) => {
+    event.preventDefault();
+    createUserWithEmailAndPassword(firebaseAuth, email, password)
+      .then((userCredentials) => {
+        const user = userCredentials.user;
+        updateProfile(user, {
+          displayName: firstName + " " + lastName,
+        });
+        navigate("/" + ROUTES.HOME);
+      })
+      .catch((err) => console.error(err));
+  };
   return (
     <DefaultTemplate>
       <Typography variant="h4">SignUp</Typography>
@@ -36,7 +59,7 @@ const SignUpPage = () => {
           <Box
             component="form"
             noValidate
-            onSubmit={() => console.log("oisdf")}
+            onSubmit={handleUserSignUp}
             sx={{ mt: 3 }}
           >
             <Grid container spacing={2}>
@@ -48,6 +71,8 @@ const SignUpPage = () => {
                   fullWidth
                   id="firstName"
                   label="First Name"
+                  value={firstName}
+                  onChange={(ev) => setFirstName(ev.target.value)}
                   autoFocus
                 />
               </Grid>
@@ -59,6 +84,8 @@ const SignUpPage = () => {
                   label="Last Name"
                   name="lastName"
                   autoComplete="family-name"
+                  value={lastName}
+                  onChange={(ev) => setLastName(ev.target.value)}
                 />
               </Grid>
               <Grid item xs={12}>
@@ -69,6 +96,8 @@ const SignUpPage = () => {
                   label="Email Address"
                   name="email"
                   autoComplete="email"
+                  value={email}
+                  onChange={(ev) => setEmail(ev.target.value)}
                 />
               </Grid>
               <Grid item xs={12}>
@@ -80,6 +109,8 @@ const SignUpPage = () => {
                   type="password"
                   id="password"
                   autoComplete="new-password"
+                  value={password}
+                  onChange={(ev) => setPassword(ev.target.value)}
                 />
               </Grid>
             </Grid>

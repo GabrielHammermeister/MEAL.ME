@@ -1,8 +1,8 @@
 import "./displayIngredients.css";
-import React from "react";
+import React, { useContext } from "react";
 import IngredientCard from "../IngredientCard/IngredientCard";
-import { Ingredient } from "@/providers/Ingredient.provider";
 import {
+  Grid,
   List,
   ListItem,
   ListItemButton,
@@ -10,18 +10,20 @@ import {
   Typography,
 } from "@mui/material";
 import { Box } from "@mui/system";
+import { generateKey } from "@/utils/generateKey";
+import useIngredients from "@/hooks/useIngredients";
 
 interface DisplayIngredientsProps {
   variant: "small" | "large";
 }
 
 const DisplayIngredients = ({ variant }: DisplayIngredientsProps) => {
-  // const { ingredients } = useContext(IngredientContext);
-  const ingredients: Ingredient[] = [{}, {}, {}, {}];
+  const { ingredients } = useIngredients();
+
   return (
     <>
       {variant === "small" ? (
-        <Box maxWidth={"50%"}>
+        <Box>
           <List>
             {ingredients.map((value, index) => (
               <ListItemButton key={index}>
@@ -46,10 +48,14 @@ const DisplayIngredients = ({ variant }: DisplayIngredientsProps) => {
           </List>
         </Box>
       ) : (
-        <div className="container">
-          <IngredientCard />
-          <IngredientCard />
-          <IngredientCard />
+        <div className="grid-wrapper">
+          <Grid container spacing={2} justifyContent="center">
+            {ingredients.map((ingredient) => (
+              <Grid item key={generateKey()}>
+                <IngredientCard ingredient={ingredient} />
+              </Grid>
+            ))}
+          </Grid>
         </div>
       )}
     </>

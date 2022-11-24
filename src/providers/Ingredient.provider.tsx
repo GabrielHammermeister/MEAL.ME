@@ -1,9 +1,16 @@
 import React, { useState } from "react";
 
 export const IngredientContext =
-  React.createContext<IngredientContextValues | null>(null);
+  React.createContext<IngredientContextValues | null>({
+    ingredients: [],
+    setIngredients: () => null,
+  });
 
-export type Ingredient = {};
+export type Ingredient = {
+  id: number;
+  image: string;
+  name: string;
+};
 
 export interface IngredientContextValues {
   ingredients: Ingredient[];

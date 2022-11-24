@@ -1,4 +1,5 @@
 import useIngredients from "@/hooks/useIngredients";
+import { getIngredients } from "@/services/spoonacular/spoonacular.service";
 import SearchRoundedIcon from "@mui/icons-material/SearchRounded";
 import {
   FormControl,
@@ -8,41 +9,19 @@ import {
 } from "@mui/material";
 import { debounce } from "lodash";
 import React, { useContext, useMemo } from "react";
+import Input from "../Molecules/Input/Input.index";
 // Contexts
 // import { getIngredients } from "../../services/spoonacular.service";
 
 function SearchIngredient() {
-  const { setIngredients } = useIngredients();
-  const debouncedHandleChange = useMemo(
-    () => debounce(handleChange, 500),
-    [handleChange]
-  );
-
-  function handleChange(query: string) {
-    if (query !== "") {
-      setIngredients([]);
-      //   getIngredients(query)
-      //     .then((res: { data: { results: any } }) => {
-      //       setIngredients(res.data.results);
-      //     })
-      //     .catch((err: any) => console.error(err));
-    }
-  }
-
   return (
     <>
       <FormControl fullWidth variant="outlined">
         <InputLabel htmlFor="search-food">Search</InputLabel>
-        <OutlinedInput
-          id="search-food"
-          type="text"
+        <Input
+          onChange={(e) => console.log("seaching ... ")}
+          icon={<SearchRoundedIcon />}
           label="Search"
-          onChange={(e) => debouncedHandleChange(e.target.value)}
-          endAdornment={
-            <InputAdornment position="end">
-              <SearchRoundedIcon />
-            </InputAdornment>
-          }
         />
       </FormControl>
     </>

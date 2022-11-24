@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import DefaultTemplate from "@/templates/Default/Default.index";
 import {
   Box,
@@ -18,15 +18,62 @@ import "./IngredientPage.styles.css";
 import MacroProgressBar, {
   LinearProgressWithLabel,
 } from "@/components/MacroProgressBar";
+import { getInformationById } from "@/services/spoonacular/spoonacular.service";
+import { generateKey } from "@/utils/generateKey";
+import { toArray } from "lodash";
+
+type Nutrients = Array<{ name: string; amount: number; unit: string }>;
 
 const IngredientPage = () => {
   const { id: ingredientId } = useParams();
+  const [macros, setMacros] = useState([]);
+  const [totalCalories, setTotalCalories] = useState();
+  const [caloricBreakdown, setCaloricBreakdown] = useState();
+  const [ingredientName, setIngredientName] = useState("-");
+
+  console.log(
+    "🚀 ~ file: IngredientPage.index.tsx ~ line 31 ~ IngredientPage ~ caloricBreakdown",
+    caloricBreakdown
+  );
+
+  const filterMacros = (nutrients: Nutrients) => {
+    setMacros([]);
+    nutrients.forEach((nutrient) => {
+      if (
+        nutrient.name === "Protein" ||
+        nutrient.name === "Fat" ||
+        nutrient.name === "Carbohydrates"
+      ) {
+        setMacros((prev) => {
+          return [...prev, nutrient].sort((a, b) => {
+            return a.name > b.name ? 1 : -1;
+          });
+        });
+      }
+      if (nutrient.name === "Calories") setTotalCalories(nutrient);
+    });
+  };
+
+  const fetchIngredient = async () => {
+    try {
+      const {
+        data: { nutrition, name },
+      } = await getInformationById(ingredientId);
+      setIngredientName(name);
+      setCaloricBreakdown(toArray(nutrition.caloricBreakdown));
+
+      filterMacros(nutrition.nutrients);
+    } catch (err) {
+      console.error(err);
+    }
+  };
+  useEffect(() => {
+    fetchIngredient();
+  }, []);
 
   return (
     <DefaultTemplate>
-      <Typography variant="h4">
-        Your ingredient Page : {ingredientId}
-      </Typography>
+      <Typography variant="h4">{ingredientName}</Typography>
 
       <div className="grid-dashboard">
         <Paper>
@@ -40,32 +87,24 @@ const IngredientPage = () => {
             <Typography variant="subtitle2">Macro Nutrients</Typography>
 
             <Box>
-              <MacroProgressBar
-                name={"Proteins"}
-                macroNutrient={{
-                  amount: 10,
-                  unit: "g",
-                }}
-                percent={20}
-              />
-              <MacroProgressBar
-                name={"Carbohydrates"}
-                macroNutrient={{
-                  amount: 30,
-                  unit: "g",
-                }}
-                percent={30}
-              />
-              <MacroProgressBar
-                name={"Fats"}
-                macroNutrient={{
-                  amount: 40,
-                  unit: "g",
-                }}
-                percent={50}
-              />
+              {macros.map((macro, index) => (
+                <MacroProgressBar
+                  key={generateKey()}
+                  name={macro.name}
+                  macroNutrient={{
+                    amount: macro.amount,
+                    unit: macro.unit,
+                  }}
+                  percent={caloricBreakdown[index]}
+                />
+              ))}
             </Box>
-            <Typography variant="overline">Total calories: 330 kcal</Typography>
+            {totalCalories && (
+              <Typography variant="overline">
+                Total calories: {totalCalories.amount}{" "}
+                {totalCalories.unit.toUpperCase()}
+              </Typography>
+            )}
           </Box>
         </Paper>
         <TableContainer sx={{ maxWidth: "1000px" }} component={Paper}>
@@ -85,20 +124,29 @@ const IngredientPage = () => {
             <TableBody>
               <TableRow>
                 <TableCell>Valor Energetico </TableCell>
-                <TableCell>133 kcal</TableCell>
+                {totalCalories && (
+                  <TableCell>
+                    {totalCalories.amount} {totalCalories.unit}
+                  </TableCell>
+                )}
               </TableRow>
-              <TableRow>
-                <TableCell>Proteins </TableCell>
-                <TableCell>10 g</TableCell>
-              </TableRow>
-              <TableRow>
+              {macros.map((macro, index) => (
+                <TableRow key={generateKey()}>
+                  <TableCell>{macro.name} </TableCell>
+                  <TableCell>
+                    {macro.amount} {macro.unit}
+                  </TableCell>
+                </TableRow>
+              ))}
+
+              {/* <TableRow>
                 <TableCell>Carbs </TableCell>
                 <TableCell>30 g</TableCell>
               </TableRow>
               <TableRow>
-                <TableCell>Fats </TableCell>
-                <TableCell>40 g</TableCell>
-              </TableRow>
+              <TableCell>Fats </TableCell>
+              <TableCell>40 g</TableCell>
+            </TableRow> */}
             </TableBody>
           </Table>
         </TableContainer>

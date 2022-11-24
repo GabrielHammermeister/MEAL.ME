@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import DefaultTemplate from "@/templates/Default/Default.index";
 import {
   Avatar,
@@ -14,8 +14,23 @@ import {
 } from "@mui/material";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import { ROUTES } from "@/router/Router";
+import { signInWithEmailAndPassword } from "firebase/auth";
+import { firebaseAuth } from "@/services/firebase/initializer";
+import { useNavigate, useNavigation } from "react-router-dom";
 
 const LoginPage = () => {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const navigate = useNavigate();
+
+  const handleUserSignIn = (event: any) => {
+    event.preventDefault();
+    signInWithEmailAndPassword(firebaseAuth, email, password)
+      .then((user) => {
+        navigate("/" + ROUTES.HOME);
+      })
+      .catch((err) => console.error(err));
+  };
   return (
     <DefaultTemplate>
       <Typography variant="h4">Login</Typography>
@@ -36,7 +51,7 @@ const LoginPage = () => {
           </Typography>
           <Box
             component="form"
-            onSubmit={() => console.log("oi")}
+            onSubmit={handleUserSignIn}
             noValidate
             sx={{ mt: 1 }}
           >
@@ -49,6 +64,8 @@ const LoginPage = () => {
               name="email"
               autoComplete="email"
               autoFocus
+              value={email}
+              onChange={(ev) => setEmail(ev.target.value)}
             />
             <TextField
               margin="normal"
@@ -59,6 +76,8 @@ const LoginPage = () => {
               type="password"
               id="password"
               autoComplete="current-password"
+              value={password}
+              onChange={(ev) => setPassword(ev.target.value)}
             />
             <FormControlLabel
               control={<Checkbox value="remember" color="primary" />}
@@ -74,11 +93,6 @@ const LoginPage = () => {
             </Button>
             <Grid container>
               <Grid item>
-                {/* <Link to={ROUTES.SIGNUP}>
-                  <Typography variant="body2">
-                    Don't have an account? Sign Up
-                  </Typography>
-                </Link> */}
                 <Link href={ROUTES.SIGNUP} variant="body2">
                   Don't have an account? Sign Up
                 </Link>

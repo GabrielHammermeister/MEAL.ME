@@ -1,24 +1,26 @@
 .grid-container {
-    display: grid;
-    grid-template-rows: 20vh 80vh;
-    grid-template-columns: min-content;
+  display: grid;
+  grid-template-rows: 20vh 80vh;
+  grid-template-columns: min-content;
 
-    height: 100vh;
+  height: 100vh;
 
-    grid-template-areas: 
+  grid-template-areas:
     "side-bar header"
     "side-bar content";
 }
 
 .header {
-    color: var(--white);
-    grid-area: header;
-    height:100%;
-    background-color: var(--background-light);
-    padding: 20px 30px 0;
+  color: var(--white);
+  grid-area: header;
+  height: 100%;
+  background-color: var(--background-light);
+  padding: 20px 30px 0;
 }
 
 .content {
-    grid-area: content;
-    padding: 20px 30px;
+  grid-area: content;
+  padding: 20px;
+  margin: 0 auto;
+  width: clamp(700px, 70%, 1500px);
 }
