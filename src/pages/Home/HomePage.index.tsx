@@ -13,12 +13,7 @@ import { getIngredients } from "@/services/spoonacular/spoonacular.service";
 
 const HomePage = () => {
   const { currentUser } = useCurrentUser();
-  useEffect(() => {
-    const fetch = () => {
-      getIngredients("carrots").then((response) => console.log(response));
-    };
-    fetch();
-  }, []);
+
   return (
     <DefaultTemplate>
       <Typography variant="h4">
