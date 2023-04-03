@@ -1,28 +1,21 @@
-import "./displayIngredients.css";
-import React, { useContext } from "react";
-import IngredientCard from "../IngredientCard/IngredientCard";
-import {
-  Grid,
-  List,
-  ListItem,
-  ListItemButton,
-  ListItemText,
-  Typography,
-} from "@mui/material";
-import { Box } from "@mui/system";
-import { generateKey } from "@/utils/generateKey";
-import useIngredients from "@/hooks/useIngredients";
+import './displayIngredients.css'
+import React, { useContext } from 'react'
+import IngredientCard from '../IngredientCard/IngredientCard'
+import { Grid, List, ListItem, ListItemButton, ListItemText, Typography } from '@mui/material'
+import { Box } from '@mui/system'
+import { generateKey } from '@/utils/generateKey'
+import useIngredients from '@/hooks/useIngredients'
 
 interface DisplayIngredientsProps {
-  variant: "small" | "large";
+  variant: 'small' | 'large'
 }
 
 const DisplayIngredients = ({ variant }: DisplayIngredientsProps) => {
-  const { ingredients } = useIngredients();
+  const { ingredients } = useIngredients()
 
   return (
     <>
-      {variant === "small" ? (
+      {variant === 'small' ? (
         <Box>
           <List>
             {ingredients.map((value, index) => (
@@ -30,16 +23,16 @@ const DisplayIngredients = ({ variant }: DisplayIngredientsProps) => {
                 <ListItem
                   disablePadding
                   sx={{
-                    display: "flex",
-                    justifyContent: "space-between",
-                    alignItems: "center",
+                    display: 'flex',
+                    justifyContent: 'space-between',
+                    alignItems: 'center',
                   }}
                 >
                   {/* <ListItemText primary="Item title" secondary="100 g" /> */}
-                  <Typography variant="body2" fontWeight={500}>
+                  <Typography variant='body2' fontWeight={500}>
                     Carrots
                   </Typography>
-                  <Typography variant="body2" color="GrayText">
+                  <Typography variant='body2' color='GrayText'>
                     100 g
                   </Typography>
                 </ListItem>
@@ -48,8 +41,8 @@ const DisplayIngredients = ({ variant }: DisplayIngredientsProps) => {
           </List>
         </Box>
       ) : (
-        <div className="grid-wrapper">
-          <Grid container spacing={2} justifyContent="center">
+        <div className='grid-wrapper'>
+          <Grid container spacing={2} justifyContent='center'>
             {ingredients.map((ingredient) => (
               <Grid item key={generateKey()}>
                 <IngredientCard ingredient={ingredient} />
@@ -59,7 +52,7 @@ const DisplayIngredients = ({ variant }: DisplayIngredientsProps) => {
         </div>
       )}
     </>
-  );
-};
+  )
+}
 
-export default DisplayIngredients;
+export default DisplayIngredients

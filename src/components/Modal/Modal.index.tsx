@@ -1,18 +1,16 @@
-import React from "react";
+import React from 'react'
 
 // Styles
-import "./Modal.styles.css"
+import './Modal.styles.css'
 
-interface ModalProps {
-
-}
+interface ModalProps {}
 
 const Modal = (props: ModalProps) => {
   return (
     <div>
       <h1>Modal</h1>
     </div>
-  );
-};
+  )
+}
 
-export default Modal;
+export default Modal

@@ -1,15 +1,12 @@
-import {
-  IngredientContext,
-  IngredientContextValues,
-} from "@/providers/Ingredient.provider";
-import { UserContext, UserContextValues } from "@/providers/User.provider";
-import { useContext } from "react";
+import { IngredientContext, IngredientContextValues } from '@/providers/Ingredient.provider'
+import { UserContext, UserContextValues } from '@/providers/User.provider'
+import { useContext } from 'react'
 
 const useCurrentUser = () => {
-  const { currentUser } = useContext(UserContext) as UserContextValues;
+  const { currentUser } = useContext(UserContext) as UserContextValues
   return {
     currentUser,
-  };
-};
+  }
+}
 
-export default useCurrentUser;
+export default useCurrentUser

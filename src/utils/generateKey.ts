@@ -1,5 +1,5 @@
-import { uniqueId } from "lodash";
+import { uniqueId } from 'lodash'
 
-type GenerateKey = () => string;
+type GenerateKey = () => string
 
-export const generateKey: GenerateKey = () => uniqueId("k");
+export const generateKey: GenerateKey = () => uniqueId('k')

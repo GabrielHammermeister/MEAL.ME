@@ -6,8 +6,8 @@
   height: 100vh;
 
   grid-template-areas:
-    "side-bar header"
-    "side-bar content";
+    'side-bar header'
+    'side-bar content';
 }
 
 .header {
