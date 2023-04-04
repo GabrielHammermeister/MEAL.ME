@@ -10,22 +10,34 @@ import './styles/global.css'
 import { MuiCustomTheme } from './styles/MuiCustomTheme'
 import { DevSupport } from '@react-buddy/ide-toolbox'
 import { ComponentPreviews, useInitial } from '@/dev'
+import { worker } from './mocks/browser'
+
+function setupMockServiceWorker() {
+  if (import.meta.env.DEV) {
+    return worker.start()
+  }
+  return Promise.resolve()
+}
 
 const muiCustomTheme = createTheme(MuiCustomTheme)
+
 SpoonacularInterceptor()
-ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
-  <React.StrictMode>
-    <CssBaseline />
-    <ThemeProvider theme={muiCustomTheme}>
-      <IngredientProvider>
-        <UserProvider>
-          <BrowserRouter>
-            <DevSupport ComponentPreviews={ComponentPreviews} useInitialHook={useInitial}>
-              <Router />
-            </DevSupport>
-          </BrowserRouter>
-        </UserProvider>
-      </IngredientProvider>
-    </ThemeProvider>
-  </React.StrictMode>,
+
+setupMockServiceWorker().then(() =>
+  ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
+    <React.StrictMode>
+      <CssBaseline />
+      <ThemeProvider theme={muiCustomTheme}>
+        <IngredientProvider>
+          <UserProvider>
+            <BrowserRouter>
+              <DevSupport ComponentPreviews={ComponentPreviews} useInitialHook={useInitial}>
+                <Router />
+              </DevSupport>
+            </BrowserRouter>
+          </UserProvider>
+        </IngredientProvider>
+      </ThemeProvider>
+    </React.StrictMode>,
+  ),
 )
