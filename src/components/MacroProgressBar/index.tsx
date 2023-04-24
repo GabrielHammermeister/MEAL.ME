@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/ban-ts-comment */
 import { Box, LinearProgress, LinearProgressProps, Typography } from '@mui/material'
 import React, { useEffect } from 'react'
 
@@ -13,6 +14,7 @@ export interface MacroNutrientProps {
 export const LinearProgressWithLabel = (props: LinearProgressProps & { value: number }) => {
   const [progress, setProgress] = React.useState(0)
 
+  // @ts-ignore
   const calculateProgress = (timer: NodeJS.Timer) => {
     setProgress((oldProgress) => {
       if (oldProgress === props.value) {

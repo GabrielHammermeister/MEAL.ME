@@ -9,7 +9,7 @@ import { SpoonacularInterceptor } from './services/spoonacular/SpoonacularInterc
 import './styles/global.css'
 import { MuiCustomTheme } from './styles/MuiCustomTheme'
 import { DevSupport } from '@react-buddy/ide-toolbox'
-import { ComponentPreviews, useInitial } from '@/dev'
+import { ComponentPreviews } from '@/dev'
 
 const muiCustomTheme = createTheme(MuiCustomTheme)
 SpoonacularInterceptor()
@@ -20,7 +20,7 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
       <IngredientProvider>
         <UserProvider>
           <BrowserRouter>
-            <DevSupport ComponentPreviews={ComponentPreviews} useInitialHook={useInitial}>
+            <DevSupport ComponentPreviews={ComponentPreviews}>
               <Router />
             </DevSupport>
           </BrowserRouter>
