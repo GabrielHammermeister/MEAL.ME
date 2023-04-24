@@ -1,4 +1,3 @@
-import Sidebar from '@/components/Sidebar/Sidebar.index'
 import CreateMealPage from '@/pages/CreateMeal/CreateMealPage.index'
 import FindIngredientsPage from '@/pages/FindIngredients/FindIngredientsPage.index'
 import HomePage from '@/pages/Home/HomePage.index'
@@ -6,7 +5,7 @@ import IngredientPage from '@/pages/Ingredient/IngredientPage.index'
 import LoginPage from '@/pages/Login/LoginPage.index'
 import MealsPage from '@/pages/Meals/MealsPage.index'
 import SignUpPage from '@/pages/SignUp/SignUpPage.index'
-import { Fragment, useState } from 'react'
+import { Fragment } from 'react'
 import { Navigate, Route, Routes } from 'react-router-dom'
 import Validator from './Validator/Validator.index'
 

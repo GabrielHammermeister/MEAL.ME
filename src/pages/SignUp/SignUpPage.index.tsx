@@ -1,22 +1,10 @@
 import React, { useState } from 'react'
 import DefaultTemplate from '@/templates/Default/Default.index'
-import {
-  Avatar,
-  Box,
-  Button,
-  Checkbox,
-  Container,
-  FormControlLabel,
-  Grid,
-  Link,
-  TextField,
-  Typography,
-} from '@mui/material'
+import { Avatar, Box, Button, Container, Grid, Link, TextField, Typography } from '@mui/material'
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined'
 import { ROUTES } from '@/router/Router'
 import { createUserWithEmailAndPassword, updateProfile } from 'firebase/auth'
 import { firebaseAuth } from '@/services/firebase/initializer'
-import { Password } from '@mui/icons-material'
 import { useNavigate } from 'react-router-dom'
 
 const SignUpPage = () => {

@@ -1,41 +1,15 @@
-import React, { useState } from 'react'
+import React from 'react'
 import DefaultTemplate from '@/templates/Default/Default.index'
-import {
-  Backdrop,
-  Button,
-  Divider,
-  Fade,
-  List,
-  ListItem,
-  ListItemButton,
-  ListItemText,
-  Modal,
-  Paper,
-  Typography,
-} from '@mui/material'
+import { Button, Divider, Paper, Typography } from '@mui/material'
 import { Box } from '@mui/system'
 import './CreateMealPage.styles.css'
 import MacroProgressBar from '@/components/MacroProgressBar'
-import SearchIngredient from '@/components/SearchIngredient/SearchIngredient'
 import SearchRoundedIcon from '@mui/icons-material/SearchRounded'
 
 import DisplayIngredients from '@/components/DisplayIngredients/DisplayIngredients'
 import Input from '@/components/Molecules/Input/Input.index'
 
-const style = {
-  position: 'absolute' as const,
-  top: '50%',
-  left: '50%',
-  transform: 'translate(-50%, -50%)',
-  width: 400,
-  bgcolor: 'background.paper',
-  boxShadow: 24,
-  p: 4,
-}
-
 const CreateMealPage = () => {
-  const [ingredientModalOpened, setIngredientModalOpened] = useState(false)
-
   return (
     <DefaultTemplate>
       <Typography variant='h4'>Create a Meal</Typography>

@@ -4,7 +4,7 @@ import { FormControl, InputAdornment, InputLabel, OutlinedInput } from '@mui/mat
 interface InputProps {
   icon: JSX.Element
   label: string
-  onChange: (e: any) => void
+  onChange: (e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => void
 }
 
 const Input = ({ icon, label, onChange }: InputProps) => {

@@ -1,14 +1,15 @@
 import EmptyState from '@/components/EmptyState/EmptyState.index'
 import Meal from '@/components/Meal/Meal.index'
 import DefaultTemplate from '@/templates/Default/Default.index'
-import { Box, Paper, Typography } from '@mui/material'
+import { Typography } from '@mui/material'
 import React from 'react'
 
 import './MealsPage.styles.css'
 import emptyBoxSrc from '@/assets/empty-box.svg'
 import { useNavigate } from 'react-router-dom'
+import { generateKey } from '@/utils/generateKey'
 
-const userMeals: any[] = []
+const userMeals: never[] = []
 
 const MealsPage = () => {
   const navigate = useNavigate()
@@ -31,8 +32,8 @@ const MealsPage = () => {
         />
       ) : (
         <div className='grid-dashboard'>
-          {userMeals.map((meal) => (
-            <Meal />
+          {userMeals.map(() => (
+            <Meal key={generateKey()} />
           ))}
         </div>
       )}

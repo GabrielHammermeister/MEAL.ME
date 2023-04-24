@@ -1,15 +1,11 @@
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 // Components
 import DefaultTemplate from '@/templates/Default/Default.index'
-import DisplayIngredients from '@/components/DisplayIngredients/DisplayIngredients'
-import SearchIngredient from '@/components/SearchIngredient/SearchIngredient'
 // Contexts
-import { IngredientProvider } from '@/providers/Ingredient.provider'
-import { Box, Dialog, Typography } from '@mui/material'
+import { Typography } from '@mui/material'
 
 import './HomePage.styles.css'
 import useCurrentUser from '@/hooks/useCurrentUser'
-import { getIngredients } from '@/services/spoonacular/spoonacular.service'
 
 const HomePage = () => {
   const { currentUser } = useCurrentUser()

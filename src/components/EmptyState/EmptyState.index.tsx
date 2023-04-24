@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/ban-ts-comment */
 import { Button, Typography } from '@mui/material'
 import React from 'react'
 // @ts-ignore

@@ -1,9 +1,9 @@
 import { firebaseAuth } from '@/services/firebase/initializer'
 import useCurrentUser from '@/hooks/useCurrentUser'
-import { AccountCircleOutlined, Person } from '@mui/icons-material'
+import { Person } from '@mui/icons-material'
 import { Avatar, Box, Typography } from '@mui/material'
 import { signOut } from 'firebase/auth'
-import React, { useContext } from 'react'
+import React from 'react'
 import { NavLink } from 'react-router-dom'
 import './Sidebar.styles.css'
 

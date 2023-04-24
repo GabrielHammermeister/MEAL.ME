@@ -1,4 +1,3 @@
-import { IngredientContext, IngredientContextValues } from '@/providers/Ingredient.provider'
 import { UserContext, UserContextValues } from '@/providers/User.provider'
 import { useContext } from 'react'
 

@@ -2,8 +2,6 @@ import React, { useEffect, useState } from 'react'
 import DefaultTemplate from '@/templates/Default/Default.index'
 import {
   Box,
-  LinearProgress,
-  LinearProgressProps,
   Paper,
   Table,
   TableBody,
@@ -15,7 +13,7 @@ import {
 } from '@mui/material'
 import { useParams } from 'react-router-dom'
 import './IngredientPage.styles.css'
-import MacroProgressBar, { LinearProgressWithLabel } from '@/components/MacroProgressBar'
+import MacroProgressBar from '@/components/MacroProgressBar'
 import { getInformationById } from '@/services/spoonacular/spoonacular.service'
 import { generateKey } from '@/utils/generateKey'
 import { toArray } from 'lodash'
@@ -30,11 +28,6 @@ const IngredientPage = () => {
   const [totalCalories, setTotalCalories] = useState<Nutrient>()
   const [caloricBreakdown, setCaloricBreakdown] = useState<number[]>()
   const [ingredientName, setIngredientName] = useState('-')
-
-  console.log(
-    '🚀 ~ file: IngredientPage.index.tsx ~ line 31 ~ IngredientPage ~ caloricBreakdown',
-    caloricBreakdown,
-  )
 
   const filterMacros = (nutrients: Nutrients) => {
     setMacros([])
@@ -60,7 +53,6 @@ const IngredientPage = () => {
         data: { nutrition, name },
       } = await getInformationById(ingredientId)
       setIngredientName(name)
-      // @ts-ignore
 
       setCaloricBreakdown(toArray(nutrition.caloricBreakdown))
 
@@ -132,7 +124,7 @@ const IngredientPage = () => {
                   </TableCell>
                 )}
               </TableRow>
-              {macros.map((macro, index) => (
+              {macros.map((macro) => (
                 <TableRow key={generateKey()}>
                   <TableCell>{macro.name} </TableCell>
                   <TableCell>

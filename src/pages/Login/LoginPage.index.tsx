@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { FormEvent, useState } from 'react'
 import DefaultTemplate from '@/templates/Default/Default.index'
 import {
   Avatar,
@@ -16,17 +16,17 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined'
 import { ROUTES } from '@/router/Router'
 import { signInWithEmailAndPassword } from 'firebase/auth'
 import { firebaseAuth } from '@/services/firebase/initializer'
-import { useNavigate, useNavigation } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 
 const LoginPage = () => {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const navigate = useNavigate()
 
-  const handleUserSignIn = (event: any) => {
+  const handleUserSignIn = (event: FormEvent) => {
     event.preventDefault()
     signInWithEmailAndPassword(firebaseAuth, email, password)
-      .then((user) => {
+      .then(() => {
         navigate('/' + ROUTES.HOME)
       })
       .catch((err) => console.error(err))
@@ -84,6 +84,7 @@ const LoginPage = () => {
             <Grid container>
               <Grid item>
                 <Link href={ROUTES.SIGNUP} variant='body2'>
+                  {/* eslint-disable-next-line react/no-unescaped-entities */}
                   Don't have an account? Sign Up
                 </Link>
               </Grid>
