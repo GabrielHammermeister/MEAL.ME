@@ -8,6 +8,7 @@ import SearchRoundedIcon from '@mui/icons-material/SearchRounded'
 
 import DisplayIngredients from '@/components/DisplayIngredients/DisplayIngredients'
 import Input from '@/components/Molecules/Input/Input.index'
+import SearchIngredient from '@/components/SearchIngredient/SearchIngredient'
 
 const CreateMealPage = () => {
   return (
@@ -15,11 +16,7 @@ const CreateMealPage = () => {
       <Typography variant='h4'>Create a Meal</Typography>
       <main className='dashboard-container'>
         <Box>
-          <Input
-            icon={<SearchRoundedIcon />}
-            label='Search'
-            onChange={() => console.log('search')}
-          />
+          <SearchIngredient />
           <DisplayIngredients variant='small' />
         </Box>
         <Paper>

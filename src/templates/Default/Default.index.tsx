@@ -10,7 +10,7 @@ const DefaultTemplate = ({ children }: DefaultTemplateProps) => {
   const [header, ...content] = React.Children.toArray(children)
   return (
     <div className='grid-container'>
-      {/* <Sidebar /> */}
+      <Sidebar />
       <header className='header'>{header}</header>
       <main className='content'>{content}</main>
     </div>

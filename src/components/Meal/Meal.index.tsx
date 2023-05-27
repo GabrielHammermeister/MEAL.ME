@@ -5,39 +5,56 @@ import {
   Card,
   CardActions,
   CardContent,
+  Icon,
   IconButton,
   Paper,
+  styled,
+  SvgIcon,
   Typography,
 } from '@mui/material'
-import React from 'react'
+import React, { useState } from 'react'
 import { Add, Mail } from '@mui/icons-material'
+import './styles.css'
+
+const StyledCardActions = styled(CardActions)`
+  display: flex;
+  justify-content: space-between;
+`
 
 const Meal = () => {
+  const [mealCounter, setMealCounter] = useState(0)
+  function handleAddMealCounter() {
+    setMealCounter((prev) => prev + 1)
+  }
+
   return (
     <Badge
       color='secondary'
-      badgeContent={1}
+      badgeContent={mealCounter}
       anchorOrigin={{
         vertical: 'top',
         horizontal: 'left',
       }}
+      invisible={mealCounter === 0}
     >
-      <Card sx={{ width: '100%' }}>
+      <Card sx={{ width: '100%', height: 'fit-content' }}>
         <CardContent>
-          <Typography variant='h6' gutterBottom component='h6'>
-            Heading 6
-          </Typography>
-
+          <header className={'card-header'}>
+            <img src={'/water.svg'} />
+            <Typography variant='h6' gutterBottom component='h6'>
+              Heading 6
+            </Typography>
+            <IconButton aria-label='add' onClick={handleAddMealCounter}>
+              <Add />
+            </IconButton>
+          </header>
+        </CardContent>
+        <StyledCardActions sx={{ p: 2 }}>
           <Typography variant='overline' display='block' gutterBottom>
             500 kcal
           </Typography>
-        </CardContent>
-        <CardActions>
-          <Button size='small'>Learn More</Button>
-        </CardActions>
-        <IconButton aria-label='add'>
-          <Add />
-        </IconButton>
+          <Button size='small'>See More</Button>
+        </StyledCardActions>
       </Card>
     </Badge>
   )
