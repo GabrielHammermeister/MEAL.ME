@@ -2,7 +2,7 @@
   height: 100%;
   margin: 0 auto;
   display: grid;
-  grid-template: repeat(auto-fit, 150px) / repeat(auto-fit, 300px);
+  /*grid-template: repeat(auto-fit, 150px) / repeat(auto-fit, 300px);*/
   justify-content: center;
   gap: 20px;
 }

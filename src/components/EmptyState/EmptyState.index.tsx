@@ -9,8 +9,8 @@ interface EmptyStateProps {
   imgAlt: string
   title: string
   description: string
-  handleOnClickButton: () => void
-  buttonLabel: string
+  handleOnClickButton?: () => void
+  buttonLabel?: string
 }
 
 const EmptyState = ({
@@ -28,14 +28,16 @@ const EmptyState = ({
       <Typography variant='body1' align='center'>
         {description}
       </Typography>
-      <Button
-        sx={{ marginTop: '10px' }}
-        size='large'
-        variant='contained'
-        onClick={handleOnClickButton}
-      >
-        {buttonLabel}
-      </Button>
+      {handleOnClickButton && (
+        <Button
+          sx={{ marginTop: '10px' }}
+          size='large'
+          variant='contained'
+          onClick={handleOnClickButton}
+        >
+          {buttonLabel}
+        </Button>
+      )}
     </div>
   )
 }

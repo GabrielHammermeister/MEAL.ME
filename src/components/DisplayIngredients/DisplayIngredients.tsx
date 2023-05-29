@@ -5,6 +5,8 @@ import { Grid, List, ListItem, ListItemButton, Typography } from '@mui/material'
 import { Box } from '@mui/system'
 import { generateKey } from '@/utils/generateKey'
 import useIngredients from '@/hooks/useIngredients'
+import EmptyState from '@/components/EmptyState/EmptyState.index'
+import searchSrc from '@/assets/search-ingredient.svg'
 
 interface DisplayIngredientsProps {
   variant: 'small' | 'large'
@@ -12,6 +14,17 @@ interface DisplayIngredientsProps {
 
 const DisplayIngredients = ({ variant }: DisplayIngredientsProps) => {
   const { ingredients } = useIngredients()
+
+  if (ingredients.length === 0) {
+    return (
+      <EmptyState
+        imgSrc={searchSrc}
+        imgAlt={'No results found'}
+        title={'No results to show'}
+        description={'Type a valid ingredient to search'}
+      />
+    )
+  }
 
   return (
     <>

@@ -32,5 +32,11 @@ export const MuiCustomTheme: ThemeOptions = {
         component: MuiCustomLink,
       } as LinkProps,
     },
+    MuiCardHeader: {
+      defaultProps: {
+        titleTypographyProps: { variant: 'h6' },
+        subheaderTypographyProps: { variant: 'body2' },
+      },
+    },
   },
 }

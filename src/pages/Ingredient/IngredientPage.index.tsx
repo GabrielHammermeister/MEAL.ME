@@ -17,46 +17,97 @@ import MacroProgressBar from '@/components/MacroProgressBar'
 import { getInformationById } from '@/services/spoonacular/spoonacular.service'
 import { generateKey } from '@/utils/generateKey'
 import { toArray } from 'lodash'
+import { MacroSummary } from '@/components/MacroSummary/MacroSummary'
 
 type Nutrients = Array<{ name: string; amount: number; unit: string }>
 type Nutrient = { name: string; amount: number; unit: string }
+
 type Macros = Array<Nutrient>
+
+type Macro = {
+  amount: number
+  unit: string
+  percent: number
+}
+
+type MacroSummary = {
+  calories?: number
+  fats?: Macro
+  carbs?: Macro
+  proteins?: Macro
+}
+
+interface Nutrition {
+  nutrients: Nutrients
+  caloricBreakdown: {
+    percentCarbs: number
+    percentFat: number
+    percentProtein: number
+  }
+}
 
 const IngredientPage = () => {
   const { id: ingredientId } = useParams()
-  const [macros, setMacros] = useState<Macros>([])
-  const [totalCalories, setTotalCalories] = useState<Nutrient>()
-  const [caloricBreakdown, setCaloricBreakdown] = useState<number[]>()
   const [ingredientName, setIngredientName] = useState('-')
+  const [loadingMacros, setLoadingMacros] = useState(true)
 
-  const filterMacros = (nutrients: Nutrients) => {
-    setMacros([])
+  const [macroNutrients, setMacroNutrients] = useState<MacroSummary>({})
+  const [nutrients, setNutrients] = useState<Array<Nutrient>>([])
+
+  const filterMacros = ({ nutrients, caloricBreakdown }: Nutrition) => {
     nutrients.forEach((nutrient) => {
-      if (
-        nutrient.name === 'Protein' ||
-        nutrient.name === 'Fat' ||
-        nutrient.name === 'Carbohydrates'
-      ) {
-        setMacros((prev) => {
-          return [...prev, nutrient].sort((a, b) => {
-            return a.name > b.name ? 1 : -1
-          })
-        })
+      if (nutrient.name === 'Protein') {
+        setMacroNutrients((prev) => ({
+          ...prev,
+          proteins: {
+            amount: nutrient.amount,
+            unit: nutrient.unit,
+            percent: caloricBreakdown.percentProtein,
+          },
+        }))
+      } else if (nutrient.name === 'Fat') {
+        setMacroNutrients((prev) => ({
+          ...prev,
+          fats: {
+            amount: nutrient.amount,
+            unit: nutrient.unit,
+            percent: caloricBreakdown.percentFat,
+          },
+        }))
+      } else if (nutrient.name === 'Carbohydrates') {
+        setMacroNutrients((prev) => ({
+          ...prev,
+          carbs: {
+            amount: nutrient.amount,
+            unit: nutrient.unit,
+            percent: caloricBreakdown.percentCarbs,
+          },
+        }))
+      } else if (nutrient.name === 'Calories') {
+        setMacroNutrients((prev) => ({
+          ...prev,
+          calories: nutrient.amount,
+        }))
       }
-      if (nutrient.name === 'Calories') setTotalCalories(nutrient)
     })
+    setLoadingMacros(false)
+  }
+
+  function omitMacros(nutrients: Array<any>) {
+    const filter = ['Fat', 'Protein', 'Carbohydrates', 'Calories']
+    return nutrients.filter((nutrient) => !filter.includes(nutrient.name) && nutrient.amount > 0)
   }
 
   const fetchIngredient = async () => {
     try {
+      const res = await getInformationById(ingredientId)
       const {
         data: { nutrition, name },
-      } = await getInformationById(ingredientId)
+      } = res
+
       setIngredientName(name)
-
-      setCaloricBreakdown(toArray(nutrition.caloricBreakdown))
-
-      filterMacros(nutrition.nutrients)
+      setNutrients(omitMacros(nutrition.nutrients))
+      filterMacros(nutrition)
     } catch (err) {
       console.error(err)
     }
@@ -79,26 +130,7 @@ const IngredientPage = () => {
             height='100%'
           >
             <Typography variant='subtitle2'>Macro Nutrients</Typography>
-
-            <Box>
-              {caloricBreakdown &&
-                macros.map((macro, index) => (
-                  <MacroProgressBar
-                    key={generateKey()}
-                    name={macro.name}
-                    macroNutrient={{
-                      amount: macro.amount,
-                      unit: macro.unit,
-                    }}
-                    percent={caloricBreakdown[index]}
-                  />
-                ))}
-            </Box>
-            {totalCalories && (
-              <Typography variant='overline'>
-                Total calories: {totalCalories.amount} {totalCalories.unit.toUpperCase()}
-              </Typography>
-            )}
+            <MacroSummary macros={macroNutrients} loading={loadingMacros} />
           </Box>
         </Paper>
         <TableContainer sx={{ maxWidth: '1000px' }} component={Paper}>
@@ -118,17 +150,32 @@ const IngredientPage = () => {
             <TableBody>
               <TableRow>
                 <TableCell>Valor Energetico </TableCell>
-                {totalCalories && (
-                  <TableCell>
-                    {totalCalories.amount} {totalCalories.unit}
-                  </TableCell>
-                )}
+                {macroNutrients && <TableCell>{macroNutrients.calories} kcal</TableCell>}
               </TableRow>
-              {macros.map((macro) => (
+              <TableRow>
+                <TableCell>Carbohydrates</TableCell>
+                <TableCell>
+                  {macroNutrients.carbs?.amount} {macroNutrients.carbs?.unit}
+                </TableCell>
+              </TableRow>
+              <TableRow>
+                <TableCell>Proteins</TableCell>
+                <TableCell>
+                  {macroNutrients.proteins?.amount} {macroNutrients.proteins?.unit}
+                </TableCell>
+              </TableRow>
+              <TableRow>
+                <TableCell>Fats</TableCell>
+                <TableCell>
+                  {macroNutrients.fats?.amount} {macroNutrients.fats?.unit}
+                </TableCell>
+              </TableRow>
+
+              {nutrients.map((nutrient) => (
                 <TableRow key={generateKey()}>
-                  <TableCell>{macro.name} </TableCell>
+                  <TableCell>{nutrient.name}</TableCell>
                   <TableCell>
-                    {macro.amount} {macro.unit}
+                    {nutrient?.amount} {nutrient?.unit}
                   </TableCell>
                 </TableRow>
               ))}
