@@ -9,6 +9,7 @@ import { Fragment } from 'react'
 import { Navigate, Route, Routes } from 'react-router-dom'
 import Validator from './Validator/Validator.index'
 import { ProfilePage } from '@/pages/Profile/ProfilePage'
+import { MealPage } from '@/pages/MealPage/MealPage'
 
 export const ROUTES = {
   HOME: 'home',
@@ -36,6 +37,7 @@ function Router() {
           <Route path={ROUTES.MEALS.INDEX}>
             <Route index element={<MealsPage />} />
             <Route path={ROUTES.MEALS.CREATE} element={<CreateMealPage />} />
+            <Route path=':id' element={<MealPage />} />
           </Route>
 
           <Route path={ROUTES.INGREDIENTS.INDEX}>

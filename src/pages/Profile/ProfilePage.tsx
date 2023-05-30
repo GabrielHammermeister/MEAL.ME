@@ -113,7 +113,7 @@ export function ProfilePage() {
   const [activeStep, setActiveStep] = useState(0)
   const [displayUserGoalStepper, setDisplayUserGoalStepper] = useState(false)
   const isLastStep = activeStep === steps.length - 1
-  const userGoal = true
+  const userGoal = false
 
   function handleNextStep() {
     if (activeStep === 2) setActiveStep(0)
