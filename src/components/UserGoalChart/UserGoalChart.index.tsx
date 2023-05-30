@@ -43,8 +43,8 @@ export default function UserGoalChart({ chartData }: any) {
       <Card>
         <CardHeader title={'title'} subheader={'subheader'} />
 
-        <Box sx={{ p: 3, pb: 1 }} dir='ltr'>
-          <ReactApexChart type='line' series={chartData} options={chartOptions} height={364} />
+        <Box sx={{ p: 3, pb: 1, pt: 0 }} dir='ltr'>
+          <ReactApexChart type='line' series={chartData} options={chartOptions} height={350} />
         </Box>
       </Card>
     </>

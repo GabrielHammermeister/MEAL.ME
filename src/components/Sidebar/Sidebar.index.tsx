@@ -6,6 +6,7 @@ import { signOut } from 'firebase/auth'
 import React from 'react'
 import { NavLink } from 'react-router-dom'
 import './Sidebar.styles.css'
+import { ROUTES } from '@/router/Router'
 
 const Sidebar = () => {
   const { currentUser } = useCurrentUser()
@@ -42,12 +43,12 @@ const Sidebar = () => {
               <Person />
             </Avatar>
             <NavLink
-              to='#'
-              onClick={handleUserSignOut}
+              to={ROUTES.PROFILE.INDEX}
+              // onClick={handleUserSignOut}
               className={({ isActive }) => (isActive ? 'activeLink' : 'nav-link')}
               style={{ height: '35px' }}
             >
-              Sign Out
+              Profile
             </NavLink>
           </Box>
         ) : (
@@ -57,16 +58,6 @@ const Sidebar = () => {
         )}
         <Typography variant='caption' className='copyright'>
           Copyright ©{new Date().getFullYear()} All rights reserved
-          {/* | This
-          website is made by{" "}
-          <a
-            href="https://www.linkedin.com/in/gabriel-hammer/"
-            rel="noreferrer"
-            target="_blank"
-            className="copyright__linkedin-link"
-          >
-            Gabriel Hammer.
-          </a> */}
         </Typography>
       </footer>
     </nav>

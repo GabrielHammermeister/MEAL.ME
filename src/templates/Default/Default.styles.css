@@ -1,6 +1,6 @@
 .grid-container {
   display: grid;
-  grid-template-rows: 20vh 80vh;
+  grid-template-rows: 15vh 85vh;
   grid-template-columns: min-content;
 
   height: 100vh;
@@ -20,7 +20,7 @@
 
 .content {
   grid-area: content;
-  padding: 20px;
+  padding: 40px 80px;
   margin: 0 auto;
   width: clamp(700px,90%, 1500px);
 }

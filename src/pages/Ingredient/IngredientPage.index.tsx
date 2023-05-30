@@ -121,7 +121,7 @@ const IngredientPage = () => {
       <Typography variant='h4'>{ingredientName}</Typography>
 
       <div className='grid-dashboard'>
-        <Paper>
+        <Paper sx={{ gridColumn: 'span 2', gridRow: 'span 1' }}>
           <Box
             p={2}
             display='flex'
@@ -133,7 +133,10 @@ const IngredientPage = () => {
             <MacroSummary macros={macroNutrients} loading={loadingMacros} />
           </Box>
         </Paper>
-        <TableContainer sx={{ maxWidth: '1000px' }} component={Paper}>
+        <TableContainer
+          sx={{ maxWidth: '1000px', gridColumn: 'span 2', gridRow: 'span 2' }}
+          component={Paper}
+        >
           <Table width={100} size='small' aria-label='a dense table'>
             <TableHead>
               <TableRow>

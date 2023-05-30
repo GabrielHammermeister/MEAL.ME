@@ -11,5 +11,5 @@
   display: flex;
   justify-content: center;
   margin-top: auto;
-  grid-column: span 2;
+  grid-column: span 4;
 }

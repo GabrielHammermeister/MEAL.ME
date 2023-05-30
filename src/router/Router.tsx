@@ -8,6 +8,7 @@ import SignUpPage from '@/pages/SignUp/SignUpPage.index'
 import { Fragment } from 'react'
 import { Navigate, Route, Routes } from 'react-router-dom'
 import Validator from './Validator/Validator.index'
+import { ProfilePage } from '@/pages/Profile/ProfilePage'
 
 export const ROUTES = {
   HOME: 'home',
@@ -17,6 +18,9 @@ export const ROUTES = {
   MEALS: {
     INDEX: 'meals',
     CREATE: 'create',
+  },
+  PROFILE: {
+    INDEX: '/profile',
   },
   LOGIN: '/login',
   SIGNUP: '/sign-up',
@@ -38,6 +42,8 @@ function Router() {
             <Route index element={<FindIngredientsPage />} />
             <Route path=':id' element={<IngredientPage />} />
           </Route>
+
+          <Route path={ROUTES.PROFILE.INDEX} element={<ProfilePage />} />
         </Route>
 
         {/* Public Routes */}
