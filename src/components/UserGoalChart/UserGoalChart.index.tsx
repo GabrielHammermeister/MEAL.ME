@@ -8,7 +8,7 @@ import useChart from '@/hooks/useChart'
 export default function UserGoalChart({ chartData }: any) {
   const chartOptions = useChart({
     plotOptions: { bar: { columnWidth: '16%' } },
-    fill: { type: chartData.map((i) => i.fill) },
+    fill: { type: chartData.map((i: any) => i.fill) },
     labels: [
       '01/01/2003',
       '02/01/2003',
@@ -28,7 +28,7 @@ export default function UserGoalChart({ chartData }: any) {
       shared: true,
       intersect: false,
       y: {
-        formatter: (y) => {
+        formatter: (y: any) => {
           if (typeof y !== 'undefined') {
             return `${y.toFixed(0)} kg`
           }
@@ -41,7 +41,7 @@ export default function UserGoalChart({ chartData }: any) {
   return (
     <>
       <Card>
-        <CardHeader title={'title'} subheader={'subheader'} />
+        <CardHeader title={'Your Weight Journey'} subheader={'Track all your weight change'} />
 
         <Box sx={{ p: 3, pb: 1, pt: 0 }} dir='ltr'>
           <ReactApexChart type='line' series={chartData} options={chartOptions} height={350} />

@@ -15,16 +15,30 @@ import {
 import React, { useState } from 'react'
 import { Add, Mail } from '@mui/icons-material'
 import './styles.css'
+import { useNavigate } from 'react-router-dom'
+import { ROUTES } from '@/router/Router'
+import { s } from 'msw/lib/glossary-de6278a9'
 
 const StyledCardActions = styled(CardActions)`
   display: flex;
   justify-content: space-between;
 `
 
-const Meal = () => {
+type MealProps = {
+  mealData: {
+    id: string
+  }
+}
+
+const Meal = ({ mealData }: MealProps) => {
   const [mealCounter, setMealCounter] = useState(0)
+  const navigate = useNavigate()
   function handleAddMealCounter() {
     setMealCounter((prev) => prev + 1)
+  }
+
+  function handleSeeMore() {
+    navigate(mealData.id)
   }
 
   return (
@@ -53,7 +67,9 @@ const Meal = () => {
           <Typography variant='overline' display='block' gutterBottom>
             500 kcal
           </Typography>
-          <Button size='small'>See More</Button>
+          <Button size='small' onClick={handleSeeMore}>
+            See More
+          </Button>
         </StyledCardActions>
       </Card>
     </Badge>

@@ -1,22 +1,60 @@
 import Iconify from '@/components/iconify/Iconify'
-import { IconButton, MenuItem, Popover, Typography } from '@mui/material'
+import { Card, CardHeader, IconButton, MenuItem, Paper, Popover, Typography } from '@mui/material'
 import DefaultTemplate from '@/templates/Default/Default.index'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import './styles.css'
+import { MacroSummary } from '@/components/MacroSummary/MacroSummary'
+import { Box } from '@mui/system'
+import DisplayIngredients from '@/components/DisplayIngredients/DisplayIngredients'
+import useIngredients from '@/hooks/useIngredients'
 
+const MOCK_INGREDIENTS = [
+  { id: 1, image: 'image.png', name: 'Carrot' },
+  { id: 1, image: 'image.png', name: 'Carrot' },
+  { id: 1, image: 'image.png', name: 'Carrot' },
+  { id: 1, image: 'image.png', name: 'Carrot' },
+  { id: 1, image: 'image.png', name: 'Carrot' },
+]
+
+const MOCK_MACROS = {
+  calories: 123,
+  fats: {
+    amount: 100,
+    unit: 'g',
+    percent: 30,
+  },
+  carbs: {
+    amount: 50,
+    unit: 'g',
+    percent: 40,
+  },
+  proteins: {
+    amount: 80,
+    unit: 'g',
+    percent: 30,
+  },
+}
 export function MealPage() {
   const [open, setOpen] = useState(null)
+  const { setIngredients } = useIngredients()
 
-  const handleOpenMenu = (event) => {
+  useEffect(() => {
+    setIngredients(MOCK_INGREDIENTS)
+    // TODO:
+    // - realizar request da MEAL
+    // - popular store com ingredients
+  }, [])
+
+  const handleOpenMenu = (event: any) => {
     setOpen(event.currentTarget)
   }
-  const handleCloseMenu = (event) => {
+  const handleCloseMenu = () => {
     setOpen(null)
   }
   const handleDeleteMeal = () => {
     console.log('delteed')
     handleCloseMenu()
-    //redirect to MEALS
+    // redirect to MEALS
   }
 
   return (
@@ -50,6 +88,20 @@ export function MealPage() {
             Delete
           </MenuItem>
         </Popover>
+      </section>
+      <section className={'meal-grid'}>
+        <Card>
+          <CardHeader title={'Macro Nutrients'} />
+          <Box p={3}>
+            <MacroSummary macros={MOCK_MACROS} />
+          </Box>
+        </Card>
+        <Card>
+          <CardHeader title={'Ingredients'} />
+          <Box p={3}>
+            <DisplayIngredients variant={'small'} />
+          </Box>
+        </Card>
       </section>
     </DefaultTemplate>
   )

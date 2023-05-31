@@ -3,7 +3,7 @@ import MacroProgressBar from '@/components/MacroProgressBar'
 import { CircularProgress, Typography } from '@mui/material'
 import React from 'react'
 
-type MacroNutrient = {
+export type MacroNutrient = {
   amount: number
   unit: string
   percent: number
@@ -22,7 +22,6 @@ export function MacroSummary({
   macros: { calories, fats, proteins, carbs },
   loading = false,
 }: MacroSummaryProps) {
-  console.log('macros', { calories, fats, proteins, carbs })
   if (loading) {
     return <CircularProgress />
   }

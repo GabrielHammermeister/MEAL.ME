@@ -40,7 +40,7 @@ const MealsPage = () => {
         <>
           <div className='grid-dashboard'>
             {mealList.map(() => (
-              <Meal key={generateKey()} />
+              <Meal key={generateKey()} mealData={{ id: 'iasdf' }} />
             ))}
             <section className={'button-container'}>
               <Button

@@ -9,6 +9,8 @@ export type Ingredient = {
   id: number
   image: string
   name: string
+  unit?: string
+  amount?: number
 }
 
 export interface IngredientContextValues {

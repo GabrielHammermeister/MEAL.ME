@@ -7,12 +7,14 @@ import { generateKey } from '@/utils/generateKey'
 import useIngredients from '@/hooks/useIngredients'
 import EmptyState from '@/components/EmptyState/EmptyState.index'
 import searchSrc from '@/assets/search-ingredient.svg'
+import { Ingredient } from '@/providers/Ingredient.provider'
 
 interface DisplayIngredientsProps {
   variant: 'small' | 'large'
+  handleSelectIngredient?: (ingredient: Ingredient) => void
 }
 
-const DisplayIngredients = ({ variant }: DisplayIngredientsProps) => {
+const DisplayIngredients = ({ variant, handleSelectIngredient }: DisplayIngredientsProps) => {
   const { ingredients } = useIngredients()
 
   if (ingredients.length === 0) {
@@ -31,26 +33,24 @@ const DisplayIngredients = ({ variant }: DisplayIngredientsProps) => {
       {variant === 'small' ? (
         <Box>
           <List>
-            {ingredients.map((value, index) => (
-              <ListItemButton key={index}>
-                <ListItem
-                  disablePadding
-                  sx={{
-                    display: 'flex',
-                    justifyContent: 'space-between',
-                    alignItems: 'center',
-                  }}
-                >
-                  {/* <ListItemText primary="Item title" secondary="100 g" /> */}
-                  <Typography variant='body2' fontWeight={500}>
-                    Carrots
-                  </Typography>
-                  <Typography variant='body2' color='GrayText'>
-                    100 g
-                  </Typography>
-                </ListItem>
-              </ListItemButton>
-            ))}
+            {handleSelectIngredient &&
+              ingredients.map((value, index) => (
+                <ListItemButton key={index} onClick={() => handleSelectIngredient(value)}>
+                  <ListItem
+                    disablePadding
+                    sx={{
+                      display: 'flex',
+                      justifyContent: 'space-between',
+                      alignItems: 'center',
+                    }}
+                  >
+                    {/* <ListItemText primary="Item title" secondary="100 g" /> */}
+                    <Typography variant='body2' fontWeight={500}>
+                      {value.name}
+                    </Typography>
+                  </ListItem>
+                </ListItemButton>
+              ))}
           </List>
         </Box>
       ) : (

@@ -9,3 +9,6 @@ export function getIngredients(ingredient: string) {
 export function getInformationById(id: string | undefined) {
   return axios.get(BASE_URL + `/${id}/information?amount=100&unit=grams` + AUTH)
 }
+export function getInformationByIdWithAmount(id: string | undefined, amount: number) {
+  return axios.get(BASE_URL + `/${id}/information?amount=${amount}&unit=grams` + AUTH)
+}

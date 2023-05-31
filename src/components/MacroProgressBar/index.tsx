@@ -47,6 +47,7 @@ export const LinearProgressWithLabel = (props: LinearProgressProps & { value: nu
   )
 }
 function MacroProgressBar({ name, macroNutrient, percent }: MacroNutrientProps) {
+  console.log('teste: ', percent)
   return (
     <div>
       <Typography variant='caption'>

@@ -1,3 +1,4 @@
+/* eslint-disable quotes */
 import DefaultTemplate from '@/templates/Default/Default.index'
 import {
   Box,
@@ -20,6 +21,10 @@ import './styles.css'
 import EmptyState from '@/components/EmptyState/EmptyState.index'
 import noGoalSvg from '@/assets/goal.svg'
 import { DisplayUserGoal } from '@/pages/Profile/components/DisplayUserGoal'
+import { signOut } from 'firebase/auth'
+import { firebaseAuth } from '@/services/firebase/initializer'
+import { useNavigate } from 'react-router-dom'
+import { ROUTES } from '@/router/Router'
 
 const steps = ['Goal Type', 'Basal Metabolic Rate', 'Define Goal']
 
@@ -112,6 +117,7 @@ export function ProfilePage() {
   const { currentUser } = useCurrentUser()
   const [activeStep, setActiveStep] = useState(0)
   const [displayUserGoalStepper, setDisplayUserGoalStepper] = useState(false)
+  const navigate = useNavigate()
   const isLastStep = activeStep === steps.length - 1
   const userGoal = false
 
@@ -120,7 +126,7 @@ export function ProfilePage() {
     else setActiveStep((prevState) => prevState + 1)
   }
 
-  function renderStepContent(step) {
+  function renderStepContent(step: number) {
     switch (step) {
       case 0: {
         return <GoalTypeOptions />
@@ -142,6 +148,11 @@ export function ProfilePage() {
     }
   }
 
+  const handleUserSignOut = () => {
+    signOut(firebaseAuth).then(() => console.log('user signed out'))
+    navigate(ROUTES.LOGIN)
+  }
+
   function addUserGoal() {
     setDisplayUserGoalStepper(true)
   }
@@ -149,7 +160,12 @@ export function ProfilePage() {
   return (
     <>
       <DefaultTemplate>
-        <Typography variant={'h4'}>Welcome {currentUser?.displayName}!</Typography>
+        <section className={'profile-header'}>
+          <Typography variant={'h4'}>Welcome {currentUser?.displayName}!</Typography>
+          <Button onClick={handleUserSignOut} variant={'contained'}>
+            Sign Out
+          </Button>
+        </section>
 
         <section className={'profile-section'}>
           {userGoal ? (

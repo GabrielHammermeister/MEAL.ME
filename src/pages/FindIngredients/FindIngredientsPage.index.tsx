@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react'
+import React, { useEffect, useMemo } from 'react'
 import DefaultTemplate from '@/templates/Default/Default.index'
 import { Typography } from '@mui/material'
 import SearchRoundedIcon from '@mui/icons-material/SearchRounded'
@@ -11,7 +11,7 @@ import { getIngredients } from '@/services/spoonacular/spoonacular.service'
 import SearchIngredient from '@/components/SearchIngredient/SearchIngredient'
 
 const FindIngredientsPage = () => {
-  // const { setIngredients } = useIngredients()
+  const { setIngredients } = useIngredients()
   // const debouncedHandleChange = useMemo(() => debounce(handleChange, 500), [handleChange])
   //
   // function handleChange(query: string) {
@@ -25,6 +25,9 @@ const FindIngredientsPage = () => {
   //       .catch((err) => console.error(err))
   //   }
   // }
+  useEffect(() => {
+    setIngredients([])
+  }, [])
 
   return (
     <DefaultTemplate>

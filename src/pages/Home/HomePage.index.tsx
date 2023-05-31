@@ -2,7 +2,16 @@ import React from 'react'
 // Components
 import DefaultTemplate from '@/templates/Default/Default.index'
 // Contexts
-import { Button, Card, CardActions, CardContent, CardHeader, Typography } from '@mui/material'
+import {
+  Button,
+  Card,
+  CardActions,
+  CardContent,
+  CardHeader,
+  InputAdornment,
+  TextField,
+  Typography,
+} from '@mui/material'
 
 import './HomePage.styles.css'
 import useCurrentUser from '@/hooks/useCurrentUser'
@@ -76,9 +85,20 @@ const HomePage = () => {
         <div className='checkout'>
           <Card sx={{ height: '100%' }}>
             <CardHeader title={'Daily Weight Check'} subheader={'Check your body weight daily'} />
-
-            <CardActions>
-              <Button size='small'>Learn More</Button>
+            {/* <CardContent> */}
+            {/*    */}
+            {/* </CardContent> */}
+            <CardActions sx={{ p: 3, display: 'flex', justifyContent: 'space-between' }}>
+              <TextField
+                variant={'outlined'}
+                type={'number'}
+                InputProps={{
+                  endAdornment: <InputAdornment position='start'>kg</InputAdornment>,
+                }}
+              />
+              <Button size='large' variant={'outlined'}>
+                save
+              </Button>
             </CardActions>
           </Card>
         </div>

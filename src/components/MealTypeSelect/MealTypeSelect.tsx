@@ -10,13 +10,18 @@ const MEAL_TYPES = [
 
 export function MealTypeSelect() {
   const [open, setOpen] = useState(null)
+  const [mealTypeSelected, setMealTypeSelected] = useState('solid')
 
   const handleOpen = (event: any) => {
     setOpen(event.currentTarget)
   }
 
-  const handleClose = (option) => {
-    console.log('option selected: ', option)
+  const handleClose = () => {
+    setOpen(null)
+  }
+
+  const handleSelectMealType = (option: any) => {
+    setMealTypeSelected(option.value)
     setOpen(null)
   }
 
@@ -34,11 +39,12 @@ export function MealTypeSelect() {
           variant='subtitle2'
           sx={{ color: 'text.secondary', textTransform: 'capitalize' }}
         >
-          Solid
+          {mealTypeSelected}
         </Typography>
       </Button>
       <Menu
         keepMounted
+        defaultValue={'liquid'}
         anchorEl={open}
         open={Boolean(open)}
         onClose={handleClose}
@@ -48,8 +54,8 @@ export function MealTypeSelect() {
         {MEAL_TYPES.map((option) => (
           <MenuItem
             key={option.value}
-            selected={option.value === 'solid'}
-            onClick={() => handleClose(option)}
+            selected={option.value === mealTypeSelected}
+            onClick={() => handleSelectMealType(option)}
             sx={{ typography: 'body2' }}
           >
             {option.label}

@@ -10,9 +10,7 @@ import { ROUTES } from '@/router/Router'
 
 const Sidebar = () => {
   const { currentUser } = useCurrentUser()
-  const handleUserSignOut = () => {
-    signOut(firebaseAuth).then(() => console.log('user signed out'))
-  }
+
   return (
     <nav className='side-bar'>
       <div className='links'>

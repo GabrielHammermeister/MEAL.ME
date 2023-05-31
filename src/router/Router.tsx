@@ -40,14 +40,13 @@ function Router() {
             <Route path=':id' element={<MealPage />} />
           </Route>
 
-          <Route path={ROUTES.INGREDIENTS.INDEX}>
-            <Route index element={<FindIngredientsPage />} />
-            <Route path=':id' element={<IngredientPage />} />
-          </Route>
-
           <Route path={ROUTES.PROFILE.INDEX} element={<ProfilePage />} />
         </Route>
 
+        <Route path={ROUTES.INGREDIENTS.INDEX}>
+          <Route index element={<FindIngredientsPage />} />
+          <Route path=':id' element={<IngredientPage />} />
+        </Route>
         {/* Public Routes */}
         <Route path={ROUTES.LOGIN} element={<LoginPage />} />
         <Route path={ROUTES.SIGNUP} element={<SignUpPage />} />

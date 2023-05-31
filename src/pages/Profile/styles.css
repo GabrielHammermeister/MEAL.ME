@@ -12,3 +12,20 @@
     align-items: center;
     flex-direction: column;
 }
+
+.goal-item {
+    display: flex;
+    justify-content: space-between;
+}
+.item {
+    display: inline-block;
+    padding: 5px 15px;
+    background: var(--background-light);
+    border-radius: 10px;
+    color: white;
+}
+
+.profile-header {
+    display: flex;
+    justify-content: space-between;
+}

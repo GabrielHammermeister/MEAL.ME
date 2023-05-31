@@ -17,7 +17,7 @@ import MacroProgressBar from '@/components/MacroProgressBar'
 import { getInformationById } from '@/services/spoonacular/spoonacular.service'
 import { generateKey } from '@/utils/generateKey'
 import { toArray } from 'lodash'
-import { MacroSummary } from '@/components/MacroSummary/MacroSummary'
+import { MacroNutrient, MacroSummary } from '@/components/MacroSummary/MacroSummary'
 
 type Nutrients = Array<{ name: string; amount: number; unit: string }>
 type Nutrient = { name: string; amount: number; unit: string }
@@ -31,10 +31,10 @@ type Macro = {
 }
 
 type MacroSummary = {
-  calories?: number
-  fats?: Macro
-  carbs?: Macro
-  proteins?: Macro
+  calories: number
+  fats: MacroNutrient
+  carbs: MacroNutrient
+  proteins: MacroNutrient
 }
 
 interface Nutrition {
@@ -51,6 +51,7 @@ const IngredientPage = () => {
   const [ingredientName, setIngredientName] = useState('-')
   const [loadingMacros, setLoadingMacros] = useState(true)
 
+  // @ts-ignore
   const [macroNutrients, setMacroNutrients] = useState<MacroSummary>({})
   const [nutrients, setNutrients] = useState<Array<Nutrient>>([])
 
