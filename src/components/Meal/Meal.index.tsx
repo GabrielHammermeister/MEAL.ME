@@ -13,7 +13,7 @@ import {
   Typography,
 } from '@mui/material'
 import React, { useState } from 'react'
-import { Add, Mail } from '@mui/icons-material'
+import { Add, Check, Mail } from '@mui/icons-material'
 import './styles.css'
 import { useNavigate } from 'react-router-dom'
 import { ROUTES } from '@/router/Router'
@@ -27,6 +27,9 @@ const StyledCardActions = styled(CardActions)`
 type MealProps = {
   mealData: {
     id: string
+    name: string
+    type: 'solid' | 'liquid'
+    calories: number
   }
 }
 
@@ -54,18 +57,18 @@ const Meal = ({ mealData }: MealProps) => {
       <Card sx={{ width: '100%', height: 'fit-content' }}>
         <CardContent>
           <header className={'card-header'}>
-            <img src={'/water.svg'} />
-            <Typography variant='h6' gutterBottom component='h6'>
-              Heading 6
+            {mealData.type === 'liquid' ? <img src={'/water.svg'} /> : <img src={'/plate.svg'} />}
+            <Typography variant={'subtitle2'} gutterBottom align={'center'}>
+              {mealData.name}
             </Typography>
             <IconButton aria-label='add' onClick={handleAddMealCounter}>
-              <Add />
+              <Check />
             </IconButton>
           </header>
         </CardContent>
         <StyledCardActions sx={{ p: 2 }}>
           <Typography variant='overline' display='block' gutterBottom>
-            500 kcal
+            {mealData.calories} kcal
           </Typography>
           <Button size='small' onClick={handleSeeMore}>
             See More

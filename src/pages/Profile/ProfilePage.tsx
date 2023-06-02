@@ -10,6 +10,7 @@ import {
   StepContent,
   StepLabel,
   Stepper,
+  StepProps,
   Tab,
   Tabs,
   TextField,
@@ -25,126 +26,54 @@ import { signOut } from 'firebase/auth'
 import { firebaseAuth } from '@/services/firebase/initializer'
 import { useNavigate } from 'react-router-dom'
 import { ROUTES } from '@/router/Router'
+import GoalTypeForm from '@/pages/Profile/components/GoalTypeForm'
+import DefineGoalForm from '@/pages/Profile/components/DefineGoalForm'
+import BMRForm from '@/pages/Profile/components/BMR_Form'
+import calculateBMR from '@/utils/calculateBMR'
 
 const steps = ['Goal Type', 'Basal Metabolic Rate', 'Define Goal']
-
-function GoalTypeOptions() {
-  return (
-    <div className={'step-container'}>
-      <Typography></Typography>
-      <Button size={'large'} variant={'outlined'} sx={{ mb: 3 }}>
-        Gain Weight
-      </Button>
-      <Button size={'large'} variant={'outlined'}>
-        Lose Weight
-      </Button>
-    </div>
-  )
-}
-function BMRForm() {
-  return (
-    <div className={'step-container'}>
-      <div>
-        <TextField
-          label='Weight'
-          sx={{ m: 1, width: '25ch' }}
-          InputProps={{
-            endAdornment: <InputAdornment position='start'>kg</InputAdornment>,
-          }}
-        />
-        <TextField
-          label='Height'
-          sx={{ m: 1, width: '25ch' }}
-          InputProps={{
-            endAdornment: <InputAdornment position='start'>cm</InputAdornment>,
-          }}
-        />
-      </div>
-      <div>
-        <TextField
-          label='Age'
-          sx={{ m: 1, width: '25ch' }}
-          InputProps={{
-            endAdornment: <InputAdornment position='start'>years</InputAdornment>,
-          }}
-        />
-        <TextField
-          sx={{ m: 1, width: '25ch' }}
-          select
-          label='Sex'
-          defaultValue='male'
-          helperText='Please select your biological sex'
-        >
-          <MenuItem key={'male'} value={'male'}>
-            Male
-          </MenuItem>
-          <MenuItem key={'female'} value={'female'}>
-            Female
-          </MenuItem>
-        </TextField>
-      </div>
-    </div>
-  )
-}
-function DefineGoal() {
-  return (
-    <div className={'step-container'}>
-      <div>
-        <TextField
-          label='Deadline'
-          type={'number'}
-          sx={{ m: 1, width: '25ch' }}
-          InputProps={{
-            endAdornment: <InputAdornment position='start'>months</InputAdornment>,
-          }}
-          helperText={'Set a deadline for your goal'}
-        />
-        <TextField
-          label='Weight Goal'
-          type={'number'}
-          sx={{ m: 1, width: '25ch' }}
-          InputProps={{
-            endAdornment: <InputAdornment position='start'>kg</InputAdornment>,
-          }}
-          helperText={'Set a weight goal'}
-        />
-      </div>
-    </div>
-  )
-}
 
 export function ProfilePage() {
   const { currentUser } = useCurrentUser()
   const [activeStep, setActiveStep] = useState(0)
   const [displayUserGoalStepper, setDisplayUserGoalStepper] = useState(false)
+  const [bmrValue, setBmrValue] = useState(0)
   const navigate = useNavigate()
+
   const isLastStep = activeStep === steps.length - 1
   const userGoal = false
 
   function handleNextStep() {
-    if (activeStep === 2) setActiveStep(0)
+    if (activeStep === 2) navigate('/' + ROUTES.HOME)
     else setActiveStep((prevState) => prevState + 1)
+  }
+  function handlePreviousStep() {
+    setActiveStep((prevState) => prevState - 1)
   }
 
   function renderStepContent(step: number) {
     switch (step) {
       case 0: {
-        return <GoalTypeOptions />
+        return <GoalTypeForm handleNextStep={handleNextStep} />
       }
       case 1: {
-        return <BMRForm />
+        return (
+          <BMRForm
+            handleNextStep={handleNextStep}
+            handlePreviousStep={handlePreviousStep}
+            setBmrValue={setBmrValue}
+          />
+        )
       }
       case 2: {
-        return <DefineGoal />
+        return (
+          <DefineGoalForm
+            handleNextStep={handleNextStep}
+            handlePreviousStep={handlePreviousStep}
+            bmrValue={bmrValue}
+          />
+        )
       }
-    }
-  }
-
-  function handleSubmit() {
-    if (isLastStep) {
-      // submit form
-    } else {
-      setActiveStep(activeStep + 1)
     }
   }
 
@@ -195,11 +124,14 @@ export function ProfilePage() {
               </Stepper>
               {renderStepContent(activeStep)}
 
-              <Box sx={{ marginLeft: 'auto', marginRight: 25 }}>
-                <Button variant={'contained'} onClick={handleNextStep}>
-                  next
-                </Button>
-              </Box>
+              {/* <Box sx={{ marginLeft: 'auto', marginRight: 25, display: 'flex', gap: 4 }}> */}
+              {/*   <Button variant={'contained'} onClick={handlePreviousStep}> */}
+              {/*     back */}
+              {/*   </Button> */}
+              {/*   <Button variant={'contained'} onClick={handleNextStep}> */}
+              {/*     next */}
+              {/*   </Button> */}
+              {/* </Box> */}
             </>
           )}
         </section>

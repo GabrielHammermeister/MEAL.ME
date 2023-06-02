@@ -1,15 +1,18 @@
-.grid-dashboard {
-  height: 100%;
+.grid-dashboard-meals {
+  /*height: 100%;*/
   margin: 0 auto;
   display: grid;
   /*grid-template: repeat(auto-fit, 150px) / repeat(auto-fit, 300px);*/
-  justify-content: center;
+  grid-template-columns: repeat(4, 1fr);
+  /*flex-wrap: wrap;*/
+  /*justify-content: center;*/
   gap: 20px;
 }
 
 .button-container {
+
   display: flex;
   justify-content: center;
-  margin-top: auto;
+  margin-top: 300px;
   grid-column: span 4;
 }

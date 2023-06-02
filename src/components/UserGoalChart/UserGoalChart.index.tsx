@@ -5,25 +5,31 @@ import React from 'react'
 import { ApexOptions } from 'apexcharts'
 import useChart from '@/hooks/useChart'
 
+const dates = [
+  '1/1/2003',
+  '2/1/2003',
+  '03/01/2003',
+  '04/01/2003',
+  '05/01/2003',
+  '06/01/2003',
+  '07/01/2003',
+  '08/01/2003',
+  '09/01/2003',
+  '10/01/2003',
+  // '11/01/2003',
+  // '12/01/2003',
+]
+
 export default function UserGoalChart({ chartData }: any) {
   const chartOptions = useChart({
     plotOptions: { bar: { columnWidth: '16%' } },
     fill: { type: chartData.map((i: any) => i.fill) },
-    labels: [
-      '01/01/2003',
-      '02/01/2003',
-      '03/01/2003',
-      '04/01/2003',
-      '05/01/2003',
-      '06/01/2003',
-      '07/01/2003',
-      '08/01/2003',
-      '09/01/2003',
-      '10/01/2003',
-      // '11/01/2003',
-      // '12/01/2003',
-    ],
-    xaxis: { type: 'datetime' },
+    labels: dates,
+    xaxis: {
+      atype: 'datetime',
+      formatter: (value) => value + '##',
+      // categories: dates,
+    },
     tooltip: {
       shared: true,
       intersect: false,

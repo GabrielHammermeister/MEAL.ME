@@ -38,21 +38,46 @@ const MealsPage = () => {
         />
       ) : (
         <>
-          <div className='grid-dashboard'>
-            {mealList.map(() => (
-              <Meal key={generateKey()} mealData={{ id: 'iasdf' }} />
-            ))}
-            <section className={'button-container'}>
-              <Button
-                size={'large'}
-                variant={'contained'}
-                onClick={handleAddMeal}
-                startIcon={<Add />}
-              >
-                Add meal
-              </Button>
-            </section>
+          <div className='grid-dashboard-meals'>
+            {/* {mealList.map(() => ( */}
+            {/*   <Meal key={generateKey()} mealData={{ id: 'iasdf' }} /> */}
+            {/* ))} */}
+
+            <Meal
+              // key={generateKey()}
+              mealData={{ id: '1', name: 'Red Smothie', calories: 540, type: 'liquid' }}
+            />
+            <Meal
+              // key={generateKey()}
+              mealData={{ id: '2', name: 'Pasta and Chicken', calories: 710, type: 'solid' }}
+            />
+            <Meal
+              // key={generateKey()}
+              mealData={{ id: '3', name: 'Chicken and Rice', calories: 630, type: 'solid' }}
+            />
+            <Meal
+              // key={generateKey()}
+              mealData={{ id: '4', name: 'Green Juice', calories: 230, type: 'liquid' }}
+            />
+            <Meal
+              // key={generateKey()}
+              mealData={{ id: '5', name: 'Meat Balls', calories: 800, type: 'solid' }}
+            />
+            <Meal
+              // key={generateKey()}
+              mealData={{ id: '6', name: 'Purple Smothie', calories: 320, type: 'liquid' }}
+            />
           </div>
+          <section className={'button-container'}>
+            <Button
+              size={'large'}
+              variant={'contained'}
+              onClick={handleAddMeal}
+              startIcon={<Add />}
+            >
+              Add meal
+            </Button>
+          </section>
         </>
       )}
     </DefaultTemplate>
