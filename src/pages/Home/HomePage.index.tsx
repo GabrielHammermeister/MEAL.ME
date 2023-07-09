@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 // Components
 import DefaultTemplate from '@/templates/Default/Default.index'
 // Contexts
@@ -18,6 +18,9 @@ import useCurrentUser from '@/hooks/useCurrentUser'
 import UserGoalChart from '@/components/UserGoalChart/UserGoalChart.index'
 import { MacroSummary } from '@/components/MacroSummary/MacroSummary'
 import { Add } from '@mui/icons-material'
+import { firebaseApp } from '@/services/firebase/initializer'
+import firebase from 'firebase/compat'
+import firestore = firebase.firestore
 
 const MOCK_MACROS = {
   calories: 123,
@@ -41,14 +44,19 @@ const MOCK_MACROS = {
 const HomePage = () => {
   const { currentUser } = useCurrentUser()
 
+  useEffect(() => {
+    console.log(firestore.Timestamp.now().toDate())
+  }, [])
+
   return (
     <DefaultTemplate>
       <Typography variant='h4'>
         Bem vindo {currentUser?.displayName?.toLocaleUpperCase()}!
+        <h1 className='text-3xl font-bold underline'>Hello Tailwind!</h1>
       </Typography>
 
-      <section className={'dashboard-home'}>
-        <div className='chart'>
+      <section className={'dashboard-home grid grid-cols-10 gap-y-4'}>
+        <div className='chart col-span-10 md:col-span-7'>
           <UserGoalChart
             chartData={[
               {
@@ -66,7 +74,10 @@ const HomePage = () => {
             ]}
           />
         </div>
-        <div className='Summary'>
+        {/* <div className={' bg-violet-950 min-h-[300px] row-span-2 col-span-10 md:col-span-7'}></div> */}
+        {/* <div className={' bg-violet-950 min-h-[200px] row-span-1 col-span-10 md:col-span-7'}></div> */}
+        {/* <div className={' bg-violet-950 min-h-[200px] row-span-1 col-span-10 md:col-span-7'}></div> */}
+        <div className='Summary col-span-10 md:col-span-7'>
           <Card sx={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
             <CardHeader
               title={'Daily Macro Summary'}
@@ -82,7 +93,7 @@ const HomePage = () => {
             </CardActions>
           </Card>
         </div>
-        <div className='checkout'>
+        <div className='checkout col-span-10 md:col-span-7'>
           <Card sx={{ height: '100%' }}>
             <CardHeader title={'Daily Weight Check'} subheader={'Check your body weight daily'} />
             {/* <CardContent> */}

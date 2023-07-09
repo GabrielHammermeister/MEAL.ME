@@ -12,7 +12,7 @@ const Sidebar = () => {
   const { currentUser } = useCurrentUser()
 
   return (
-    <nav className='side-bar'>
+    <nav className='side-bar hidden md:flex'>
       <div className='links'>
         <Typography variant='h4' fontWeight={800}>
           Meal.me

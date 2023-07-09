@@ -1,3 +1,7 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 :root {
   font-family: 'Poppins';
   font-size: 18px;
@@ -12,6 +16,10 @@
   --text-dark: #144339;
   --text-light: #50a593;
   --text-dark-blue: #101038;
+}
+
+html, body, #root {
+  height: 100%;
 }
 
 * {
