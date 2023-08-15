@@ -1,13 +1,8 @@
-import React, { useEffect, useMemo } from 'react'
+import React, { useEffect } from 'react'
 import DefaultTemplate from '@/templates/Default/Default.index'
 import { Typography } from '@mui/material'
-import SearchRoundedIcon from '@mui/icons-material/SearchRounded'
 import DisplayIngredients from '@/components/DisplayIngredients/DisplayIngredients'
-import Input from '@/components/Molecules/Input/Input.index'
 import useIngredients from '@/hooks/useIngredients'
-import { debounce } from 'lodash'
-import { Ingredient } from '@/providers/Ingredient.provider'
-import { getIngredients } from '@/services/spoonacular/spoonacular.service'
 import SearchIngredient from '@/components/SearchIngredient/SearchIngredient'
 
 const FindIngredientsPage = () => {
@@ -18,8 +13,8 @@ const FindIngredientsPage = () => {
   //   if (query !== '') {
   //     setIngredients([])
   //     getIngredients(query)
-  //       .then((res: { data: { results: Ingredient[] } }) => {
-  //         const ingredientList: Ingredient[] = res.data.results
+  //       .then((res: { data: { results: IngredientPage[] } }) => {
+  //         const ingredientList: IngredientPage[] = res.data.results
   //         setIngredients(ingredientList)
   //       })
   //       .catch((err) => console.error(err))
