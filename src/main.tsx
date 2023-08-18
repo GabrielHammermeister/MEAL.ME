@@ -14,8 +14,8 @@ import { ComponentPreviews } from '@/dev'
 const muiCustomTheme = createTheme(MuiCustomTheme)
 SpoonacularInterceptor()
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
-  <React.StrictMode>
-    <StyledEngineProvider injectFirst>
+  <StyledEngineProvider injectFirst>
+    <React.StrictMode>
       <CssBaseline />
       <ThemeProvider theme={muiCustomTheme}>
         <IngredientProvider>
@@ -28,6 +28,6 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
           </UserProvider>
         </IngredientProvider>
       </ThemeProvider>
-    </StyledEngineProvider>
-  </React.StrictMode>,
+    </React.StrictMode>
+  </StyledEngineProvider>,
 )
