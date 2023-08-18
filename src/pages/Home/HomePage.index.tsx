@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 // Components
 import DefaultTemplate from '@/templates/Default/Default.index'
 // Contexts
@@ -8,6 +8,8 @@ import {
   CardActions,
   CardContent,
   CardHeader,
+  Icon,
+  IconButton,
   InputAdornment,
   TextField,
   Typography,
@@ -21,6 +23,8 @@ import { Add } from '@mui/icons-material'
 import { firebaseApp } from '@/services/firebase/initializer'
 import firebase from 'firebase/compat'
 import firestore = firebase.firestore
+import CheckCircleIcon from '@mui/icons-material/CheckCircle'
+import EditIcon from '@mui/icons-material/Edit'
 
 const MOCK_MACROS = {
   calories: 123,
@@ -43,16 +47,27 @@ const MOCK_MACROS = {
 
 const HomePage = () => {
   const { currentUser } = useCurrentUser()
+  const [checkedOut, setCheckedOut] = useState(() => hasCheckedOut())
 
-  useEffect(() => {
-    console.log(firestore.Timestamp.now().toDate())
-  }, [])
+  function hasCheckedOut() {
+    const currentDate = firestore.Timestamp.now().toDate()
+    const yesterday = firestore.Timestamp.now().toDate()
+    yesterday.setDate(currentDate.getMonth() - 1)
+    return !(currentDate > yesterday)
+  }
+
+  function handleDailyCheckout() {
+    setCheckedOut((prevState) => !prevState)
+  }
+  function handleEditWeight() {
+    setCheckedOut((prevState) => !prevState)
+  }
 
   return (
     <DefaultTemplate>
       <Typography variant='h4'>
         Bem vindo {currentUser?.displayName?.toLocaleUpperCase()}!
-        <h1 className='text-3xl font-bold underline'>Hello Tailwind!</h1>
+        {/* <h1 className='text-3xl font-bold underline'>checkedOut: {String(checkedOut)}</h1> */}
       </Typography>
 
       <section className={'dashboard-home grid grid-cols-10 gap-y-4'}>
@@ -95,21 +110,44 @@ const HomePage = () => {
         </div>
         <div className='checkout col-span-10 md:col-span-7'>
           <Card sx={{ height: '100%' }}>
-            <CardHeader title={'Daily Weight Check'} subheader={'Check your body weight daily'} />
-            {/* <CardContent> */}
-            {/*    */}
-            {/* </CardContent> */}
-            <CardActions sx={{ p: 3, display: 'flex', justifyContent: 'space-between' }}>
-              <TextField
-                variant={'outlined'}
-                type={'number'}
-                InputProps={{
-                  endAdornment: <InputAdornment position='start'>kg</InputAdornment>,
-                }}
-              />
-              <Button size='large' variant={'outlined'}>
-                save
-              </Button>
+            <CardHeader
+              title={'Daily Weight Check'}
+              subheader={'Check your body weight daily'}
+              action={
+                checkedOut ? (
+                  <IconButton onClick={handleEditWeight}>
+                    <EditIcon />
+                  </IconButton>
+                ) : null
+              }
+            />
+
+            <CardActions
+              sx={{ p: 3, display: 'flex' }}
+              className={checkedOut ? 'gap-3 justify-start' : 'justify-between'}
+            >
+              {checkedOut ? (
+                <>
+                  <CheckCircleIcon color={'primary'} fontSize={'large'} />
+                  <div>
+                    <Typography variant={'body1'}>Body weight saved with success</Typography>
+                    <Typography variant={'caption'}>You can check your weight tomorrow</Typography>
+                  </div>
+                </>
+              ) : (
+                <>
+                  <TextField
+                    variant={'outlined'}
+                    type={'number'}
+                    InputProps={{
+                      endAdornment: <InputAdornment position='start'>kg</InputAdornment>,
+                    }}
+                  />
+                  <Button size='large' variant={'outlined'} onClick={handleDailyCheckout}>
+                    save
+                  </Button>
+                </>
+              )}
             </CardActions>
           </Card>
         </div>

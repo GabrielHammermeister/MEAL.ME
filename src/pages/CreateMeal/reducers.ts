@@ -47,7 +47,6 @@ export function mealReducer(state: MealStateType, action: Action) {
     }
     case 'update-macros': {
       const newMacroNutrients = updateMacros(state.ingredients)
-      console.log('new Macros: ', newMacroNutrients)
       return {
         ...state,
         macroNutrients: newMacroNutrients,

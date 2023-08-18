@@ -31,7 +31,6 @@ const initialState = {
 function formReducer(state, action) {
   switch (action.type) {
     case 'CHANGE_FIELD':
-      console.log(action)
       return {
         ...state,
         [action.field]: action.value,
@@ -56,7 +55,6 @@ export default function BMRForm({ handleNextStep, handlePreviousStep, setBmrValu
       parseInt(state.age),
       state.sex === 'male',
     )
-    console.log(`The BMR is: ${bmr}`)
 
     // Reset form values
     dispatch({ type: 'RESET_FORM' })
