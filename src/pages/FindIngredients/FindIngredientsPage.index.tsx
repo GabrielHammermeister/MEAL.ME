@@ -1,61 +1,45 @@
-import React, { useEffect, useMemo } from "react";
-import DefaultTemplate from "@/templates/Default/Default.index";
-import { Box, Typography } from "@mui/material";
-import SearchRoundedIcon from "@mui/icons-material/SearchRounded";
-
-import SearchIngredient from "@/components/SearchIngredient/SearchIngredient";
-import DisplayIngredients from "@/components/DisplayIngredients/DisplayIngredients";
-import Input from "@/components/Molecules/Input/Input.index";
-import useIngredients from "@/hooks/useIngredients";
-import { debounce } from "lodash";
-import { getIngredients } from "@/services/spoonacular/spoonacular.service";
+import React, { useEffect } from 'react'
+import DefaultTemplate from '@/templates/Default/Default.index'
+import { Typography } from '@mui/material'
+import DisplayIngredients from '@/components/DisplayIngredients/DisplayIngredients'
+import useIngredients from '@/hooks/useIngredients'
+import SearchIngredient from '@/components/SearchIngredient/SearchIngredient'
 
 const FindIngredientsPage = () => {
-  const { setIngredients } = useIngredients();
-  const debouncedHandleChange = useMemo(
-    () => debounce(handleChange, 500),
-    [handleChange]
-  );
-
-  function handleChange(query: string) {
-    console.log(
-      "🚀 ~ file: SearchIngredient.tsx ~ line 20 ~ handleChange ~ query",
-      query
-    );
-    if (query !== "") {
-      setIngredients([]);
-      console.log("request");
-      getIngredients(query)
-        .then((res: { data: { results: any } }) => {
-          console.log(
-            "🚀 ~ file: SearchIngredient.tsx ~ line 31 ~ .then ~ res",
-            res
-          );
-
-          setIngredients(res.data.results);
-        })
-        .catch((err: any) => console.error(err));
-    }
-  }
-
+  const { setIngredients } = useIngredients()
+  // const debouncedHandleChange = useMemo(() => debounce(handleChange, 500), [handleChange])
+  //
+  // function handleChange(query: string) {
+  //   if (query !== '') {
+  //     setIngredients([])
+  //     getIngredients(query)
+  //       .then((res: { data: { results: IngredientPage[] } }) => {
+  //         const ingredientList: IngredientPage[] = res.data.results
+  //         setIngredients(ingredientList)
+  //       })
+  //       .catch((err) => console.error(err))
+  //   }
+  // }
   useEffect(() => {
-    return () => {};
-  }, []);
+    setIngredients([])
+  }, [])
+
   return (
     <DefaultTemplate>
-      <Typography variant="h4">Find Ingredients</Typography>
+      <Typography variant='h4'>Find Ingredients</Typography>
       <div>
-        <div className="input-wrapper">
-          <Input
-            icon={<SearchRoundedIcon />}
-            label="Search"
-            onChange={(e) => debouncedHandleChange(e.target.value)}
-          />
+        <div className='input-wrapper'>
+          {/* <Input */}
+          {/*   icon={<SearchRoundedIcon />} */}
+          {/*   label='Search' */}
+          {/*   onChange={(e) => debouncedHandleChange(e.target.value)} */}
+          {/* /> */}
+          <SearchIngredient />
         </div>
-        <DisplayIngredients variant="large" />
+        <DisplayIngredients variant='large' />
       </div>
     </DefaultTemplate>
-  );
-};
+  )
+}
 
-export default FindIngredientsPage;
+export default FindIngredientsPage

@@ -1,27 +1,28 @@
-import React, { useState } from "react";
+import React, { useState } from 'react'
 
-export const IngredientContext =
-  React.createContext<IngredientContextValues | null>({
-    ingredients: [],
-    setIngredients: () => null,
-  });
+export const IngredientContext = React.createContext<IngredientContextValues | null>({
+  ingredients: [],
+  setIngredients: () => null,
+})
 
 export type Ingredient = {
-  id: number;
-  image: string;
-  name: string;
-};
+  id: number
+  image: string
+  name: string
+  unit?: string
+  amount?: number
+}
 
 export interface IngredientContextValues {
-  ingredients: Ingredient[];
-  setIngredients: React.Dispatch<React.SetStateAction<Ingredient[]>>;
+  ingredients: Ingredient[]
+  setIngredients: React.Dispatch<React.SetStateAction<Ingredient[]>>
 }
 type IngredientProviderProps = {
-  children: React.ReactNode;
-};
+  children: React.ReactNode
+}
 
 export const IngredientProvider = ({ children }: IngredientProviderProps) => {
-  const [ingredients, setIngredients] = useState<Ingredient[]>([]);
+  const [ingredients, setIngredients] = useState<Ingredient[]>([])
 
   return (
     <IngredientContext.Provider
@@ -32,5 +33,5 @@ export const IngredientProvider = ({ children }: IngredientProviderProps) => {
     >
       {children}
     </IngredientContext.Provider>
-  );
-};
+  )
+}

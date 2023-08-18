@@ -1,9 +1,16 @@
-import React from "react";
-import { Outlet } from "react-router-dom";
+import React from 'react'
+import { Navigate, Outlet, redirect } from 'react-router-dom'
+import useCurrentUser from '@/hooks/useCurrentUser'
+import { ROUTES } from '@/router/Router'
 
 const Validator = () => {
-  console.log("validacao de login");
-  return <Outlet />;
-};
+  const { currentUser } = useCurrentUser()
 
-export default Validator;
+  if (!currentUser) {
+    return <Navigate to={'/login'} />
+  }
+
+  return <Outlet />
+}
+
+export default Validator

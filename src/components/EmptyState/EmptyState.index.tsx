@@ -1,15 +1,16 @@
-import { Button, Typography } from "@mui/material";
-import React from "react";
-//@ts-ignore
-import { container, illustration } from "./EmptyState.module.css";
+/* eslint-disable @typescript-eslint/ban-ts-comment */
+import { Button, Typography } from '@mui/material'
+import React from 'react'
+// @ts-ignore
+import { container, illustration } from './EmptyState.module.css'
 
 interface EmptyStateProps {
-  imgSrc: string;
-  imgAlt: string;
-  title: string;
-  description: string;
-  handleOnClickButton: () => void;
-  buttonLabel: string;
+  imgSrc: string
+  imgAlt: string
+  title: string
+  description: string
+  handleOnClickButton?: () => void
+  buttonLabel?: string
 }
 
 const EmptyState = ({
@@ -23,20 +24,22 @@ const EmptyState = ({
   return (
     <div className={container}>
       <img src={imgSrc} alt={imgAlt} className={illustration} />
-      <Typography variant="h5">{title}</Typography>
-      <Typography variant="body1" align="center">
+      <Typography variant='h5'>{title}</Typography>
+      <Typography variant='body1' align='center'>
         {description}
       </Typography>
-      <Button
-        sx={{ marginTop: "10px" }}
-        size="large"
-        variant="contained"
-        onClick={handleOnClickButton}
-      >
-        {buttonLabel}
-      </Button>
+      {handleOnClickButton && (
+        <Button
+          sx={{ marginTop: '10px' }}
+          size='large'
+          variant='contained'
+          onClick={handleOnClickButton}
+        >
+          {buttonLabel}
+        </Button>
+      )}
     </div>
-  );
-};
+  )
+}
 
-export default EmptyState;
+export default EmptyState

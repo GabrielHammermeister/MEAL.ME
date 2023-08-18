@@ -1,0 +1,10 @@
+.meal-header {
+    display: flex;
+    justify-content: space-between;
+}
+
+.meal-grid {
+    display: grid;
+    grid-template: 1fr 1fr / 1fr 1fr;
+    gap: 20px
+}

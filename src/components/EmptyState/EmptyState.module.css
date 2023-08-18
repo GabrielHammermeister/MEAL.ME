@@ -1,18 +1,16 @@
 .container {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 
-    height: 100%;
-
-    margin: 0 auto;
-    gap: 10px;
+  margin: 50px auto;
+  gap: 10px;
 }
 
 .illustration {
-    height: 100%;
-    max-height: 450px;
-    flex: 1;
-    margin-bottom: 20px;
+  height: 100%;
+  max-height: 450px;
+  flex: 1;
+  margin-bottom: 20px;
 }

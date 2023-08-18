@@ -1,6 +1,10 @@
-:root {
-  font-family: "Poppins";
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
+:root {
+  font-family: 'Poppins';
+  font-size: 18px;
   --white: #fff;
   --gray: rgba(255, 255, 255, 0.5);
   --orange: #ff6b35;
@@ -13,6 +17,13 @@
   --text-light: #50a593;
   --text-dark-blue: #101038;
 }
+
+#root {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
 
 * {
   font-family: Poppins;

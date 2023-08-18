@@ -1,44 +1,39 @@
-import { MacroNutrientProps } from "@/components/MacroProgressBar";
-import { floor } from "lodash";
+import { MacroNutrientProps } from '@/components/MacroProgressBar'
+import { floor } from 'lodash'
 
 type filterMacrosArgs = {
-  proteins: number;
-  carbohydrates: number;
-  fats: number;
-  totalCalories: number;
-};
+  proteins: number
+  carbohydrates: number
+  fats: number
+  totalCalories: number
+}
 
-type filterMacros = (args: filterMacrosArgs) => MacroNutrientProps[];
+type filterMacros = (args: filterMacrosArgs) => MacroNutrientProps[]
 
-export const filterMacros: filterMacros = ({
-  proteins,
-  carbohydrates,
-  fats,
-  totalCalories,
-}) => {
+export const filterMacros: filterMacros = ({ proteins, carbohydrates, fats, totalCalories }) => {
   const proteinMacro = {
-    name: "Proteins",
+    name: 'Proteins',
     macroNutrient: {
       amount: proteins,
-      unit: "g",
+      unit: 'g',
     },
     percent: floor(totalCalories / (proteins * 4)),
-  };
+  }
   const carbsMacro = {
-    name: "Carbohydrates",
+    name: 'Carbohydrates',
     macroNutrient: {
       amount: carbohydrates,
-      unit: "g",
+      unit: 'g',
     },
     percent: floor(totalCalories / (carbohydrates * 4)),
-  };
+  }
   const fatsMacro = {
-    name: "Fats",
+    name: 'Fats',
     macroNutrient: {
       amount: fats,
-      unit: "g",
+      unit: 'g',
     },
     percent: floor(totalCalories / (proteins * 9)),
-  };
-  return [proteinMacro, carbsMacro, fatsMacro];
-};
+  }
+  return [proteinMacro, carbsMacro, fatsMacro]
+}
