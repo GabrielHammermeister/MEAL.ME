@@ -5,6 +5,10 @@ import { extend } from 'lodash'
 import { generateKey } from '@/utils/generateKey'
 
 interface ResponsiveLayoutProps {
+  options?: {
+    tabBar?: boolean
+    header?: boolean
+  }
   children: ReactNode
 }
 
@@ -14,44 +18,47 @@ interface Link {
   icon: (props: any) => ReactNode
 }
 
+const getBaseRoute = (route: string) => '/responsive/' + route.replace('/', '')
 
 const LINKS: Array<Link> = [
   {
     label: 'Home',
-    icon: (props) => <HomeSVG {...props}/>,
-    to: '/'
+    icon: (props) => <HomeSVG {...props} />,
+    to: getBaseRoute('/'),
   },
   {
     label: 'Meals',
-    icon: (props) => <MealSVG {...props}/>,
-    to: '/meals'
+    icon: (props) => <MealSVG {...props} />,
+    to: getBaseRoute('meals'),
   },
   {
     label: 'Foods',
-    icon: (props) => <FoodSVG {...props}/>,
-    to: '/responsive/ingredients'
+    icon: (props) => <FoodSVG {...props} />,
+    to: getBaseRoute('ingredients'),
   },
   {
     label: 'Profile',
-    icon: (props) => <ProfileSVG {...props}/>,
-    to: '/profile'
+    icon: (props) => <ProfileSVG {...props} />,
+    to: getBaseRoute('profile'),
   },
 ]
 
 interface NavButtonProps extends Link {}
 
-function NavButton({icon, label, to}: NavButtonProps) {
+function NavButton({ icon, label, to }: NavButtonProps) {
   return (
     <NavLink
       to={to}
       className={({ isActive }) =>
-        'flex flex-col justify-center items-center p-3 pb-0 rounded' + ' ' + (isActive ? 'bg-[#38A3A5] bg-opacity-30' : 'items-start')
+        'flex flex-col justify-center items-center p-3 pb-0 rounded' +
+        ' ' +
+        (isActive ? 'bg-m-green bg-opacity-30' : 'items-start')
       }
     >
       {({ isActive }) => {
         return (
           <>
-            {icon({className: isActive ? "fill-[#38A3A5]" : 'fill-[#ACB4C9]'})}
+            {icon({ className: isActive ? 'fill-m-green' : 'fill-m-gray' })}
             <span className='text-xs'>{label}</span>
           </>
         )
@@ -60,23 +67,32 @@ function NavButton({icon, label, to}: NavButtonProps) {
   )
 }
 
-export function ResponsiveLayout({ children }: ResponsiveLayoutProps) {
+export function ResponsiveLayout({
+  children,
+  options = { header: true, tabBar: true },
+}: ResponsiveLayoutProps) {
   return (
     <>
-      <header className={'py-2 shadow-md'}>
-        <h1 className={'text-center text-green-950 font-black text-3xl'}>Meal.me</h1>
-      </header>
-      <main className={'px-3.5 flex-grow pb-60'}>{children}</main>
-      <nav
-        id='tab-bar'
-        className={
-          'fixed bottom-0 right-0 left-0 border-t-2 border-slate-200 border-opacity-20 h-16'
-        }
-      >
-        <div className='relative z-50 flex items-center justify-between h-full px-12 bg-white'>
-          {LINKS.map(link => <NavButton {...link} key={generateKey()}/>)}
-        </div>
-      </nav>
+      {options.header && (
+        <header className={'py-2 shadow-md'}>
+          <h1 className={'text-center text-green-950 font-black text-3xl'}>Meal.me</h1>
+        </header>
+      )}
+      <main className={'flex flex-col px-3.5 flex-grow'}>{children}</main>
+      {options.tabBar && (
+        <nav
+          id='tab-bar'
+          className={
+            'fixed bottom-0 right-0 left-0 border-t-2 border-slate-200 border-opacity-20 h-16'
+          }
+        >
+          <div className='relative z-50 flex items-center justify-between h-full px-12 bg-white'>
+            {LINKS.map((link) => (
+              <NavButton {...link} key={generateKey()} />
+            ))}
+          </div>
+        </nav>
+      )}
     </>
   )
 }

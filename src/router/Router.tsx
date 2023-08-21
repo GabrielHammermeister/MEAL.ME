@@ -13,6 +13,10 @@ import { MealPage } from '@/pages/MealPage/MealPage'
 import {
   FindIngredientsPage as RFindIngredientsPage,
   IngredientPage as RIngredientPage,
+  ProfilePage as RProfilePage,
+  MealsPage as RMealsPage,
+  HomePage as RHomePage,
+  LoginPage as RLoginPage,
 } from '@/pages/Responsive'
 
 export const ROUTES = {
@@ -57,15 +61,26 @@ function Router() {
 
         {/* Responsive Routes */}
         <Route path={'responsive'}>
+          <Route index element={<RHomePage />} />
           <Route path={'ingredients'}>
-            <Route index element={<RFindIngredientsPage />}></Route>
-            <Route path={':id'} element={<RIngredientPage />}></Route>
+            <Route index element={<RFindIngredientsPage />} />
+            <Route path={':id'} element={<RIngredientPage />} />
+          </Route>
+          <Route path={'meals'}>
+            <Route index element={<RMealsPage />} />
+          </Route>
+          <Route path={'profile'}>
+            <Route index element={<RProfilePage />} />
+          </Route>
+          <Route path={'login'}>
+            <Route index element={<RLoginPage />} />
           </Route>
         </Route>
+
         {/* Public Routes */}
         <Route path={ROUTES.LOGIN} element={<LoginPage />} />
         <Route path={ROUTES.SIGNUP} element={<SignUpPage />} />
-        <Route path={ROUTES.HOME} element={<Navigate to='/' replace />} />
+        {/* <Route path={ROUTES.HOME} element={<Navigate to='/' replace />} /> */}
       </Routes>
     </Fragment>
   )
