@@ -1,7 +1,7 @@
 import './displayIngredients.css'
 import React from 'react'
 import IngredientCard from '../IngredientCard/IngredientCard'
-import { Grid, List, ListItem, ListItemButton, Typography } from '@mui/material'
+import { List, ListItem, ListItemButton, Typography } from '@mui/material'
 import { Box } from '@mui/system'
 import { generateKey } from '@/utils/generateKey'
 import useIngredients from '@/hooks/useIngredients'
@@ -54,14 +54,10 @@ const DisplayIngredients = ({ variant, handleSelectIngredient }: DisplayIngredie
           </List>
         </Box>
       ) : (
-        <div className='grid-wrapper'>
-          <Grid container spacing={2} justifyContent='center'>
-            {ingredients.map((ingredient) => (
-              <Grid item key={generateKey()}>
-                <IngredientCard ingredient={ingredient} />
-              </Grid>
-            ))}
-          </Grid>
+        <div className='grid grid-cols-2 mt-6 gap-4'>
+          {ingredients.map((ingredient) => (
+            <IngredientCard ingredient={ingredient} key={generateKey()} />
+          ))}
         </div>
       )}
     </>

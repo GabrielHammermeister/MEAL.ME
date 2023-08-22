@@ -16,13 +16,13 @@ function IngredientCard({ ingredient }: IngredientCardProps) {
 
   return (
     <Card
-      sx={{
-        maxWidth: 345,
-        width: 240,
-        display: 'flex',
-        flexDirection: 'column',
-        justifyContent: 'space-between',
-      }}
+    // sx={{
+    //   maxWidth: 345,
+    //   width: 240,
+    //   display: 'flex',
+    //   flexDirection: 'column',
+    //   justifyContent: 'space-between',
+    // }}
     >
       <CardActionArea onClick={goToIngredient}>
         <CardMedia
@@ -32,17 +32,17 @@ function IngredientCard({ ingredient }: IngredientCardProps) {
 
         <CardContent sx={{ p: 2 }}>
           <Box
-            sx={{
-              height: 60,
-              textOverflow: 'ellipsis',
-              p: 0,
-              overflow: 'hidden',
-              whiteSpace: 'wrap',
-              display: 'flex',
-              alignItems: 'flex-end',
-            }}
+          // sx={{
+          //   height: 60,
+          //   textOverflow: 'ellipsis',
+          //   p: 0,
+          //   overflow: 'hidden',
+          //   whiteSpace: 'wrap',
+          //   display: 'flex',
+          //   alignItems: 'flex-end',
+          // }}
           >
-            <Typography variant='h6' component='div'>
+            <Typography variant='h6' className={'text-base text-center'}>
               {ingredient.name}
             </Typography>
           </Box>

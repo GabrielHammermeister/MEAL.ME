@@ -10,6 +10,10 @@ import { Navigate, Route, Routes } from 'react-router-dom'
 import Validator from './Validator/Validator.index'
 import { ProfilePage } from '@/pages/Profile/ProfilePage'
 import { MealPage } from '@/pages/MealPage/MealPage'
+import {
+  FindIngredientsPage as RFindIngredientsPage,
+  IngredientPage as RIngredientPage,
+} from '@/pages/Responsive'
 
 export const ROUTES = {
   HOME: 'home',
@@ -25,6 +29,9 @@ export const ROUTES = {
   },
   LOGIN: '/login',
   SIGNUP: '/sign-up',
+  RESPONSIVE: {
+    INGREDIENTS: 'ingredients',
+  },
 } as const
 
 function Router() {
@@ -46,6 +53,14 @@ function Router() {
         <Route path={ROUTES.INGREDIENTS.INDEX}>
           <Route index element={<FindIngredientsPage />} />
           <Route path=':id' element={<IngredientPage />} />
+        </Route>
+
+        {/* Responsive Routes */}
+        <Route path={'responsive'}>
+          <Route path={'ingredients'}>
+            <Route index element={<RFindIngredientsPage />}></Route>
+            <Route path={':id'} element={<RIngredientPage />}></Route>
+          </Route>
         </Route>
         {/* Public Routes */}
         <Route path={ROUTES.LOGIN} element={<LoginPage />} />
