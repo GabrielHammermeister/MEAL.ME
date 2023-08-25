@@ -1,22 +1,5 @@
 import React, { FormEvent, useState } from 'react'
-import DefaultTemplate from '@/templates/Default/Default.index'
-import {
-  Avatar,
-  Box,
-  Button,
-  Checkbox,
-  Container,
-  FormControlLabel,
-  Grid,
-  Link,
-  Step,
-  StepContent,
-  StepLabel,
-  Stepper,
-  TextField,
-  Typography,
-} from '@mui/material'
-import LockOutlinedIcon from '@mui/icons-material/LockOutlined'
+import { Box, Button, Checkbox, FormControlLabel, Link, TextField } from '@mui/material'
 import { ROUTES } from '@/router/Router'
 import { signInWithEmailAndPassword } from 'firebase/auth'
 import { firebaseAuth } from '@/services/firebase/initializer'
@@ -26,7 +9,7 @@ import { FlatIcon } from '@/components/FlatIcon/FlatIcon'
 import svgGoogleSrc from '@/assets/icons/google.svg'
 import svgFacebookSrc from '@/assets/icons/facebook.svg'
 
-const SocialButton = ({ src }) => {
+const SocialButton = ({ src }: { src: string }) => {
   return (
     <button className='flex p-2 bg-white border-2 border-gray-200 border-solid rounded-full shadow-lg border-opacity-20'>
       <FlatIcon src={src} size='2xl' />

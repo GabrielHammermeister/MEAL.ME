@@ -1,6 +1,4 @@
 import { Action, MealStateType } from '@/pages/CreateMeal/types'
-import { Ingredient } from '@/providers/Ingredient.provider'
-import { MacroNutrient } from '@/components/MacroSummary/MacroSummary'
 import { IngredientType } from '@/models/Ingredient'
 
 function updateMacros(ingredients: Array<IngredientType>) {

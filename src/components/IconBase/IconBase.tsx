@@ -1,4 +1,4 @@
-import { Children, ReactElement, ReactNode, cloneElement } from 'react'
+import { Children, cloneElement, ReactElement } from 'react'
 
 type Type = 'rounded' | 'rectangle'
 
@@ -7,7 +7,7 @@ interface IconBaseProps {
   children: ReactElement
 }
 
-const StyleInjector = ({ children }) => {
+const StyleInjector = ({ children }: { children: any }) => {
   const classList = 'fill-m-gray'
   const StyledChildren = () =>
     Children.map(children, (child) =>
