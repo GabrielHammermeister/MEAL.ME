@@ -20,7 +20,7 @@ function updateMacros(ingredients: Array<IngredientType>) {
       percent: 0,
     },
   }
-  const newMacros = ingredients.reduce((acc, currentValue) => {
+  return ingredients.reduce((acc, currentValue) => {
     acc.calories += currentValue.macros.calories
     acc.fats.amount += Math.floor(currentValue.macros.fats.amount)
     acc.fats.percent = ((acc.fats.amount * 9) / acc.calories) * 100
@@ -31,8 +31,6 @@ function updateMacros(ingredients: Array<IngredientType>) {
 
     return acc
   }, initialMacros)
-
-  return newMacros
 }
 
 export function mealReducer(state: MealStateType, action: Action) {
