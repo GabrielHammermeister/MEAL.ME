@@ -1,7 +1,6 @@
 import React, { ReactNode } from 'react'
 import { NavLink } from 'react-router-dom'
 import { FoodSVG, HomeSVG, MealSVG, ProfileSVG } from '@/icons'
-import { extend } from 'lodash'
 import { generateKey } from '@/utils/generateKey'
 
 interface ResponsiveLayoutProps {
@@ -43,7 +42,7 @@ const LINKS: Array<Link> = [
   },
 ]
 
-interface NavButtonProps extends Link {}
+type NavButtonProps = Link
 
 function NavButton({ icon, label, to }: NavButtonProps) {
   return (
