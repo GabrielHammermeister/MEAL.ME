@@ -89,8 +89,6 @@ const CreateMealPage = () => {
   //   fetchData()
   // }, [])
 
-  console.log('mealState: ', mealState)
-
   const handleClickOpen = () => {
     setOpen(true)
   }

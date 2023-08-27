@@ -34,7 +34,7 @@ interface Nutrition {
   }
 }
 
-const Section = ({ children }: { children: any }) => {
+const Section = ({ children }: { children: React.ReactNode }) => {
   return (
     <section className={'py-4 bg-neutral-50 mx-[-14px] px-3.5 border-t-gray-500 border-t-2'}>
       {children}

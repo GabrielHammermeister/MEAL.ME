@@ -2,6 +2,7 @@ import { Box, Card, CardHeader } from '@mui/material'
 import ReactApexChart from 'react-apexcharts'
 
 import React from 'react'
+import { ApexOptions } from 'apexcharts'
 import useChart from '@/hooks/useChart'
 
 const dates = [
@@ -26,7 +27,7 @@ export default function UserGoalChart({ chartData }: any) {
     labels: dates,
     xaxis: {
       atype: 'datetime',
-      formatter: (value: any) => value + '##',
+      formatter: (value: string) => value + '##',
       // categories: dates,
     },
     tooltip: {

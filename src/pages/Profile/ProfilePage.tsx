@@ -78,7 +78,7 @@ export function ProfilePage() {
   }
 
   const handleUserSignOut = () => {
-    signOut(firebaseAuth).then(() => console.log('user signed out'))
+    signOut(firebaseAuth).then()
     navigate(ROUTES.LOGIN)
   }
 
