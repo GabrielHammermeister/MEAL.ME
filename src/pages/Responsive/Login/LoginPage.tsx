@@ -41,10 +41,9 @@ export const LoginPage = () => {
     event.preventDefault()
     signInWithEmailAndPassword(firebaseAuth, email, password)
       .then(() => {
-        navigate('/' + ROUTES.HOME)
+        navigate('/responsive/')
       })
       .catch((err) => {
-        console.log('error firebase: ', err.message)
         setError('Credenciais inválidas. Verifique seu email e senha.')
       })
   }

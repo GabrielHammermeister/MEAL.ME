@@ -1,5 +1,6 @@
 import MuiCustomLink from '@/components/Custom/MuiLink/MuiLink.index'
-import { LinkProps, ThemeOptions } from '@mui/material'
+import { Card, CardProps, LinkProps, ThemeOptions } from '@mui/material'
+import { MuiCustomCard } from '@/components/Custom/Card/MuiCustomCard'
 
 export const MuiCustomTheme: ThemeOptions = {
   typography: {
@@ -37,6 +38,11 @@ export const MuiCustomTheme: ThemeOptions = {
         titleTypographyProps: { variant: 'h6' },
         subheaderTypographyProps: { variant: 'body2' },
       },
+    },
+    MuiCard: {
+      defaultProps: {
+        component: MuiCustomCard,
+      } as unknown as CardProps,
     },
   },
 }
