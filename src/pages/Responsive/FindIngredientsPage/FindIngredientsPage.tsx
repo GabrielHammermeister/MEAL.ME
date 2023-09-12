@@ -1,12 +1,12 @@
 import React from 'react'
 import DisplayIngredients from '@/components/DisplayIngredients/DisplayIngredients'
-import useIngredients from '@/hooks/useIngredients'
+// import useIngredients from '@/hooks/useIngredients'
 import SearchIngredient from '@/components/SearchIngredient/SearchIngredient'
 import { ResponsiveLayout } from '@/templates/ResponsiveLayout/ResponsiveLayout'
 import { PageTitle } from '@/components/PageTitle/PageTitle'
 
 export const FindIngredientsPage = () => {
-  const { setIngredients } = useIngredients()
+  // const { setIngredients } = useIngredients()
 
   return (
     <ResponsiveLayout>

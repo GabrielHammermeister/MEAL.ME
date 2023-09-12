@@ -3,22 +3,22 @@
   max-width: 650px;
 }
 
-.dashboard-home {
-  display: grid;
-  height: 100%;
-  grid-template-columns: 1fr 1fr 1fr;
-  grid-template-rows: 1fr 1fr 1fr;
-  gap: 20px;
-  grid-template-areas:
-    "chart chart Summary"
-    "chart chart Summary"
-    "checkout checkout .";
-}
-.chart { grid-area: chart; }
-.Summary {
-  grid-area: Summary;
-}
-.checkout {
-  grid-area: checkout;
-  padding-bottom: 20px;
-}
+/*.dashboard-home {*/
+/*  display: grid;*/
+/*  height: 100%;*/
+/*  grid-template-columns: 1fr 1fr 1fr;*/
+/*  grid-template-rows: 1fr 1fr 1fr;*/
+/*  gap: 20px;*/
+/*  grid-template-areas:*/
+/*    "chart chart Summary"*/
+/*    "chart chart Summary"*/
+/*    "checkout checkout .";*/
+/*}*/
+/*.chart { grid-area: chart; }*/
+/*.Summary {*/
+/*  grid-area: Summary;*/
+/*}*/
+/*.checkout {*/
+/*  grid-area: checkout;*/
+/*  padding-bottom: 20px;*/
+/*}*/

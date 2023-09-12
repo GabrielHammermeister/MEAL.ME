@@ -52,7 +52,6 @@ export function MealPage() {
     setOpen(null)
   }
   const handleDeleteMeal = () => {
-    console.log('delteed')
     handleCloseMenu()
     // redirect to MEALS
   }

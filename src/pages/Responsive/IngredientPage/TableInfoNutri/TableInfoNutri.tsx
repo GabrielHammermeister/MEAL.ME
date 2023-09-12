@@ -9,7 +9,7 @@ import {
 } from '@mui/material'
 import { generateKey } from '@/utils/generateKey'
 import React from 'react'
-import { MacroSummary, Nutrient } from '@/pages/Responsive/IngredientPage/IngredientPage.index'
+import { MacroSummary, Nutrient } from '@/pages/Responsive/IngredientPage/IngredientPage'
 
 interface TableInfoNutriProps {
   macroNutrients: MacroSummary

@@ -10,13 +10,13 @@ import { PageTitle } from '@/components/PageTitle/PageTitle'
 type Nutrients = Array<{ name: string; amount: number; unit: string }>
 export type Nutrient = { name: string; amount: number; unit: string }
 
-type Macros = Array<Nutrient>
-
-type Macro = {
-  amount: number
-  unit: string
-  percent: number
-}
+// type Macros = Array<Nutrient>
+//
+// type Macro = {
+//   amount: number
+//   unit: string
+//   percent: number
+// }
 
 export type MacroSummary = {
   calories: number
@@ -34,7 +34,7 @@ interface Nutrition {
   }
 }
 
-const Section = ({ children }) => {
+const Section = ({ children }: { children: React.ReactNode }) => {
   return (
     <section className={'py-4 bg-neutral-50 mx-[-14px] px-3.5 border-t-gray-500 border-t-2'}>
       {children}

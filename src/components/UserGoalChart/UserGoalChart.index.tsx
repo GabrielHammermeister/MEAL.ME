@@ -27,7 +27,7 @@ export default function UserGoalChart({ chartData }: any) {
     labels: dates,
     xaxis: {
       atype: 'datetime',
-      formatter: (value) => value + '##',
+      formatter: (value: string) => value + '##',
       // categories: dates,
     },
     tooltip: {
