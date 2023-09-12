@@ -1,4 +1,4 @@
-import MuiCustomLink from '@/router/MuiLink/MuiLink.index'
+import MuiCustomLink from '@/components/Custom/MuiLink/MuiLink.index'
 import { LinkProps, ThemeOptions } from '@mui/material'
 
 export const MuiCustomTheme: ThemeOptions = {

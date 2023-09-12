@@ -1,13 +1,11 @@
 import EmptyState from '@/components/EmptyState/EmptyState.index'
 import Meal from '@/components/Meal/Meal.index'
-import DefaultTemplate from '@/templates/Default/Default.index'
-import { Button, Typography } from '@mui/material'
+import { Button } from '@mui/material'
 import React, { useState } from 'react'
 
 import './MealsPage.styles.css'
 import emptyBoxSrc from '@/assets/empty-box.svg'
 import { useNavigate } from 'react-router-dom'
-import { generateKey } from '@/utils/generateKey'
 import { Add } from '@mui/icons-material'
 import { ROUTES } from '@/router/Router'
 import { ResponsiveLayout } from '@/templates/ResponsiveLayout/ResponsiveLayout'
@@ -28,7 +26,7 @@ export const MealsPage = () => {
 
   return (
     <ResponsiveLayout>
-      <PageTitle  text='Your Meals'/>
+      <PageTitle text='Your Meals' />
       {mealList.length === 0 ? (
         <EmptyState
           imgSrc={emptyBoxSrc}
@@ -41,7 +39,7 @@ export const MealsPage = () => {
       ) : (
         <>
           {/* <div className='grid-dashboard-meals'> */}
-          <div className='grid gap-2'>
+          <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4'>
             {/* {mealList.map(() => ( */}
             {/*   <Meal key={generateKey()} mealData={{ id: 'iasdf' }} /> */}
             {/* ))} */}
@@ -71,12 +69,13 @@ export const MealsPage = () => {
               mealData={{ id: '6', name: 'Purple Smothie', calories: 320, type: 'liquid' }}
             />
           </div>
-          <section className={'button-container'}>
+          <section className='mt-8'>
             <Button
               size={'large'}
               variant={'contained'}
               onClick={handleAddMeal}
               startIcon={<Add />}
+              className='w-full md:w-auto'
             >
               Add meal
             </Button>
