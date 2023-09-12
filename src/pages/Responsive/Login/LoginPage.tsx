@@ -1,5 +1,16 @@
 import React, { FormEvent, useState } from 'react'
-import { Box, Button, Checkbox, FormControlLabel, Link, TextField } from '@mui/material'
+import {
+  Box,
+  Button,
+  Checkbox,
+  FormControl,
+  FormControlLabel,
+  IconButton,
+  InputAdornment,
+  Link,
+  TextField,
+  Typography,
+} from '@mui/material'
 import { ROUTES } from '@/router/Router'
 import { signInWithEmailAndPassword } from 'firebase/auth'
 import { firebaseAuth } from '@/services/firebase/initializer'
@@ -8,6 +19,7 @@ import { ResponsiveLayout } from '@/templates/ResponsiveLayout/ResponsiveLayout'
 import { FlatIcon } from '@/components/FlatIcon/FlatIcon'
 import svgGoogleSrc from '@/assets/icons/google.svg'
 import svgFacebookSrc from '@/assets/icons/facebook.svg'
+import { Visibility, VisibilityOff } from '@mui/icons-material'
 
 const SocialButton = ({ src }: { src: string }) => {
   return (
@@ -21,6 +33,9 @@ export const LoginPage = () => {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const navigate = useNavigate()
+  const [rememberMe, setRememberMe] = useState(false)
+  const [error, setError] = useState('')
+  const [showPassword, setShowPassword] = useState(false)
 
   const handleUserSignIn = (event: FormEvent) => {
     event.preventDefault()
@@ -28,7 +43,10 @@ export const LoginPage = () => {
       .then(() => {
         navigate('/' + ROUTES.HOME)
       })
-      .catch((err) => console.error(err))
+      .catch((err) => {
+        console.log('error firebase: ', err.message)
+        setError('Credenciais inválidas. Verifique seu email e senha.')
+      })
   }
   return (
     <ResponsiveLayout options={{ header: true, tabBar: false }}>
@@ -36,34 +54,58 @@ export const LoginPage = () => {
         <h2 className='m-0 mt-20 font-bold text-center'>Sign in</h2>
         <h3 className='m-0 font-normal text-center'>Sign in to your account</h3>
         <Box component='form' onSubmit={handleUserSignIn} noValidate sx={{ mt: 1 }}>
-          <TextField
-            margin='normal'
-            required
-            fullWidth
-            id='email'
-            label='Email Address'
-            name='email'
-            autoComplete='email'
-            autoFocus
-            value={email}
-            onChange={(ev) => setEmail(ev.target.value)}
-          />
-          <TextField
-            margin='normal'
-            required
-            fullWidth
-            name='password'
-            label='Password'
-            type='password'
-            id='password'
-            autoComplete='current-password'
-            value={password}
-            onChange={(ev) => setPassword(ev.target.value)}
-          />
+          <FormControl fullWidth margin='normal' error={Boolean(error)}>
+            <TextField
+              required
+              fullWidth
+              error={!!error}
+              id='email'
+              label='Email Address'
+              name='email'
+              autoComplete='email'
+              autoFocus
+              value={email}
+              onChange={(ev) => setEmail(ev.target.value)}
+            />
+          </FormControl>
+          <FormControl fullWidth margin='normal' error={Boolean(error)}>
+            <TextField
+              error={!!error}
+              required
+              fullWidth
+              name='password'
+              label='Password'
+              type={showPassword ? 'text' : 'password'}
+              id='password'
+              autoComplete='current-password'
+              value={password}
+              onChange={(ev) => setPassword(ev.target.value)}
+              InputProps={{
+                endAdornment: (
+                  <InputAdornment position='end'>
+                    <IconButton onClick={() => setShowPassword(!showPassword)} edge='end'>
+                      {showPassword ? <Visibility /> : <VisibilityOff />}
+                    </IconButton>
+                  </InputAdornment>
+                ),
+              }}
+            />
+          </FormControl>
           <FormControlLabel
-            control={<Checkbox value='remember' color='primary' />}
+            control={
+              <Checkbox
+                value={rememberMe}
+                onChange={() => setRememberMe(!rememberMe)}
+                color='primary'
+              />
+            }
             label='Remember me'
           />
+          {error && (
+            <Typography variant={'subtitle1'} color={'error'}>
+              {error}
+            </Typography>
+          )}
           <Button type='submit' size='large' fullWidth variant='contained' sx={{ mt: 8, mb: 2 }}>
             Sign In
           </Button>
@@ -79,7 +121,7 @@ export const LoginPage = () => {
           <SocialButton src={svgGoogleSrc} />
         </section>
         <span className='text-lg '>
-          Don{'\''}t have an account ?{' '}
+          Don{"'"}t have an account ?{' '}
           <Link href={ROUTES.SIGNUP}>
             {/* eslint-disable-next-line react/no-unescaped-entities */}
             Sign Up
