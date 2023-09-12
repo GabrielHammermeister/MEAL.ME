@@ -78,11 +78,12 @@ export function ResponsiveLayout({
         </header>
       )}
       <main className={'flex flex-col px-3.5 flex-grow'}>{children}</main>
+      <div className={'min-h-[4rem] mt-4'}></div>
       {options.tabBar && (
         <nav
           id='tab-bar'
           className={
-            'fixed bottom-0 right-0 left-0 border-t-2 border-slate-200 border-opacity-20 h-16'
+            'fixed bottom-0 right-0 left-0 border-t-2 border-slate-200 border-opacity-20 h-16 z-20'
           }
         >
           <div className='relative z-50 flex items-center justify-between h-full px-12 bg-white'>

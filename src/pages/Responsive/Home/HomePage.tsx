@@ -1,17 +1,7 @@
 import React from 'react'
 // Components
-import DefaultTemplate from '@/templates/Default/Default.index'
 // Contexts
-import {
-  Button,
-  Card,
-  CardActions,
-  CardContent,
-  CardHeader,
-  InputAdornment,
-  TextField,
-  Typography,
-} from '@mui/material'
+import { Button, Card, CardActions, CardContent, CardHeader } from '@mui/material'
 
 import './HomePage.styles.css'
 import useCurrentUser from '@/hooks/useCurrentUser'
@@ -19,6 +9,8 @@ import UserGoalChart from '@/components/UserGoalChart/UserGoalChart.index'
 import { MacroSummary } from '@/components/MacroSummary/MacroSummary'
 import { Add } from '@mui/icons-material'
 import { ResponsiveLayout } from '@/templates/ResponsiveLayout/ResponsiveLayout'
+import { PageTitle } from '@/components/PageTitle/PageTitle'
+import DailyWeightTracker from '@/components/DailyWeightTracker/DailyWeightTracker'
 
 const MOCK_MACROS = {
   calories: 123,
@@ -44,11 +36,26 @@ export const HomePage = () => {
 
   return (
     <ResponsiveLayout>
-      <Typography variant='h4'>
-        Bem vindo {currentUser?.displayName?.toLocaleUpperCase()}!
-      </Typography>
+      <PageTitle text={`Bem vindo ${currentUser?.displayName?.toLocaleUpperCase()}!`} />
 
-      <section className={'dashboard-home'}>
+      <section className={'flex flex-col gap-8'}>
+        <div className='Summary'>
+          <Card sx={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
+            <CardHeader
+              title={'Daily Macro Summary'}
+              subheader={'Your daily nutrient consumption'}
+            />
+            <CardContent>
+              <MacroSummary macros={MOCK_MACROS} />
+            </CardContent>
+            <CardActions sx={{ p: 2, marginTop: 'auto' }}>
+              <Button startIcon={<Add />} variant={'contained'}>
+                Add food Consumption
+              </Button>
+            </CardActions>
+          </Card>
+        </div>
+
         <div className='chart'>
           <UserGoalChart
             chartData={[
@@ -67,41 +74,26 @@ export const HomePage = () => {
             ]}
           />
         </div>
-        <div className='Summary'>
-          <Card sx={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
-            <CardHeader
-              title={'Daily Macro Summary'}
-              subheader={'Your daily nutrient consumption'}
-            />
-            <CardContent>
-              <MacroSummary macros={MOCK_MACROS} />
-            </CardContent>
-            <CardActions sx={{ p: 2, marginTop: 'auto' }}>
-              <Button startIcon={<Add />} variant={'contained'}>
-                Add food Consumption
-              </Button>
-            </CardActions>
-          </Card>
-        </div>
         <div className='checkout'>
-          <Card sx={{ height: '100%' }}>
-            <CardHeader title={'Daily Weight Check'} subheader={'Check your body weight daily'} />
-            {/* <CardContent> */}
-            {/*    */}
-            {/* </CardContent> */}
-            <CardActions sx={{ p: 3, display: 'flex', justifyContent: 'space-between' }}>
-              <TextField
-                variant={'outlined'}
-                type={'number'}
-                InputProps={{
-                  endAdornment: <InputAdornment position='start'>kg</InputAdornment>,
-                }}
-              />
-              <Button size='large' variant={'outlined'}>
-                save
-              </Button>
-            </CardActions>
-          </Card>
+          {/* <Card sx={{ height: '100%' }}>*/}
+          {/*  <CardHeader title={'Daily Weight Check'} subheader={'Check your body weight daily'} />*/}
+          {/*  /!* <CardContent> *!/*/}
+          {/*  /!*    *!/*/}
+          {/*  /!* </CardContent> *!/*/}
+          {/*  <CardActions sx={{ p: 3, display: 'flex', justifyContent: 'space-between' }}>*/}
+          {/*    <TextField*/}
+          {/*      variant={'outlined'}*/}
+          {/*      type={'number'}*/}
+          {/*      InputProps={{*/}
+          {/*        endAdornment: <InputAdornment position='start'>kg</InputAdornment>,*/}
+          {/*      }}*/}
+          {/*    />*/}
+          {/*    <Button size='large' variant={'outlined'}>*/}
+          {/*      save*/}
+          {/*    </Button>*/}
+          {/*  </CardActions>*/}
+          {/* </Card>*/}
+          <DailyWeightTracker />
         </div>
       </section>
     </ResponsiveLayout>

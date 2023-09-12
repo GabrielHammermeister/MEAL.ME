@@ -12,11 +12,11 @@ import { ProfilePage } from '@/pages/Profile/ProfilePage'
 import { MealPage } from '@/pages/MealPage/MealPage'
 import {
   FindIngredientsPage as RFindIngredientsPage,
-  IngredientPage as RIngredientPage,
-  ProfilePage as RProfilePage,
-  MealsPage as RMealsPage,
   HomePage as RHomePage,
+  IngredientPage as RIngredientPage,
   LoginPage as RLoginPage,
+  MealsPage as RMealsPage,
+  UserProfilePage as RProfilePage,
 } from '@/pages/Responsive'
 
 export const ROUTES = {
@@ -80,7 +80,7 @@ function Router() {
         {/* Public Routes */}
         <Route path={ROUTES.LOGIN} element={<LoginPage />} />
         <Route path={ROUTES.SIGNUP} element={<SignUpPage />} />
-        {/* <Route path={ROUTES.HOME} element={<Navigate to='/' replace />} /> */}
+        <Route path={ROUTES.HOME} element={<Navigate to='/' replace />} />
       </Routes>
     </Fragment>
   )
