@@ -1,8 +1,8 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment */
-import { Button, Typography } from '@mui/material'
-import React from 'react'
+import { Button, Typography } from '@mui/material';
+import React from 'react';
 // @ts-ignore
-import { container, illustration } from './EmptyState.module.css'
+import { container, illustration } from './EmptyState.module.css';
 
 interface EmptyStateProps {
   imgSrc: string
@@ -22,18 +22,20 @@ const EmptyState = ({
   buttonLabel,
 }: EmptyStateProps) => {
   return (
-    <div className={container}>
-      <img src={imgSrc} alt={imgAlt} className={illustration} />
-      <Typography variant='h5'>{title}</Typography>
-      <Typography variant='body1' align='center'>
+    <div className='flex flex-col items-center justify-center h-full'>
+      <img src={imgSrc} alt={imgAlt} className='w-40 h-40 mb-4' />
+      <Typography variant='h5' align='center' className='mb-2'>
+        {title}
+      </Typography>
+      <Typography variant='body1' align='center' className='mb-4'>
         {description}
       </Typography>
       {handleOnClickButton && (
         <Button
-          sx={{ marginTop: '10px' }}
           size='large'
           variant='contained'
           onClick={handleOnClickButton}
+          className='px-6 py-2'
         >
           {buttonLabel}
         </Button>

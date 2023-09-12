@@ -12,7 +12,11 @@ import { ProfilePage } from '@/pages/Profile/ProfilePage'
 import { MealPage } from '@/pages/MealPage/MealPage'
 import {
   FindIngredientsPage as RFindIngredientsPage,
+  HomePage as RHomePage,
   IngredientPage as RIngredientPage,
+  LoginPage as RLoginPage,
+  MealsPage as RMealsPage,
+  UserProfilePage as RProfilePage,
 } from '@/pages/Responsive'
 
 export const ROUTES = {
@@ -57,11 +61,22 @@ function Router() {
 
         {/* Responsive Routes */}
         <Route path={'responsive'}>
+          <Route index element={<RHomePage />} />
           <Route path={'ingredients'}>
-            <Route index element={<RFindIngredientsPage />}></Route>
-            <Route path={':id'} element={<RIngredientPage />}></Route>
+            <Route index element={<RFindIngredientsPage />} />
+            <Route path={':id'} element={<RIngredientPage />} />
+          </Route>
+          <Route path={'meals'}>
+            <Route index element={<RMealsPage />} />
+          </Route>
+          <Route path={'profile'}>
+            <Route index element={<RProfilePage />} />
+          </Route>
+          <Route path={'login'}>
+            <Route index element={<RLoginPage />} />
           </Route>
         </Route>
+
         {/* Public Routes */}
         <Route path={ROUTES.LOGIN} element={<LoginPage />} />
         <Route path={ROUTES.SIGNUP} element={<SignUpPage />} />

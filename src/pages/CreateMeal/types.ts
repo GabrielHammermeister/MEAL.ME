@@ -1,4 +1,3 @@
-import { Ingredient } from '@/providers/Ingredient.provider'
 import { MacroNutrient } from '@/components/MacroSummary/MacroSummary'
 import { IngredientType } from '@/models/Ingredient'
 
