@@ -3,10 +3,16 @@ import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 import tsconfigPaths from 'vite-tsconfig-paths'
 import svgr from 'vite-plugin-svgr'
+import { VitePWA } from 'vite-plugin-pwa'
 
 // https://vitejs.dev/config/
 export default defineConfig({
-  plugins: [tsconfigPaths({ root: './src' }), react(), svgr()],
+  plugins: [
+    tsconfigPaths({ root: './src' }),
+    react(),
+    svgr(),
+    VitePWA({ registerType: 'autoUpdate', devOptions: { enabled: true } }),
+  ],
   resolve: {
     alias: {
       '@': '/src',

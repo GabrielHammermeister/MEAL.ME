@@ -5,14 +5,13 @@ import ReactDOM from 'react-dom/client'
 import { BrowserRouter } from 'react-router-dom'
 import { IngredientProvider } from './providers/Ingredient.provider'
 import { UserProvider } from './providers/User.provider'
-import { SpoonacularInterceptor } from './services/spoonacular/SpoonacularInterceptor'
 import './styles/global.css'
 import { MuiCustomTheme } from './styles/MuiCustomTheme'
 import Router from '@/router/Router'
 import { ComponentPreviews } from '@/dev'
 
 const muiCustomTheme = createTheme(MuiCustomTheme)
-SpoonacularInterceptor()
+
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
   <StyledEngineProvider injectFirst>
     <React.StrictMode>
