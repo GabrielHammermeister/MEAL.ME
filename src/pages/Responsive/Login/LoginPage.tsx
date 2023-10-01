@@ -12,7 +12,7 @@ import {
   Typography,
 } from '@mui/material'
 import { ROUTES } from '@/router/Router'
-import { signInWithEmailAndPassword } from 'firebase/auth'
+import { browserLocalPersistence, setPersistence, signInWithEmailAndPassword } from 'firebase/auth'
 import { firebaseAuth } from '@/services/firebase/initializer'
 import { useNavigate } from 'react-router-dom'
 import { ResponsiveLayout } from '@/templates/ResponsiveLayout/ResponsiveLayout'
@@ -39,7 +39,11 @@ export const LoginPage = () => {
 
   const handleUserSignIn = (event: FormEvent) => {
     event.preventDefault()
-    signInWithEmailAndPassword(firebaseAuth, email, password)
+
+    setPersistence(firebaseAuth, browserLocalPersistence)
+      .then(() => {
+        return signInWithEmailAndPassword(firebaseAuth, email, password)
+      })
       .then(() => {
         navigate('/responsive/')
       })
