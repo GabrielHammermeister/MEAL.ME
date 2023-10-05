@@ -20,6 +20,7 @@ import { FlatIcon } from '@/components/FlatIcon/FlatIcon'
 import svgGoogleSrc from '@/assets/icons/google.svg'
 import svgFacebookSrc from '@/assets/icons/facebook.svg'
 import { Visibility, VisibilityOff } from '@mui/icons-material'
+import { UsersService } from '@/services/mealme-api/user.service'
 
 const SocialButton = ({ src }: { src: string }) => {
   return (
@@ -39,12 +40,23 @@ export const LoginPage = () => {
 
   const handleUserSignIn = (event: FormEvent) => {
     event.preventDefault()
-
+    const UserService = new UsersService()
     setPersistence(firebaseAuth, browserLocalPersistence)
       .then(() => {
         return signInWithEmailAndPassword(firebaseAuth, email, password)
       })
-      .then(() => {
+      .then(({ user }) => {
+        console.log('uid: ', user.uid)
+        UsersService.getUsers(user.uid).then((response) => {
+          console.log(response)
+          /*
+           * if(!response.body) UsersService.createUser()
+           * else {
+           *   navigate('/responsive/')
+           *   hydrateContext()
+           * }
+           * */
+        })
         navigate('/responsive/')
       })
       .catch((err) => {
