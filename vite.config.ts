@@ -1,10 +1,10 @@
 /* eslint-disable camelcase */
-import { defineConfig } from 'vite';
+import { defineConfig } from "vite";
 
-import react from '@vitejs/plugin-react';
-import tsconfigPaths from 'vite-tsconfig-paths';
-import svgr from 'vite-plugin-svgr';
-import { VitePWA } from 'vite-plugin-pwa';
+import react from "@vitejs/plugin-react";
+import tsconfigPaths from "vite-tsconfig-paths";
+import svgr from "vite-plugin-svgr";
+import { VitePWA } from "vite-plugin-pwa";
 
 export default defineConfig({
   plugins: [
@@ -18,7 +18,7 @@ export default defineConfig({
       },
       manifest: {
         name: 'Meal.me',
-        short_name: 'meal.me',
+        short_name: 'mealApi.me',
         description: 'My awesome app',
         theme_color: '#ffffff',
         icons: [

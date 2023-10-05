@@ -1,7 +1,7 @@
 import { Box, Card, CardActionArea, CardContent, CardMedia, Typography } from '@mui/material'
 import React from 'react'
 import { useNavigate } from 'react-router-dom'
-import { Ingredient } from '@/providers/Ingredient.provider'
+import { Ingredient } from '@/context/Ingredient.provider'
 import { getIngredientImage } from '@/services/spoonacular/getIngredientImage.service'
 
 type IngredientCardProps = {
