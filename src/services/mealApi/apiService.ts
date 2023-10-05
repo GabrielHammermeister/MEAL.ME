@@ -1,6 +1,6 @@
 import axios, { AxiosInstance } from 'axios'
 
-const baseURL = 'http://44.196.49.137'
+const baseURL = import.meta.env.VITE_MEAL_API_BASE_URL
 
 const mealApiService: AxiosInstance = axios.create({
   baseURL,

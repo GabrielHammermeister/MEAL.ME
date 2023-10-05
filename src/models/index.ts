@@ -1,3 +1,3 @@
 export * from './Meal'
-export * from './ApiUser'
+export * from './User'
 export * from './Goal'

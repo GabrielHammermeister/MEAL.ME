@@ -1,5 +1,6 @@
 import apiService from './apiService'
 import { ApiUser } from '@/models'
+import { Nullable } from '@/types'
 
 export const getUsers = async (documentId: string): Promise<ApiUser | null> => {
   try {
@@ -11,10 +12,10 @@ export const getUsers = async (documentId: string): Promise<ApiUser | null> => {
   }
 }
 
-export const createUsers = async (data: ApiUser): Promise<void> => {
+export const createUsers = async (data: Nullable<ApiUser>, documentId: string): Promise<void> => {
   console.log('ENTROU AQUI')
   try {
-    await apiService.post('/users/create', data)
+    await apiService.post(`/users/create?userAuth=${documentId}`, data)
   } catch (error) {
     console.error('Error creating users:', error)
   }
