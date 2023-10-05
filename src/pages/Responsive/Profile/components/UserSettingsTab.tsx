@@ -12,6 +12,8 @@ import EditIcon from '@mui/icons-material/Edit'
 import LogoutIcon from '@mui/icons-material/Logout'
 import { useNavigate } from 'react-router-dom'
 import { ROUTES } from '@/router/Router'
+import { signOut } from 'firebase/auth'
+import { firebaseAuth } from '@/services/firebase/initializer'
 
 export const UserSettingsTab = () => {
   const navigate = useNavigate()
@@ -32,7 +34,9 @@ export const UserSettingsTab = () => {
   }
 
   const logOutUser = () => {
-    navigate('/responsive/login')
+    signOut(firebaseAuth).then(() => {
+      navigate('/responsive/login')
+    })
   }
 
   // Função para lidar com mudanças nas configurações
