@@ -17,6 +17,7 @@ import {
   LoginPage as RLoginPage,
   MealsPage as RMealsPage,
   UserProfilePage as RProfilePage,
+  CreateMealPage as RCreateMealPage,
 } from '@/pages/Responsive'
 
 export const ROUTES = {
@@ -74,6 +75,9 @@ function Router() {
           </Route>
           <Route path={'login'}>
             <Route index element={<RLoginPage />} />
+          </Route>
+          <Route path={'createMeal'}>
+            <Route index element={<RCreateMealPage/>} />
           </Route>
         </Route>
 

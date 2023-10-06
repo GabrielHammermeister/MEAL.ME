@@ -7,7 +7,6 @@ import './MealsPage.styles.css'
 import emptyBoxSrc from '@/assets/empty-box.svg'
 import { useNavigate } from 'react-router-dom'
 import { Add } from '@mui/icons-material'
-import { ROUTES } from '@/router/Router'
 import { ResponsiveLayout } from '@/templates/ResponsiveLayout/ResponsiveLayout'
 import { PageTitle } from '@/components/PageTitle/PageTitle'
 
@@ -16,12 +15,12 @@ export const MealsPage = () => {
   const [mealList, setMealList] = useState([1, 2, 3])
 
   const goToCreateMeal = () => {
-    return navigate('/meals/create')
+    return navigate('/responsive/createMeal')
   }
 
   function handleAddMeal() {
     setMealList((prevState) => [...prevState, 1])
-    navigate(ROUTES.MEALS.CREATE)
+    navigate('/responsive/createMeal')
   }
 
   return (
