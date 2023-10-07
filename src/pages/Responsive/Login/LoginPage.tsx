@@ -124,8 +124,8 @@ export const LoginPage = () => {
           <SocialButton src={svgGoogleSrc} />
         </section>
         <span className='text-lg '>
-          Don{"'"}t have an account ?{' '}
-          <Link href={ROUTES.SIGNUP}>
+          Don{'\''}t have an account ?{' '}
+          <Link href={'responsive/sign-up'}>
             {/* eslint-disable-next-line react/no-unescaped-entities */}
             Sign Up
           </Link>

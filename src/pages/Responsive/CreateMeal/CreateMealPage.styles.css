@@ -1,6 +1,19 @@
+/* Estilos comuns para dispositivos não móveis */
 .dashboard-container {
   height: 100%;
   display: grid;
   grid-template: 4fr 6fr / 1fr 1fr;
   gap: 20px;
+}
+
+@media (max-width: 768px) {
+  /* Estilos específicos para dispositivos móveis */
+  .dashboard-container {
+    display: block; /* Alterar para exibição em bloco */
+    height: auto; /* Remover altura fixa para ajuste automático de conteúdo */
+  }
+
+  .dashboard-container > * {
+    margin-bottom: 20px; /* Adicionar espaço entre os elementos empilhados */
+  }
 }
