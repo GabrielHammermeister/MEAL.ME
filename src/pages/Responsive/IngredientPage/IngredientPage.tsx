@@ -1,152 +1,126 @@
-import React, { useEffect, useState } from 'react'
-import { Typography } from '@mui/material'
-import { useParams } from 'react-router-dom'
-import './IngredientPage.styles.css'
-import { getInformationById } from '@/services/spoonacular/spoonacular.service'
-import { MacroNutrient, MacroSummary } from '@/components/MacroSummary/MacroSummary'
-import { TableInfoNutri } from '@/pages/Responsive/IngredientPage/TableInfoNutri/TableInfoNutri'
-import { PageTitle } from '@/components/PageTitle/PageTitle'
+import React, { useEffect, useState } from 'react';
+import { Typography } from '@mui/material';
+import { useParams, useNavigate } from 'react-router-dom';
+import './IngredientPage.styles.css';
+import { getInformationById } from '@/services/spoonacular/spoonacular.service';
+import { MacroNutrient, MacroSummary as MacroSummaryComponent } from '@/components/MacroSummary/MacroSummary';
+import { TableInfoNutri } from '@/pages/Responsive/IngredientPage/TableInfoNutri/TableInfoNutri';
+import { PageTitle } from '@/components/PageTitle/PageTitle';
+import { getIngredientImage } from '@/services/spoonacular/getIngredientImage.service';
+import svgIconButtonSrc from '@/assets/icons/_IconButton_.svg';
 
-type Nutrients = Array<{ name: string; amount: number; unit: string }>
-export type Nutrient = { name: string; amount: number; unit: string }
+interface Nutrient {
+  name: string;
+  amount: number;
+  unit: string;
+}
 
-// type Macros = Array<Nutrient>
-//
-// type Macro = {
-//   amount: number
-//   unit: string
-//   percent: number
-// }
-
-export type MacroSummary = {
-  calories: number
-  fats: MacroNutrient
-  carbs: MacroNutrient
-  proteins: MacroNutrient
+interface MacroSummary {
+  calories: number;
+  fats: MacroNutrient;
+  carbs: MacroNutrient;
+  proteins: MacroNutrient;
 }
 
 interface Nutrition {
-  nutrients: Nutrients
+  nutrients: Nutrient[];
   caloricBreakdown: {
-    percentCarbs: number
-    percentFat: number
-    percentProtein: number
-  }
+    percentCarbs: number;
+    percentFat: number;
+    percentProtein: number;
+  };
 }
 
-const Section = ({ children }: { children: React.ReactNode }) => {
-  return (
-    <section className={'py-4 bg-neutral-50 mx-[-14px] px-3.5 border-t-gray-500 border-t-2'}>
-      {children}
-    </section>
-  )
-}
+const Section: React.FC<{ children: React.ReactNode }> = ({ children }) => (
+  <section className='py-4 bg-neutral-50 mx-[-14px] px-3.5 border-t-gray-500 border-t-2'>
+    {children}
+  </section>
+);
 
-export const IngredientPage = () => {
-  const { id: ingredientId } = useParams()
-  const [ingredientName, setIngredientName] = useState('-')
-  const [loadingMacros, setLoadingMacros] = useState(true)
+export const IngredientPage: React.FC = () => {
+  const navigate = useNavigate();
+  const { id: ingredientId } = useParams();
+  const [ingredientName, setIngredientName] = useState<string>('-');
+  const [loadingMacros, setLoadingMacros] = useState<boolean>(true);
+  const [imageURL, setImageURL] = useState<string>('');
+  const [macroNutrients, setMacroNutrients] = useState<MacroSummary>({
+    calories: 0,
+    fats: { amount: 0, unit: '', percent: 0 },
+    carbs: { amount: 0, unit: '', percent: 0 },
+    proteins: { amount: 0, unit: '', percent: 0 },
+  });
+  const [nutrients, setNutrients] = useState<Nutrient[]>([]);
 
-  // @ts-ignore
-  const [macroNutrients, setMacroNutrients] = useState<MacroSummary>({})
-  const [nutrients, setNutrients] = useState<Array<Nutrient>>([])
+  const filterMacros = (nutrition: Nutrition) => {
+    const { nutrients, caloricBreakdown } = nutrition;
 
-  const filterMacros = ({ nutrients, caloricBreakdown }: Nutrition) => {
     nutrients.forEach((nutrient) => {
-      if (nutrient.name === 'Protein') {
-        setMacroNutrients((prev) => ({
-          ...prev,
-          proteins: {
-            amount: nutrient.amount,
-            unit: nutrient.unit,
-            percent: caloricBreakdown.percentProtein,
-          },
-        }))
-      } else if (nutrient.name === 'Fat') {
-        setMacroNutrients((prev) => ({
-          ...prev,
-          fats: {
-            amount: nutrient.amount,
-            unit: nutrient.unit,
-            percent: caloricBreakdown.percentFat,
-          },
-        }))
-      } else if (nutrient.name === 'Carbohydrates') {
-        setMacroNutrients((prev) => ({
-          ...prev,
-          carbs: {
-            amount: nutrient.amount,
-            unit: nutrient.unit,
-            percent: caloricBreakdown.percentCarbs,
-          },
-        }))
-      } else if (nutrient.name === 'Calories') {
-        setMacroNutrients((prev) => ({
-          ...prev,
-          calories: nutrient.amount,
-        }))
-      }
-    })
-    setLoadingMacros(false)
-  }
+      const update = { amount: nutrient.amount, unit: nutrient.unit };
 
-  function omitMacros(nutrients: Array<any>) {
-    const filter = ['Fat', 'Protein', 'Carbohydrates', 'Calories']
-    return nutrients.filter((nutrient) => !filter.includes(nutrient.name) && nutrient.amount > 0)
-  }
+      switch (nutrient.name) {
+        case 'Protein':
+          setMacroNutrients((prev) => ({
+            ...prev,
+            proteins: { ...update, percent: caloricBreakdown.percentProtein },
+          }));
+          break;
+        case 'Fat':
+          setMacroNutrients((prev) => ({
+            ...prev,
+            fats: { ...update, percent: caloricBreakdown.percentFat },
+          }));
+          break;
+        case 'Carbohydrates':
+          setMacroNutrients((prev) => ({
+            ...prev,
+            carbs: { ...update, percent: caloricBreakdown.percentCarbs },
+          }));
+          break;
+        case 'Calories':
+          setMacroNutrients((prev) => ({ ...prev, calories: nutrient.amount }));
+          break;
+        default:
+          break;
+      }
+    });
+
+    setLoadingMacros(false);
+  };
 
   const fetchIngredient = async () => {
     try {
-      const res = await getInformationById(ingredientId)
-      const {
-        data: { nutrition, name },
-      } = res
-
-      setIngredientName(name)
-      setNutrients(omitMacros(nutrition.nutrients))
-      filterMacros(nutrition)
+      const { data } = await getInformationById(ingredientId);
+      setIngredientName(data.name);
+      setNutrients(data.nutrition.nutrients.filter((n: Nutrient) => !['Fat', 'Protein', 'Carbohydrates', 'Calories'].includes(n.name) && n.amount > 0));
+      filterMacros(data.nutrition);
+      setImageURL(getIngredientImage(data.image));
     } catch (err) {
-      console.error(err)
+      console.error(err);
     }
-  }
+  };
+
   useEffect(() => {
-    fetchIngredient()
-  }, [])
+    fetchIngredient();
+  }, []);
 
   return (
-    <div className={'flex flex-col'}>
-      <header className={'flex justify-center py-4 pb-10 bg-emerald-600'}>
-        <div
-          className={
-            'outline-[#34d39938] outline-opacity-80 outline-8 outline h-36 w-36 rounded-full bg-black bg-carrots bg-cover bg-center bg-no-repeat'
-          }
-        ></div>
+    <div className='flex flex-col relative'>
+      <button onClick={() => navigate('..')} className="back-button">
+        <img src={svgIconButtonSrc} alt="Voltar" />
+      </button>
+      <header className='flex justify-center py-4 pb-10 bg-emerald-600'>
+        <div className='flex justify-center items-center outline-[#34d39938] outline-opacity-80 outline-8 outline h-36 w-36 rounded-full bg-white'>
+          <img src={imageURL} alt={ingredientName} className='h-32 w-32 rounded-full object-cover' />
+        </div>
       </header>
-      <main className={'pb-10 rounded-t-2xl bg-white mt-[-1.5rem] px-3.5'}>
+      <main className='pb-10 rounded-t-2xl bg-white mt-[-1.5rem] px-3.5'>
         <PageTitle text={ingredientName} />
-
         <Section>
           <Typography variant='subtitle2'>Macro Nutrients</Typography>
-          <MacroSummary macros={macroNutrients} loading={loadingMacros} />
+          <MacroSummaryComponent macros={macroNutrients} loading={loadingMacros} />
         </Section>
-        <div className={'mt-4'}></div>
         <TableInfoNutri macroNutrients={macroNutrients} nutrients={nutrients} />
-
-        {/* <div className='grid-dashboard'>*/}
-        {/*  /!* <Paper sx={{ gridColumn: 'span 2', gridRow: 'span 1' }}>*!/*/}
-        {/*  /!*  <Box*!/*/}
-        {/*  /!*    p={2}*!/*/}
-        {/*  /!*    display='flex'*!/*/}
-        {/*  /!*    flexDirection='column'*!/*/}
-        {/*  /!*    justifyContent='space-between'*!/*/}
-        {/*  /!*    height='100%'*!/*/}
-        {/*  /!*  >*!/*/}
-        {/*  /!*    <Typography variant='subtitle2'>Macro Nutrients</Typography>*!/*/}
-        {/*  /!*    <MacroSummary macros={macroNutrients} loading={loadingMacros} />*!/*/}
-        {/*  /!*  </Box>*!/*/}
-        {/*  /!* </Paper>*!/*/}
-        {/* </div>*/}
       </main>
     </div>
-  )
-}
+  );
+};
