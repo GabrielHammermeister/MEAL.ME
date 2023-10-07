@@ -9,9 +9,15 @@ import {
   Typography,
 } from '@mui/material'
 import EditIcon from '@mui/icons-material/Edit'
+import LogoutIcon from '@mui/icons-material/Logout'
+import { useNavigate } from 'react-router-dom'
+import { ROUTES } from '@/router/Router'
+import { signOut } from 'firebase/auth'
+import { firebaseAuth } from '@/services/firebase/initializer'
 
 export const UserSettingsTab = () => {
-  // Estado para armazenar as configurações do usuário
+  const navigate = useNavigate()
+
   const [userSettings, setUserSettings] = useState({
     notifications: true,
     darkMode: false,
@@ -25,6 +31,12 @@ export const UserSettingsTab = () => {
     // Normalmente, você faria uma chamada de API para atualizar as configurações no servidor
     // Aqui, apenas mostramos as configurações no console como exemplo.
     console.log('Configurações Atualizadas:', userSettings)
+  }
+
+  const logOutUser = () => {
+    signOut(firebaseAuth).then(() => {
+      navigate('/responsive/login')
+    })
   }
 
   // Função para lidar com mudanças nas configurações
@@ -87,15 +99,27 @@ export const UserSettingsTab = () => {
         </Select>
       </div>
 
-      <Button
-        variant='contained'
-        color='primary'
-        onClick={updateSettings}
-        className='mt-4'
-        startIcon={<EditIcon />}
-      >
-        Salvar
-      </Button>
+      <div className={'flex justify-between'}>
+        <Button
+          variant='contained'
+          color='primary'
+          onClick={updateSettings}
+          className='mt-4'
+          startIcon={<EditIcon />}
+        >
+          Salvar
+        </Button>
+
+        <Button
+          variant='outlined'
+          color='error'
+          onClick={logOutUser}
+          className='mt-4'
+          startIcon={<LogoutIcon />}
+        >
+          Log Out
+        </Button>
+      </div>
     </main>
   )
 }

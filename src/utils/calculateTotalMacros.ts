@@ -1,5 +1,3 @@
-import { Ingredient } from '@/providers/Ingredient.provider'
-
 type MacroNutrient = {
   amount: number
   unit: string

@@ -21,7 +21,7 @@ import SearchIngredient from '@/components/SearchIngredient/SearchIngredient'
 import { MealTypeSelect } from '@/components/MealTypeSelect/MealTypeSelect'
 import { MacroSummary } from '@/components/MacroSummary/MacroSummary'
 import useIngredients from '@/hooks/useIngredients'
-import { Ingredient } from '@/context/Ingredient.provider'
+import { Ingredient } from '@/providers/Ingredient.provider'
 import { Add } from '@mui/icons-material'
 import { Action, MealStateType } from './types'
 import { mealReducer } from '@/pages/CreateMeal/reducers'
@@ -97,7 +97,6 @@ const CreateMealPage = () => {
     handleClickOpen()
     setSelectedIngredient(ingredient)
   }
-
   async function handleAddIngredient(newIngredient: Ingredient) {
     // realizar request de nutrients
     const {

@@ -45,21 +45,21 @@ function Router() {
     <Fragment>
       <Routes>
         {/* Private Routes */}
-        <Route element={<Validator />}>
-          <Route index element={<HomePage />} />
-          <Route path={ROUTES.MEALS.INDEX}>
-            <Route index element={<MealsPage />} />
-            <Route path={ROUTES.MEALS.CREATE} element={<CreateMealPage />} />
-            <Route path=':id' element={<MealPage />} />
-          </Route>
+        {/* <Route element={<Validator />}> */}
+        {/*   <Route index element={<HomePage />} /> */}
+        {/*   <Route path={ROUTES.MEALS.INDEX}> */}
+        {/*     <Route index element={<MealsPage />} /> */}
+        {/*     <Route path={ROUTES.MEALS.CREATE} element={<CreateMealPage />} /> */}
+        {/*     <Route path=':id' element={<MealPage />} /> */}
+        {/*   </Route> */}
 
-          <Route path={ROUTES.PROFILE.INDEX} element={<ProfilePage />} />
-        </Route>
+        {/*   <Route path={ROUTES.PROFILE.INDEX} element={<ProfilePage />} /> */}
+        {/* </Route> */}
 
-        <Route path={ROUTES.INGREDIENTS.INDEX}>
-          <Route index element={<FindIngredientsPage />} />
-          <Route path=':id' element={<IngredientPage />} />
-        </Route>
+        {/* <Route path={ROUTES.INGREDIENTS.INDEX}> */}
+        {/*   <Route index element={<FindIngredientsPage />} /> */}
+        {/*   <Route path=':id' element={<IngredientPage />} /> */}
+        {/* </Route> */}
 
         {/* Responsive Routes */}
         <Route path={'responsive'}>
@@ -85,10 +85,10 @@ function Router() {
           </Route>
         </Route>
 
-        {/* Public Routes */}
-        <Route path={ROUTES.LOGIN} element={<LoginPage />} />
-        <Route path={ROUTES.SIGNUP} element={<SignUpPage />} />
-        <Route path={ROUTES.HOME} element={<Navigate to='/' replace />} />
+        {/* /!* Public Routes *!/ */}
+        {/* <Route path={ROUTES.LOGIN} element={<LoginPage />} /> */}
+        {/* <Route path={ROUTES.SIGNUP} element={<SignUpPage />} /> */}
+        <Route index element={<Navigate to='responsive/login' replace />} />
       </Routes>
     </Fragment>
   )
