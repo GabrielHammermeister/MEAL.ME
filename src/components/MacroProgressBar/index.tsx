@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment */
 import { Box, LinearProgress, LinearProgressProps, Typography } from '@mui/material'
 import React, { useEffect } from 'react'
-
+import './styles.css'
 export interface MacroNutrientProps {
   name: string
   macroNutrient: {
@@ -31,7 +31,7 @@ export const LinearProgressWithLabel = (props: LinearProgressProps & { value: nu
     return () => {
       clearInterval(timer)
     }
-  }, [])
+  }, [props.value])
 
   return (
     <Box sx={{ display: 'flex', alignItems: 'center' }}>
@@ -47,6 +47,7 @@ export const LinearProgressWithLabel = (props: LinearProgressProps & { value: nu
   )
 }
 function MacroProgressBar({ name, macroNutrient, percent }: MacroNutrientProps) {
+  console.log('Name: ', name, percent)
   return (
     <div>
       <Typography variant='caption'>

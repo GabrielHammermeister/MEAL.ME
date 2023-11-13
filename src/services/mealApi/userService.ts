@@ -13,7 +13,6 @@ export const getUsers = async (documentId: string): Promise<ApiUser | null> => {
 }
 
 export const createUsers = async (data: Nullable<ApiUser>, documentId: string): Promise<void> => {
-  console.log('ENTROU AQUI')
   try {
     await apiService.post(`/users/create?userAuth=${documentId}`, data)
   } catch (error) {

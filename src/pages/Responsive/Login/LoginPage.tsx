@@ -12,7 +12,16 @@ import {
   Typography,
 } from '@mui/material'
 import { ROUTES } from '@/router/Router'
-import { browserLocalPersistence, setPersistence, signInWithEmailAndPassword } from 'firebase/auth'
+import {
+  browserLocalPersistence,
+  getAuth,
+  GoogleAuthProvider,
+  setPersistence,
+  signInWithEmailAndPassword,
+  signInWithPopup,
+  signInWithRedirect,
+  UserCredential,
+} from 'firebase/auth'
 import { firebaseAuth } from '@/services/firebase/initializer'
 import { useNavigate } from 'react-router-dom'
 import { ResponsiveLayout } from '@/templates/ResponsiveLayout/ResponsiveLayout'
@@ -21,9 +30,13 @@ import svgGoogleSrc from '@/assets/icons/google.svg'
 import svgFacebookSrc from '@/assets/icons/facebook.svg'
 import { Visibility, VisibilityOff } from '@mui/icons-material'
 
-const SocialButton = ({ src }: { src: string }) => {
+const SocialButton = ({ src, onClick }: { src: string; onClick?: () => void }) => {
   return (
-    <button className='flex p-2 bg-white border-2 border-gray-200 border-solid rounded-full shadow-lg border-opacity-20'>
+    <button
+      onClick={onClick}
+      className='flex p-2 cursor-pointer bg-white border-2 border-gray-200 border-solid rounded-full shadow-sm border-opacity-40
+      hover:shadow-md'
+    >
       <FlatIcon src={src} size='2xl' />
     </button>
   )
@@ -51,6 +64,35 @@ export const LoginPage = () => {
         setError('Credenciais inválidas. Verifique seu email e senha.')
       })
   }
+
+  async function signInWithGoogleFirebase() {
+    const provider = new GoogleAuthProvider()
+    // provider.setCustomParameters({
+    //   redirect_uri: 'http://localhost:5173/responsive/login',
+    // })
+    signInWithPopup(firebaseAuth, provider)
+      .then((result) => {
+        // This gives you a Google Access Token. You can use it to access the Google API.
+        const credential = GoogleAuthProvider.credentialFromResult(result)
+        const token = credential?.accessToken
+        // The signed-in user info.
+        const user = result.user
+        // IdP data available using getAdditionalUserInfo(result)
+        // ...
+        console.log('user: ', user)
+      })
+      .catch((error) => {
+        // Handle Errors here.
+        const errorCode = error.code
+        const errorMessage = error.message
+        // The email of the user's account used.
+        const email = error.customData.email
+        // The AuthCredential type that was used.
+        const credential = GoogleAuthProvider.credentialFromError(error)
+        // ...
+      })
+  }
+
   return (
     <ResponsiveLayout options={{ header: true, tabBar: false }}>
       <section className='flex flex-col'>
@@ -121,10 +163,10 @@ export const LoginPage = () => {
         </div>
         <section className='flex justify-center gap-14'>
           <SocialButton src={svgFacebookSrc} />
-          <SocialButton src={svgGoogleSrc} />
+          <SocialButton src={svgGoogleSrc} onClick={signInWithGoogleFirebase} />
         </section>
         <span className='text-lg '>
-          Don{'\''}t have an account ?{' '}
+          Don{"'"}t have an account ?{' '}
           <Link href={'responsive/sign-up'}>
             {/* eslint-disable-next-line react/no-unescaped-entities */}
             Sign Up
