@@ -145,7 +145,7 @@ export default function BMRForm({ handleNextStep, handlePreviousStep, setBmrValu
         <Button variant={'outlined'} onClick={handlePreviousStep}>
           Previous Step
         </Button>
-        <Button type={'submit'} variant={'contained'}>
+        <Button type={'submit'} variant={'contained'} onClick={handleNextStep}>
           Next Step
         </Button>
       </Box>
