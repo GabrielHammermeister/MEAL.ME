@@ -10,6 +10,7 @@ import {
 } from '@mui/material'
 import calculateBMR from '@/utils/calculateBMR'
 import React, { ChangeEvent, FormEvent, useReducer, useRef } from 'react'
+import { ResponsiveLayout } from '@/templates/ResponsiveLayout/ResponsiveLayout'
 
 type BMRFormProps = {
   handleNextStep: () => void
@@ -29,6 +30,7 @@ const initialState = {
 
 // @ts-ignore
 function formReducer(state, action) {
+  // Terceira tela
   switch (action.type) {
     case 'CHANGE_FIELD':
       console.log(action)
@@ -70,31 +72,39 @@ export default function BMRForm({ handleNextStep, handlePreviousStep, setBmrValu
   }
 
   return (
-    <div className={'step-container'}>
-      <form onSubmit={handleSubmit} ref={formRef}>
-        <div>
-          <TextField
-            name='weight'
-            value={state.weight}
-            label='Weight'
-            sx={{ m: 1, width: '25ch' }}
-            InputProps={{
-              endAdornment: <InputAdornment position='start'>kg</InputAdornment>,
-            }}
-            onChange={handleChange}
-          />
-          <TextField
-            name={'height'}
-            value={state.height}
-            label='Height'
-            sx={{ m: 1, width: '25ch' }}
-            InputProps={{
-              endAdornment: <InputAdornment position='start'>cm</InputAdornment>,
-            }}
-            onChange={handleChange}
-          />
-        </div>
-        <div>
+    <>
+      <Box
+        sx={{
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          mt: '16px',
+        }}
+      >
+        <form onSubmit={handleSubmit} ref={formRef}>
+          <div>
+            <TextField
+              name='weight'
+              value={state.weight}
+              label='Weight'
+              sx={{ m: 1, width: '25ch' }}
+              InputProps={{
+                endAdornment: <InputAdornment position='start'>kg</InputAdornment>,
+              }}
+              onChange={handleChange}
+            />
+            <TextField
+              name={'height'}
+              value={state.height}
+              label='Height'
+              sx={{ m: 1, width: '25ch' }}
+              InputProps={{
+                endAdornment: <InputAdornment position='start'>cm</InputAdornment>,
+              }}
+              onChange={handleChange}
+            />
+          </div>
+
           <TextField
             name={'age'}
             value={state.age}
@@ -122,16 +132,23 @@ export default function BMRForm({ handleNextStep, handlePreviousStep, setBmrValu
               Female
             </MenuItem>
           </TextField>
-        </div>
-        <Box sx={{ display: 'flex', gap: 2, justifyContent: 'flex-end', mt: 10 }}>
-          <Button variant={'outlined'} onClick={handlePreviousStep}>
-            Previous Step
-          </Button>
-          <Button type={'submit'} variant={'contained'}>
-            Next Step
-          </Button>
-        </Box>
-      </form>
-    </div>
+        </form>
+      </Box>
+      <Box
+        sx={{
+          display: 'flex',
+          justifyContent: 'flex-end', // Alinha os botões à direita
+          gap: '16px', // Espaçamento entre os botões
+          mt: 10, // Margem superior
+        }}
+      >
+        <Button variant={'outlined'} onClick={handlePreviousStep}>
+          Previous Step
+        </Button>
+        <Button type={'submit'} variant={'contained'}>
+          Next Step
+        </Button>
+      </Box>
+    </>
   )
 }

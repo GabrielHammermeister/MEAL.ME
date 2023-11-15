@@ -19,6 +19,7 @@ import {
   UserProfilePage as RProfilePage,
   CreateMealPage as RCreateMealPage,
   SignUpPage as RSignUpPage,
+  CreateGoalsPage as RCreateGoalsPage
 } from '@/pages/Responsive'
 
 export const ROUTES = {
@@ -82,6 +83,9 @@ function Router() {
           </Route>
           <Route path={'sign-up'}>
             <Route index element={<RSignUpPage />} />
+          </Route>
+          <Route path={'user-goals'}>
+            <Route index element={<RCreateGoalsPage />} />
           </Route>
         </Route>
 

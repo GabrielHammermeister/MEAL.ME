@@ -7,11 +7,13 @@ import {
   Modal,
   Typography,
 } from '@mui/material'
+import { ROUTES } from '@/router/Router'
 import React, { useState } from 'react'
 import EmptyState from '@/components/EmptyState/EmptyState.index'
 import noGoalSvg from '@/assets/goal.svg'
 import { IconBase } from '@/components/IconBase/IconBase'
 import FlagIcon from '@mui/icons-material/Flag'
+import { useNavigate } from 'react-router-dom'
 
 export const UserGoalsTab = () => {
   const [goals, setGoals] = useState([
@@ -23,6 +25,7 @@ export const UserGoalsTab = () => {
   ])
   const [selectedGoal, setSelectedGoal] = useState(null)
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false)
+  const navigate = useNavigate()
 
   const openDeleteModal = (goal) => {
     setSelectedGoal(goal)
@@ -39,6 +42,11 @@ export const UserGoalsTab = () => {
     setGoals((prevGoals) => prevGoals.filter((goal) => goal !== selectedGoal))
     closeDeleteModal()
   }
+
+  function handleAddGoal() {
+    navigate('/responsive/user-goals')
+  }
+
   return (
     <>
       <main className='container mx-auto mt-4'>
@@ -46,9 +54,9 @@ export const UserGoalsTab = () => {
           <EmptyState
             imgSrc={noGoalSvg}
             imgAlt={'user with no goal'}
-            title={'You don\'t have a goal'}
+            title={"You don't have a goal"}
             description={'Add a goal to your profile.'}
-            handleOnClickButton={() => {}}
+            handleOnClickButton={handleAddGoal}
             buttonLabel={'Create goal'}
           />
         ) : (
