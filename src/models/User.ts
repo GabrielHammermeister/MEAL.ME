@@ -3,7 +3,7 @@ import { Goal } from '@/models/Goal'
 import { User as FirebaseAuthUser } from 'firebase/auth'
 export interface ApiUser {
   activityLevel?: 'Light' | 'Moderate' | 'Active'
-  basalMetabolicRate?: string
+  basalMetabolicRate?: number
   birthDate?: string
   goals?: Record<string, Goal>
   height?: number

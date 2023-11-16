@@ -24,7 +24,7 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
         if (!apiUser) {
           const newUser: Nullable<ApiUser> = {
             activityLevel: null,
-            basalMetabolicRate: '',
+            basalMetabolicRate: 0,
             birthDate: '',
             goals: {},
             height: 0,

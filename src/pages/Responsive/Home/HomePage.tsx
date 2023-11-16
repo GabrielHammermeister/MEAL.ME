@@ -6,7 +6,7 @@ import { Button, Card, CardActions, CardContent, CardHeader } from '@mui/materia
 import './HomePage.styles.css'
 import useCurrentUser from '@/hooks/useCurrentUser'
 import UserGoalChart from '@/components/UserGoalChart/UserGoalChart.index'
-import { MacroSummary } from '@/components/MacroSummary/MacroSummary'
+import { DonutChart } from '@/components/DonutChart/DonutChart'
 import { Add } from '@mui/icons-material'
 import { ResponsiveLayout } from '@/templates/ResponsiveLayout/ResponsiveLayout'
 import { PageTitle } from '@/components/PageTitle/PageTitle'
@@ -31,9 +31,17 @@ const MOCK_MACROS = {
   },
 }
 
+const chartLabels = ['Gorduras', 'Carboidratos', 'Proteínas']
+
+const chartData = [
+  MOCK_MACROS.fats.percent,
+  MOCK_MACROS.carbs.percent,
+  MOCK_MACROS.proteins.percent,
+]
+
 export const HomePage = () => {
   const { currentUser } = useCurrentUser()
-
+  console.log('passei por aqui')
   return (
     <ResponsiveLayout>
       <PageTitle text={`Bem vindo ${currentUser?.displayName?.toLocaleUpperCase()}!`} />
@@ -46,7 +54,7 @@ export const HomePage = () => {
               subheader={'Your daily nutrient consumption'}
             />
             <CardContent>
-              <MacroSummary macros={MOCK_MACROS} />
+              <DonutChart series={chartData} labels={chartLabels} />
             </CardContent>
             <CardActions sx={{ p: 2, marginTop: 'auto' }}>
               <Button startIcon={<Add />} variant={'contained'}>
