@@ -11,7 +11,6 @@ import { Add } from '@mui/icons-material'
 import { ResponsiveLayout } from '@/templates/ResponsiveLayout/ResponsiveLayout'
 import { PageTitle } from '@/components/PageTitle/PageTitle'
 import DailyWeightTracker from '@/components/DailyWeightTracker/DailyWeightTracker'
-import { firebaseAuth } from '@/services/firebase/initializer'
 
 const MOCK_MACROS = {
   calories: 123,
@@ -104,14 +103,20 @@ const projectedWeights = calculateProjectedWeights(
 )
 console.log('Projected Weights:', projectedWeights)
 
+const chartLabels = ['Gorduras', 'Carboidratos', 'Proteínas']
+
+const chartData = [
+  MOCK_MACROS.fats.percent,
+  MOCK_MACROS.carbs.percent,
+  MOCK_MACROS.proteins.percent,
+]
+
 export const HomePage = () => {
   const { currentUser } = useCurrentUser()
 
   return (
     <ResponsiveLayout>
-      <PageTitle
-        text={`Bem vindo ${firebaseAuth.currentUser?.displayName?.toLocaleUpperCase()}!`}
-      />
+      <PageTitle text={`Bem vindo ${currentUser?.displayName?.toLocaleUpperCase()}!`} />
 
       <section className={'flex flex-col gap-8'}>
         <div className='Summary'>
@@ -138,14 +143,13 @@ export const HomePage = () => {
                 name: 'Weight Goal',
                 type: 'line',
                 fill: 'solid',
-                // data: [110, 109, 107, 105, 103, 100, 99, 98, 97, 95],
-                data: projectedWeights,
+                data: [110, 109, 107, 105, 103, 100, 99, 98, 97, 95],
               },
               {
                 name: 'Current Weight',
                 type: 'area',
                 fill: 'gradient',
-                data: [115, 114],
+                data: [115, 111, 105, 104, 103, 102, 101, 100],
               },
             ]}
           />

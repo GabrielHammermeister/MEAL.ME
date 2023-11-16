@@ -5,7 +5,7 @@ import { Undefined } from '@/types'
 export interface ApiUser {
   uid: string
   activityLevel?: 'Light' | 'Moderate' | 'Active'
-  basalMetabolicRate?: string
+  basalMetabolicRate?: number
   birthDate?: string
   goals?: Record<string, Undefined<Goal>>
   height?: number
