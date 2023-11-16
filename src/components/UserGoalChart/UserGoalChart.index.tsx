@@ -2,23 +2,9 @@ import { Box, Card, CardHeader } from '@mui/material'
 import ReactApexChart from 'react-apexcharts'
 
 import React from 'react'
-import { ApexOptions } from 'apexcharts'
 import useChart from '@/hooks/useChart'
 
-const dates = [
-  '1/1/2003',
-  '2/1/2003',
-  '03/01/2003',
-  '04/01/2003',
-  '05/01/2003',
-  '06/01/2003',
-  '07/01/2003',
-  '08/01/2003',
-  '09/01/2003',
-  '10/01/2003',
-  // '11/01/2003',
-  // '12/01/2003',
-]
+c
 
 export default function UserGoalChart({ chartData }: any) {
   const chartOptions = useChart({

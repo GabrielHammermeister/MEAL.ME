@@ -32,6 +32,78 @@ const MOCK_MACROS = {
   },
 }
 
+function calculateProjectedWeights(
+  initialWeight: number,
+  basalMetabolicRate: number,
+  goalWeight: number,
+  recommendedDailyCalories: number,
+  deadline: Date,
+): number[] {
+  const weights: number[] = []
+  const dates: string[] = []
+
+  const millisecondsInDay = 24 * 60 * 60 * 1000 // Milliseconds in a day
+
+  let currentDate = new Date()
+  let currentWeight = initialWeight
+
+  const caloricDiff = recommendedDailyCalories - basalMetabolicRate
+
+  weights.push(currentWeight)
+  dates.push(
+    currentDate.toLocaleDateString('en-US', { month: '2-digit', day: '2-digit', year: 'numeric' }),
+  )
+
+  while (currentDate < deadline) {
+    const dailyWeightChange = caloricDiff / 7700
+    currentWeight += dailyWeightChange
+
+    weights.push(currentWeight.toFixed(2))
+
+    currentDate = new Date(currentDate.getTime() + millisecondsInDay)
+    dates.push(
+      currentDate.toLocaleDateString('en-US', {
+        month: '2-digit',
+        day: '2-digit',
+        year: 'numeric',
+      }),
+    )
+  }
+
+  // while (currentDate < deadline) {
+  //   // Calculate the change in weight based on calorie intake and metabolism
+  //   const daysDifference = (deadline.getTime() - currentDate.getTime()) / millisecondsInDay
+  //   const calorieDifference = daysDifference * recommendedDailyCalories
+  //   const weightDifference = calorieDifference / 7700 // Assuming 7700 calories per kg change
+  //
+  //   // Adjust weight based on metabolic rate
+  //   const metabolicRateWeightChange = (basalMetabolicRate / 7700) * (daysDifference / 30) // Assuming 30 days in a month
+  //
+  //   currentWeight += weightDifference - metabolicRateWeightChange
+  //   weights.push(parseFloat(currentWeight.toFixed(2))) // Round to 2 decimal places
+  //
+  //   currentDate = new Date(currentDate.getTime() + millisecondsInDay)
+  // }
+
+  return { weights }
+}
+
+// Example usage:
+const initialWeight = 85 // Initial weight in kg
+const basalMetabolicRate = 1966 // Basal Metabolic Rate in calories
+const goalWeight = 95 // Goal weight in kg
+const recommendedDailyCalories = 2394 // Recommended daily calories
+const deadline = new Date('2024-05-01') // Deadline date
+
+const projectedWeights = calculateProjectedWeights(
+  initialWeight,
+  basalMetabolicRate,
+  goalWeight,
+  recommendedDailyCalories,
+  deadline,
+)
+console.log('Projected Weights:', projectedWeights)
+
 export const HomePage = () => {
   const { currentUser } = useCurrentUser()
 
@@ -66,13 +138,14 @@ export const HomePage = () => {
                 name: 'Weight Goal',
                 type: 'line',
                 fill: 'solid',
-                data: [110, 109, 107, 105, 103, 100, 99, 98, 97, 95],
+                // data: [110, 109, 107, 105, 103, 100, 99, 98, 97, 95],
+                data: projectedWeights,
               },
               {
                 name: 'Current Weight',
                 type: 'area',
                 fill: 'gradient',
-                data: [115, 111, 105, 104, 103, 102, 101, 100],
+                data: [115, 114],
               },
             ]}
           />
