@@ -142,9 +142,7 @@
 // }
 
 import React from 'react'
-import Avatar from '@mui/material/Avatar'
 import Tab from '@mui/material/Tab'
-import Tabs from '@mui/material/Tabs'
 import Typography from '@mui/material/Typography'
 import { ResponsiveLayout } from '@/templates/ResponsiveLayout/ResponsiveLayout'
 import SettingsIcon from '@mui/icons-material/Settings'
@@ -153,10 +151,10 @@ import InfoIcon from '@mui/icons-material/Info'
 import { UserSettingsTab } from '@/pages/Responsive/Profile/components/UserSettingsTab'
 import { UserGoalsTab } from '@/pages/Responsive/Profile/components/UserGoalsTab'
 import { UserInfoTab } from '@/pages/Responsive/Profile/components/UserInfoTab'
+import { Avatar, Tabs } from '@mui/material'
 
 export const UserProfilePage = () => {
   const [value, setValue] = React.useState(0)
-
   const handleChange = (event, newValue) => {
     setValue(newValue)
   }

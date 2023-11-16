@@ -1,21 +1,13 @@
-import {
-  Box,
-  Button,
-  FormControl,
-  InputAdornment,
-  MenuItem,
-  StepProps,
-  TextField,
-  useFormControl,
-} from '@mui/material'
+import { Box, Button, InputAdornment, MenuItem, TextField } from '@mui/material'
 import calculateBMR from '@/utils/calculateBMR'
 import React, { ChangeEvent, FormEvent, useReducer, useRef } from 'react'
-import { ResponsiveLayout } from '@/templates/ResponsiveLayout/ResponsiveLayout'
+import '../styles.css'
 
 type BMRFormProps = {
   handleNextStep: () => void
   handlePreviousStep: () => void
   setBmrValue: (value: number) => void
+  setGoal: (areg: any) => void
 }
 
 const initialGoal = {}
@@ -30,10 +22,8 @@ const initialState = {
 
 // @ts-ignore
 function formReducer(state, action) {
-  // Terceira tela
   switch (action.type) {
     case 'CHANGE_FIELD':
-      console.log(action)
       return {
         ...state,
         [action.field]: action.value,
@@ -45,9 +35,15 @@ function formReducer(state, action) {
   }
 }
 
-export default function BMRForm({ handleNextStep, handlePreviousStep, setBmrValue }: BMRFormProps) {
+export default function BMRForm({
+  handleNextStep,
+  handlePreviousStep,
+  setBmrValue,
+  setGoal,
+}: BMRFormProps) {
   const [state, dispatch] = useReducer(formReducer, initialState)
   const formRef = useRef<HTMLFormElement>(null)
+
   function handleSubmit(event: FormEvent) {
     event.preventDefault()
 
@@ -58,11 +54,17 @@ export default function BMRForm({ handleNextStep, handlePreviousStep, setBmrValu
       parseInt(state.age),
       state.sex === 'male',
     )
-    console.log(`The BMR is: ${bmr}`)
 
     // Reset form values
     dispatch({ type: 'RESET_FORM' })
     setBmrValue(bmr)
+    setGoal((prev) => {
+      if (prev && typeof prev === 'object') {
+        return { ...prev, dailyCalories: Math.round(bmr), initialWeight: parseFloat(state.weight) }
+      }
+
+      return { dailyCalories: bmr } // Initialize with 'dailyCalories' if 'prev' is not an object
+    })
     handleNextStep()
   }
 
@@ -72,39 +74,29 @@ export default function BMRForm({ handleNextStep, handlePreviousStep, setBmrValu
   }
 
   return (
-    <>
-      <Box
-        sx={{
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center',
-          mt: '16px',
-        }}
-      >
-        <form onSubmit={handleSubmit} ref={formRef}>
-          <div>
-            <TextField
-              name='weight'
-              value={state.weight}
-              label='Weight'
-              sx={{ m: 1, width: '25ch' }}
-              InputProps={{
-                endAdornment: <InputAdornment position='start'>kg</InputAdornment>,
-              }}
-              onChange={handleChange}
-            />
-            <TextField
-              name={'height'}
-              value={state.height}
-              label='Height'
-              sx={{ m: 1, width: '25ch' }}
-              InputProps={{
-                endAdornment: <InputAdornment position='start'>cm</InputAdornment>,
-              }}
-              onChange={handleChange}
-            />
-          </div>
-
+    <div className={'step-container'}>
+      <form onSubmit={handleSubmit} ref={formRef}>
+        <div className={'flex flex-col items-center justify-center'}>
+          <TextField
+            name='weight'
+            value={state.weight}
+            label='Weight'
+            sx={{ m: 1, width: '25ch' }}
+            InputProps={{
+              endAdornment: <InputAdornment position='start'>kg</InputAdornment>,
+            }}
+            onChange={handleChange}
+          />
+          <TextField
+            name={'height'}
+            value={state.height}
+            label='Height'
+            sx={{ m: 1, width: '25ch' }}
+            InputProps={{
+              endAdornment: <InputAdornment position='start'>cm</InputAdornment>,
+            }}
+            onChange={handleChange}
+          />
           <TextField
             name={'age'}
             value={state.age}
@@ -132,23 +124,16 @@ export default function BMRForm({ handleNextStep, handlePreviousStep, setBmrValu
               Female
             </MenuItem>
           </TextField>
-        </form>
-      </Box>
-      <Box
-        sx={{
-          display: 'flex',
-          justifyContent: 'flex-end', // Alinha os botões à direita
-          gap: '16px', // Espaçamento entre os botões
-          mt: 10, // Margem superior
-        }}
-      >
-        <Button variant={'outlined'} onClick={handlePreviousStep}>
-          Previous Step
-        </Button>
-        <Button type={'submit'} variant={'contained'} onClick={handleNextStep}>
-          Next Step
-        </Button>
-      </Box>
-    </>
+        </div>
+        <Box sx={{ display: 'flex', gap: 2, justifyContent: 'flex-end', mt: 10 }}>
+          <Button variant={'outlined'} onClick={handlePreviousStep}>
+            Previous Step
+          </Button>
+          <Button type={'submit'} variant={'contained'}>
+            Next Step
+          </Button>
+        </Box>
+      </form>
+    </div>
   )
 }

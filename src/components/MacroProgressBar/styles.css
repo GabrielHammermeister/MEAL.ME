@@ -1,0 +1,9 @@
+.progress {
+    height: 4px;
+    background: red;
+}
+
+.background {
+    height: 4px;
+    background: gray;
+}

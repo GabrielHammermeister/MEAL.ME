@@ -1,26 +1,17 @@
-import CreateMealPage from '@/pages/CreateMeal/CreateMealPage.index'
-import FindIngredientsPage from '@/pages/FindIngredients/FindIngredientsPage.index'
-import HomePage from '@/pages/Home/HomePage.index'
-import IngredientPage from '@/pages/Ingredient/IngredientPage.index'
-import LoginPage from '@/pages/Login/LoginPage.index'
-import MealsPage from '@/pages/Meals/MealsPage.index'
-import SignUpPage from '@/pages/SignUp/SignUpPage.index'
 import { Fragment } from 'react'
 import { Navigate, Route, Routes } from 'react-router-dom'
-import Validator from './Validator/Validator.index'
-import { ProfilePage } from '@/pages/Profile/ProfilePage'
-import { MealPage } from '@/pages/MealPage/MealPage'
 import {
+  CreateGoalPage as RCreateGoalPage,
+  CreateMealPage as RCreateMealPage,
   FindIngredientsPage as RFindIngredientsPage,
   HomePage as RHomePage,
   IngredientPage as RIngredientPage,
   LoginPage as RLoginPage,
   MealsPage as RMealsPage,
-  UserProfilePage as RProfilePage,
-  CreateMealPage as RCreateMealPage,
   SignUpPage as RSignUpPage,
-  CreateGoalsPage as RCreateGoalsPage
+  UserProfilePage as RProfilePage,
 } from '@/pages/Responsive'
+import Validator from '@/router/Validator/Validator.index'
 
 export const ROUTES = {
   HOME: 'home',
@@ -37,7 +28,12 @@ export const ROUTES = {
   LOGIN: '/login',
   SIGNUP: '/sign-up',
   RESPONSIVE: {
-    INGREDIENTS: 'ingredients',
+    INDEX: '/responsive',
+    INGREDIENTS: '/responsive/ingredients',
+    LOGIN: '/responsive/login',
+    SIGNUP: '/responsive/sign-up',
+    CREATE_GOAL: '/responsive/create-goal',
+    PROFILE: '/responsive/profile',
   },
 } as const
 
@@ -63,7 +59,7 @@ function Router() {
         {/* </Route> */}
 
         {/* Responsive Routes */}
-        <Route path={'responsive'}>
+        <Route path={ROUTES.RESPONSIVE.INDEX} element={<Validator />}>
           <Route index element={<RHomePage />} />
           <Route path={'ingredients'}>
             <Route index element={<RFindIngredientsPage />} />
@@ -72,27 +68,27 @@ function Router() {
           <Route path={'meals'}>
             <Route index element={<RMealsPage />} />
           </Route>
-          <Route path={'profile'}>
+          <Route path={ROUTES.RESPONSIVE.PROFILE}>
             <Route index element={<RProfilePage />} />
           </Route>
-          <Route path={'login'}>
+          <Route path={ROUTES.RESPONSIVE.LOGIN}>
             <Route index element={<RLoginPage />} />
           </Route>
           <Route path={'createMeal'}>
             <Route index element={<RCreateMealPage />} />
           </Route>
-          <Route path={'sign-up'}>
+          <Route path={ROUTES.RESPONSIVE.SIGNUP}>
             <Route index element={<RSignUpPage />} />
           </Route>
-          <Route path={'user-goals'}>
-            <Route index element={<RCreateGoalsPage />} />
+          <Route path={ROUTES.RESPONSIVE.CREATE_GOAL}>
+            <Route index element={<RCreateGoalPage />} />
           </Route>
         </Route>
 
         {/* /!* Public Routes *!/ */}
         {/* <Route path={ROUTES.LOGIN} element={<LoginPage />} /> */}
         {/* <Route path={ROUTES.SIGNUP} element={<SignUpPage />} /> */}
-        <Route index element={<Navigate to='responsive/login' replace />} />
+        <Route path={'*'} element={<Navigate to='/responsive/login' replace />} />
       </Routes>
     </Fragment>
   )

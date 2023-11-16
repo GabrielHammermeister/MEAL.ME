@@ -1,16 +1,49 @@
-import { Box, Button, InputAdornment, StepProps, TextField, Typography } from '@mui/material'
+import { Box, Button, InputAdornment, TextField, Typography } from '@mui/material'
 import React from 'react'
+import { createGoal } from '@/services/mealApi/goalsService'
+import { Goal } from '@/models'
+import useCurrentUser from '@/hooks/useCurrentUser'
+import { useNavigate } from 'react-router-dom'
+import { ROUTES } from '@/router/Router'
+import '../styles.css'
 
 type DefineGoalFormProps = {
   handleNextStep: () => void
   handlePreviousStep: () => void
   bmrValue: number
 }
+
+const dataObject = {
+  type: 'WEIGHT_GAIN',
+  dailyCalories: 2500,
+  deadline: '2025-12-31',
+  weight: 70,
+  checkpoint: [
+    {
+      date: '2023-06-30',
+      weight: 72,
+    },
+    {
+      date: '2023-09-30',
+      weight: 75,
+    },
+  ],
+}
+
 export default function DefineGoalForm({
   handleNextStep,
   handlePreviousStep,
   bmrValue,
 }: DefineGoalFormProps) {
+  const { currentUser } = useCurrentUser()
+  const navigate = useNavigate()
+
+  async function handleCreateGoal() {
+    await createGoal(dataObject as Goal, currentUser?.uid)
+    console.log('rota: ', ROUTES.RESPONSIVE.PROFILE)
+    return navigate(ROUTES.RESPONSIVE.PROFILE)
+  }
+
   return (
     <div className={'step-container'}>
       <Typography variant={'overline'} sx={{ mb: 10 }}>
@@ -18,7 +51,7 @@ export default function DefineGoalForm({
         <Typography variant={'subtitle1'}>{Math.round(bmrValue)} kcal</Typography>
       </Typography>
 
-      <form>
+      <form onSubmit={(event) => event.preventDefault()}>
         <div>
           <TextField
             label='Deadline'
@@ -43,7 +76,7 @@ export default function DefineGoalForm({
           <Button variant={'outlined'} onClick={handlePreviousStep}>
             Previous Step
           </Button>
-          <Button type={'submit'} variant={'contained'} onClick={handleNextStep}>
+          <Button type={'submit'} variant={'contained'} onClick={handleCreateGoal}>
             FINISH
           </Button>
         </Box>

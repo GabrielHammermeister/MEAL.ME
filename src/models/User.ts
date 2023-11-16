@@ -1,19 +1,21 @@
 import { Meal } from '@/models/Meal'
 import { Goal } from '@/models/Goal'
-import { User as FirebaseAuthUser } from 'firebase/auth'
+import { Undefined } from '@/types'
+
 export interface ApiUser {
+  uid: string
   activityLevel?: 'Light' | 'Moderate' | 'Active'
   basalMetabolicRate?: number
   birthDate?: string
-  goals?: Record<string, Goal>
+  goals?: Record<string, Undefined<Goal>>
   height?: number
   meals?: Record<string, Meal>
-  name: string
+  name?: string
   sex?: 'Male' | 'Female' | 'Other'
   weight?: number
 }
 
-export interface User extends FirebaseAuthUser, ApiUser {}
+export interface User extends ApiUser {}
 
 /*
 

@@ -2,7 +2,7 @@ import apiService from './apiService'
 import { ApiUser } from '@/models'
 import { Nullable } from '@/types'
 
-export const getUsers = async (userAuth: string): Promise<ApiUser | null> => {
+export const getUsers = async (userAuth?: string): Promise<ApiUser | null> => {
   try {
     const response = await apiService.get(`/users/get?userAuth=${userAuth}`)
     return response.data
@@ -12,8 +12,7 @@ export const getUsers = async (userAuth: string): Promise<ApiUser | null> => {
   }
 }
 
-export const createUsers = async (data: Nullable<ApiUser>, userAuth: string): Promise<void> => {
-  console.log('ENTROU AQUI')
+export const createUsers = async (data: Nullable<ApiUser>, userAuth?: string): Promise<void> => {
   try {
     await apiService.post(`/users/create?userAuth=${userAuth}`, data)
   } catch (error) {
@@ -21,7 +20,7 @@ export const createUsers = async (data: Nullable<ApiUser>, userAuth: string): Pr
   }
 }
 
-export const updateUsers = async (userAuth: string, data: ApiUser): Promise<void> => {
+export const updateUsers = async (data: Nullable<ApiUser>, userAuth?: string): Promise<void> => {
   try {
     await apiService.put(`/users/update?userAuth=${userAuth}`, data)
   } catch (error) {
@@ -29,7 +28,7 @@ export const updateUsers = async (userAuth: string, data: ApiUser): Promise<void
   }
 }
 
-export const deleteUsers = async (userAuth: string): Promise<void> => {
+export const deleteUsers = async (userAuth?: string): Promise<void> => {
   try {
     await apiService.delete(`/users/delete?userAuth=${userAuth}`)
   } catch (error) {

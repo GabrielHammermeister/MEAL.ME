@@ -1,8 +1,9 @@
-import { ApiUser } from '@/models'
-import { createContext, useContext } from 'react'
+import { User } from '@/models'
+import { createContext, Dispatch, SetStateAction, useContext } from 'react'
 
 export interface UserContextValues {
-  currentUser: ApiUser | null
+  currentUser: User | null
+  setCurrentUser: Dispatch<SetStateAction<User | null>>
 }
 
 const UserContext = createContext<UserContextValues | null>(null)

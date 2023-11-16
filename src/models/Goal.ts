@@ -1,9 +1,11 @@
 export interface Goal {
+  type: 'WEIGHT_GAIN' | 'WEIGHT_LOSS'
   dailyCalories: number
-  weight: number
-  macroNutrients: {
-    carbohydrates: number
-    protein: number
-    fat: number
-  }
+  deadline: string
+  initialWeight: number
+  weightGoal: number
+  checkpoint: {
+    date: string
+    weight: number
+  }[]
 }

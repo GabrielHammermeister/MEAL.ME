@@ -6,7 +6,7 @@ import { Button, Card, CardActions, CardContent, CardHeader } from '@mui/materia
 import './HomePage.styles.css'
 import useCurrentUser from '@/hooks/useCurrentUser'
 import UserGoalChart from '@/components/UserGoalChart/UserGoalChart.index'
-import { DonutChart } from '@/components/DonutChart/DonutChart'
+import { MacroSummary } from '@/components/MacroSummary/MacroSummary'
 import { Add } from '@mui/icons-material'
 import { ResponsiveLayout } from '@/templates/ResponsiveLayout/ResponsiveLayout'
 import { PageTitle } from '@/components/PageTitle/PageTitle'
@@ -31,6 +31,78 @@ const MOCK_MACROS = {
   },
 }
 
+function calculateProjectedWeights(
+  initialWeight: number,
+  basalMetabolicRate: number,
+  goalWeight: number,
+  recommendedDailyCalories: number,
+  deadline: Date,
+): number[] {
+  const weights: number[] = []
+  const dates: string[] = []
+
+  const millisecondsInDay = 24 * 60 * 60 * 1000 // Milliseconds in a day
+
+  let currentDate = new Date()
+  let currentWeight = initialWeight
+
+  const caloricDiff = recommendedDailyCalories - basalMetabolicRate
+
+  weights.push(currentWeight)
+  dates.push(
+    currentDate.toLocaleDateString('en-US', { month: '2-digit', day: '2-digit', year: 'numeric' }),
+  )
+
+  while (currentDate < deadline) {
+    const dailyWeightChange = caloricDiff / 7700
+    currentWeight += dailyWeightChange
+
+    weights.push(currentWeight.toFixed(2))
+
+    currentDate = new Date(currentDate.getTime() + millisecondsInDay)
+    dates.push(
+      currentDate.toLocaleDateString('en-US', {
+        month: '2-digit',
+        day: '2-digit',
+        year: 'numeric',
+      }),
+    )
+  }
+
+  // while (currentDate < deadline) {
+  //   // Calculate the change in weight based on calorie intake and metabolism
+  //   const daysDifference = (deadline.getTime() - currentDate.getTime()) / millisecondsInDay
+  //   const calorieDifference = daysDifference * recommendedDailyCalories
+  //   const weightDifference = calorieDifference / 7700 // Assuming 7700 calories per kg change
+  //
+  //   // Adjust weight based on metabolic rate
+  //   const metabolicRateWeightChange = (basalMetabolicRate / 7700) * (daysDifference / 30) // Assuming 30 days in a month
+  //
+  //   currentWeight += weightDifference - metabolicRateWeightChange
+  //   weights.push(parseFloat(currentWeight.toFixed(2))) // Round to 2 decimal places
+  //
+  //   currentDate = new Date(currentDate.getTime() + millisecondsInDay)
+  // }
+
+  return { weights }
+}
+
+// Example usage:
+const initialWeight = 85 // Initial weight in kg
+const basalMetabolicRate = 1966 // Basal Metabolic Rate in calories
+const goalWeight = 95 // Goal weight in kg
+const recommendedDailyCalories = 2394 // Recommended daily calories
+const deadline = new Date('2024-05-01') // Deadline date
+
+const projectedWeights = calculateProjectedWeights(
+  initialWeight,
+  basalMetabolicRate,
+  goalWeight,
+  recommendedDailyCalories,
+  deadline,
+)
+console.log('Projected Weights:', projectedWeights)
+
 const chartLabels = ['Gorduras', 'Carboidratos', 'Proteínas']
 
 const chartData = [
@@ -41,7 +113,7 @@ const chartData = [
 
 export const HomePage = () => {
   const { currentUser } = useCurrentUser()
-  console.log('passei por aqui')
+
   return (
     <ResponsiveLayout>
       <PageTitle text={`Bem vindo ${currentUser?.displayName?.toLocaleUpperCase()}!`} />
@@ -54,7 +126,7 @@ export const HomePage = () => {
               subheader={'Your daily nutrient consumption'}
             />
             <CardContent>
-              <DonutChart series={chartData} labels={chartLabels} />
+              <MacroSummary macros={MOCK_MACROS} />
             </CardContent>
             <CardActions sx={{ p: 2, marginTop: 'auto' }}>
               <Button startIcon={<Add />} variant={'contained'}>
