@@ -15,11 +15,10 @@ const Validator = () => {
       if (user) {
         const userUID = user.uid
         const apiUser = await getUsers(userUID)
-
         // verify if there is an user on the mealme database
         if (!apiUser) {
-          console.log('Validator User; ', user)
           const newUser: Nullable<ApiUser> = {
+            uid: userUID,
             activityLevel: null,
             basalMetabolicRate: '',
             birthDate: '',
@@ -31,13 +30,16 @@ const Validator = () => {
             weight: 9999,
           }
           await createUsers(newUser, userUID)
-          const contextUser = { ...newUser, user }
+          const contextUser = { ...newUser }
           console.log('USER CREATED: ', contextUser)
           setCurrentUser(contextUser as unknown as User)
           navigate(ROUTES.RESPONSIVE.INDEX)
         } else {
           // user exists
-          const contextUser = { ...apiUser, user }
+          const contextUser = {
+            ...apiUser,
+            uid: userUID,
+          }
           console.log('USER LOGGED IN: ', contextUser)
           setCurrentUser(contextUser as unknown as User)
           navigate(ROUTES.RESPONSIVE.INDEX)

@@ -1,6 +1,7 @@
 import { Fragment } from 'react'
 import { Navigate, Route, Routes } from 'react-router-dom'
 import {
+  CreateGoalPage as RCreateGoalPage,
   CreateMealPage as RCreateMealPage,
   FindIngredientsPage as RFindIngredientsPage,
   HomePage as RHomePage,
@@ -31,6 +32,8 @@ export const ROUTES = {
     INGREDIENTS: '/responsive/ingredients',
     LOGIN: '/responsive/login',
     SIGNUP: '/responsive/sign-up',
+    CREATE_GOAL: '/responsive/create-goal',
+    PROFILE: '/responsive/profile',
   },
 } as const
 
@@ -65,7 +68,7 @@ function Router() {
           <Route path={'meals'}>
             <Route index element={<RMealsPage />} />
           </Route>
-          <Route path={'profile'}>
+          <Route path={ROUTES.RESPONSIVE.PROFILE}>
             <Route index element={<RProfilePage />} />
           </Route>
           <Route path={ROUTES.RESPONSIVE.LOGIN}>
@@ -76,6 +79,9 @@ function Router() {
           </Route>
           <Route path={ROUTES.RESPONSIVE.SIGNUP}>
             <Route index element={<RSignUpPage />} />
+          </Route>
+          <Route path={ROUTES.RESPONSIVE.CREATE_GOAL}>
+            <Route index element={<RCreateGoalPage />} />
           </Route>
         </Route>
 
