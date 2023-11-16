@@ -3,26 +3,42 @@ import {
   Card,
   CardActions,
   CardContent,
-  CardHeader,
-  Modal,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
   Typography,
 } from '@mui/material'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import EmptyState from '@/components/EmptyState/EmptyState.index'
 import noGoalSvg from '@/assets/goal.svg'
-import { IconBase } from '@/components/IconBase/IconBase'
-import FlagIcon from '@mui/icons-material/Flag'
+import { isEmpty } from '@/utils/isEmpty'
+import useCurrentUser from '@/hooks/useCurrentUser'
+import { useNavigate } from 'react-router-dom'
+import { ROUTES } from '@/router/Router'
+import { deleteGoal as requestDeleteGoal, getGoals } from '@/services/mealApi/goalsService'
+import { Goal } from '@/models'
+import { GoalType } from '@/consntants/enums/GoalType'
 
 export const UserGoalsTab = () => {
-  const [goals, setGoals] = useState([
-    {
-      deadline: new Date().toLocaleDateString('pt-BR'),
-      weightGoal: 90,
-      type: 'Ganho de Peso',
-    },
-  ])
+  const [goal, setGoal] = useState<Goal | null>()
+  const { currentUser, setCurrentUser } = useCurrentUser()
   const [selectedGoal, setSelectedGoal] = useState(null)
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false)
+  const navigate = useNavigate()
+
+  useEffect(() => {
+    const fetchdata = async () => {
+      try {
+        const goalsRes = await getGoals(currentUser?.uid)
+        // @ts-ignore
+        console.log('response', goalsRes)
+        setGoal(goalsRes)
+      } catch (err) {}
+    }
+    fetchdata()
+  }, [currentUser])
 
   const openDeleteModal = (goal) => {
     setSelectedGoal(goal)
@@ -34,37 +50,70 @@ export const UserGoalsTab = () => {
     setIsDeleteModalOpen(false)
   }
 
-  const deleteGoal = () => {
-    // Lógica para excluir a meta (remova da lista de metas, etc.)
-    setGoals((prevGoals) => prevGoals.filter((goal) => goal !== selectedGoal))
+  const deleteGoal = async () => {
+    try {
+      if (currentUser?.uid) {
+        await requestDeleteGoal(currentUser?.uid)
+        setGoal(null)
+      }
+    } catch (err) {}
     closeDeleteModal()
   }
+
+  function calculateMonthsUntilDeadline(deadline) {
+    const currentDate = new Date()
+    const deadlineDate = new Date(deadline)
+
+    const timeDifference = deadlineDate.getTime() - currentDate.getTime()
+
+    const millisecondsInMonth = 1000 * 60 * 60 * 24 * 30 // Approximate milliseconds in a month
+    const monthsDifference = Math.ceil(timeDifference / millisecondsInMonth)
+
+    let message = `${monthsDifference} month${monthsDifference > 1 && 's'}`
+    if (monthsDifference === 0) {
+      message = 'Current Month'
+    }
+
+    return message
+  }
+
   return (
     <>
       <main className='container mx-auto mt-4'>
-        {goals.length === 0 ? (
+        {isEmpty(goal) ? (
           <EmptyState
             imgSrc={noGoalSvg}
             imgAlt={'user with no goal'}
-            title={'You don\'t have a goal'}
+            title={"You don't have a goal"}
             description={'Add a goal to your profile.'}
-            handleOnClickButton={() => {}}
+            handleOnClickButton={() => navigate(ROUTES.RESPONSIVE.CREATE_GOAL)}
             buttonLabel={'Create goal'}
           />
         ) : (
           <Card className='bg-white p-4 mt-4 rounded-lg shadow-md'>
-            {goals.map((goal) => (
+            {goal && (
               <>
-                <CardHeader>
-                  <IconBase>
-                    {/* <FlatIcon src={svgDrinkSrc} size='sm' />*/}
-                    <FlagIcon />
-                  </IconBase>
-                </CardHeader>
                 <CardContent>
-                  <Typography variant='subtitle1'>Prazo: {goal.deadline}</Typography>
-                  <Typography variant='subtitle1'>Meta de Peso: {goal.weightGoal} Kg</Typography>
-                  <Typography variant='subtitle1'>Tipo: {goal.type}</Typography>
+                  <Typography className={'flex justify-between'} variant='subtitle1'>
+                    Deadline:
+                    <span>{calculateMonthsUntilDeadline(goal.deadline)}</span>
+                  </Typography>
+                  <Typography className={'flex justify-between'} variant='subtitle1'>
+                    Initial weight:
+                    <span>{goal.initialWeight} Kg</span>
+                  </Typography>
+                  <Typography className={'flex justify-between'} variant='subtitle1'>
+                    Weight goal:
+                    <span>{goal.weightGoal} Kg</span>
+                  </Typography>
+                  <Typography className={'flex justify-between mb-6'} variant='subtitle1'>
+                    Type:
+                    <span>{GoalType[goal.type]}</span>
+                  </Typography>
+                  <Typography variant={'overline'}>
+                    Daily calories recommended
+                    <Typography variant={'subtitle1'}>{goal.dailyCalories} kcal</Typography>
+                  </Typography>
                 </CardContent>
                 <CardActions>
                   <Button
@@ -77,32 +126,28 @@ export const UserGoalsTab = () => {
                   </Button>
                 </CardActions>
               </>
-            ))}
+            )}
           </Card>
         )}
 
-        {/* Modal para excluir meta */}
-        <Modal
-          open={isDeleteModalOpen}
-          onClose={closeDeleteModal}
-          aria-labelledby='modal-title'
-          aria-describedby='modal-description'
-        >
-          <div className='bg-white p-4 rounded-lg shadow-md'>
-            <Typography variant='h6' id='modal-title' className='mb-3'>
-              Confirmar Exclusão de Meta
-            </Typography>
-            <Typography variant='body1' id='modal-description' className='mb-3'>
-              Tem certeza de que deseja excluir esta meta?
-            </Typography>
-            <Button variant='contained' color='error' onClick={deleteGoal}>
+        <Dialog open={isDeleteModalOpen} onClose={closeDeleteModal}>
+          <DialogTitle>Confirmar Exclusão de Meta</DialogTitle>
+          <DialogContent>
+            <DialogContentText>
+              <Typography variant='body1' id='modal-description' className='mb-3'>
+                Tem certeza de que deseja excluir esta meta?
+              </Typography>
+            </DialogContentText>
+          </DialogContent>
+          <DialogActions>
+            <Button variant='text' color='error' onClick={deleteGoal}>
               Excluir
             </Button>
-            <Button variant='contained' onClick={closeDeleteModal} className='ml-2'>
+            <Button variant='text' onClick={closeDeleteModal} className='ml-2'>
               Cancelar
             </Button>
-          </div>
-        </Modal>
+          </DialogActions>
+        </Dialog>
       </main>
     </>
   )

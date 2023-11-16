@@ -1,5 +1,5 @@
-import React, { FormEvent, useState } from 'react'
-import { Box, Button, Checkbox, FormControlLabel, Link, TextField } from '@mui/material'
+import React, { useState } from 'react'
+import { Box, Button, Link, TextField } from '@mui/material'
 import { ROUTES } from '@/router/Router'
 import { createUserWithEmailAndPassword, updateProfile } from 'firebase/auth'
 import { firebaseAuth } from '@/services/firebase/initializer'
@@ -8,7 +8,6 @@ import { ResponsiveLayout } from '@/templates/ResponsiveLayout/ResponsiveLayout'
 import { FlatIcon } from '@/components/FlatIcon/FlatIcon'
 import svgGoogleSrc from '@/assets/icons/google.svg'
 import svgFacebookSrc from '@/assets/icons/facebook.svg'
-import { string } from 'prop-types'
 
 const SocialButton = ({ src }: { src: string }) => {
   return (
@@ -24,8 +23,9 @@ export const SignUpPage = () => {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const navigate = useNavigate()
-
   const handleUserSignUp = (event: { preventDefault: () => void }) => {
+    console.log('user data: ', email, name, lastName, password)
+
     event.preventDefault()
     createUserWithEmailAndPassword(firebaseAuth, email, password)
       .then((userCredentials) => {
@@ -38,13 +38,14 @@ export const SignUpPage = () => {
       .catch((err) => console.error(err))
   }
 
-  return (// mudei os className h2/h3, add 
+  return (
+    // mudei os className h2/h3, add
     <ResponsiveLayout options={{ header: true, tabBar: false }}>
       <section className='flex flex-col'>
         <h2 className='m-0 mt-20 font-bold text-center'>Sign up</h2>
         <h3 className='m-0 font-normal text-center'>Sign up to your account</h3>
         <Box component='form' onSubmit={handleUserSignUp} noValidate sx={{ mt: 1 }}>
-          <Box display="flex">
+          <Box display='flex'>
             <TextField
               margin='normal'
               required
@@ -80,7 +81,7 @@ export const SignUpPage = () => {
             type='email'
             id='email'
             autoComplete='email'
-            value={password}
+            value={email}
             onChange={(ev) => setEmail(ev.target.value)}
           />
           <TextField
@@ -110,11 +111,7 @@ export const SignUpPage = () => {
           <SocialButton src={svgGoogleSrc} />
         </section>
         <span className='text-lg '>
-          Already have an account?{' '}
-          <Link href={'responsive/login'}>
-            {/* eslint-disable-next-line react/no-unescaped-entities */}
-            Sign In
-          </Link>
+          Already have an account? <Link href={ROUTES.RESPONSIVE.LOGIN}>Sign In</Link>
         </span>
       </div>
     </ResponsiveLayout>

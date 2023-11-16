@@ -1,20 +1,13 @@
-import {
-  Box,
-  Button,
-  FormControl,
-  InputAdornment,
-  MenuItem,
-  StepProps,
-  TextField,
-  useFormControl,
-} from '@mui/material'
+import { Box, Button, InputAdornment, MenuItem, TextField } from '@mui/material'
 import calculateBMR from '@/utils/calculateBMR'
 import React, { ChangeEvent, FormEvent, useReducer, useRef } from 'react'
+import '../styles.css'
 
 type BMRFormProps = {
   handleNextStep: () => void
   handlePreviousStep: () => void
   setBmrValue: (value: number) => void
+  setGoal: (areg: any) => void
 }
 
 const initialGoal = {}
@@ -31,7 +24,6 @@ const initialState = {
 function formReducer(state, action) {
   switch (action.type) {
     case 'CHANGE_FIELD':
-      console.log(action)
       return {
         ...state,
         [action.field]: action.value,
@@ -43,9 +35,15 @@ function formReducer(state, action) {
   }
 }
 
-export default function BMRForm({ handleNextStep, handlePreviousStep, setBmrValue }: BMRFormProps) {
+export default function BMRForm({
+  handleNextStep,
+  handlePreviousStep,
+  setBmrValue,
+  setGoal,
+}: BMRFormProps) {
   const [state, dispatch] = useReducer(formReducer, initialState)
   const formRef = useRef<HTMLFormElement>(null)
+
   function handleSubmit(event: FormEvent) {
     event.preventDefault()
 
@@ -56,11 +54,17 @@ export default function BMRForm({ handleNextStep, handlePreviousStep, setBmrValu
       parseInt(state.age),
       state.sex === 'male',
     )
-    console.log(`The BMR is: ${bmr}`)
 
     // Reset form values
     dispatch({ type: 'RESET_FORM' })
     setBmrValue(bmr)
+    setGoal((prev) => {
+      if (prev && typeof prev === 'object') {
+        return { ...prev, dailyCalories: Math.round(bmr), initialWeight: parseFloat(state.weight) }
+      }
+
+      return { dailyCalories: bmr } // Initialize with 'dailyCalories' if 'prev' is not an object
+    })
     handleNextStep()
   }
 
@@ -72,7 +76,7 @@ export default function BMRForm({ handleNextStep, handlePreviousStep, setBmrValu
   return (
     <div className={'step-container'}>
       <form onSubmit={handleSubmit} ref={formRef}>
-        <div>
+        <div className={'flex flex-col items-center justify-center'}>
           <TextField
             name='weight'
             value={state.weight}
@@ -93,8 +97,6 @@ export default function BMRForm({ handleNextStep, handlePreviousStep, setBmrValu
             }}
             onChange={handleChange}
           />
-        </div>
-        <div>
           <TextField
             name={'age'}
             value={state.age}

@@ -11,19 +11,28 @@ import {
   TextField,
   Typography,
 } from '@mui/material'
-import { ROUTES } from '@/router/Router'
-import { browserLocalPersistence, setPersistence, signInWithEmailAndPassword } from 'firebase/auth'
+import { browserLocalPersistence, setPersistence } from 'firebase/auth'
 import { firebaseAuth } from '@/services/firebase/initializer'
-import { useNavigate } from 'react-router-dom'
 import { ResponsiveLayout } from '@/templates/ResponsiveLayout/ResponsiveLayout'
 import { FlatIcon } from '@/components/FlatIcon/FlatIcon'
 import svgGoogleSrc from '@/assets/icons/google.svg'
 import svgFacebookSrc from '@/assets/icons/facebook.svg'
 import { Visibility, VisibilityOff } from '@mui/icons-material'
+import {
+  useSignInWithEmailAndPassword,
+  useSignInWithFacebook,
+  useSignInWithGoogle,
+} from 'react-firebase-hooks/auth'
+import { useNavigate } from 'react-router-dom'
+import { ROUTES } from '@/router/Router'
 
-const SocialButton = ({ src }: { src: string }) => {
+const SocialButton = ({ src, onClick }: { src: string; onClick?: () => void }) => {
   return (
-    <button className='flex p-2 bg-white border-2 border-gray-200 border-solid rounded-full shadow-lg border-opacity-20'>
+    <button
+      onClick={onClick}
+      className='flex p-2 cursor-pointer bg-white border-2 border-gray-200 border-solid rounded-full shadow-sm border-opacity-40
+      hover:shadow-md'
+    >
       <FlatIcon src={src} size='2xl' />
     </button>
   )
@@ -32,25 +41,45 @@ const SocialButton = ({ src }: { src: string }) => {
 export const LoginPage = () => {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
-  const navigate = useNavigate()
   const [rememberMe, setRememberMe] = useState(false)
-  const [error, setError] = useState('')
-  const [showPassword, setShowPassword] = useState(false)
+  const navigate = useNavigate()
 
+  const [showPassword, setShowPassword] = useState(false)
+  const [signInWithGoogle, gUser, gLoading, gError] = useSignInWithGoogle(firebaseAuth)
+  const [signInWithFacebook, fbUser, fbLoading, fbError] = useSignInWithFacebook(firebaseAuth)
+  const [signInWithEmailAndPassword, user, loading, error] =
+    useSignInWithEmailAndPassword(firebaseAuth)
   const handleUserSignIn = (event: FormEvent) => {
     event.preventDefault()
     setPersistence(firebaseAuth, browserLocalPersistence)
       .then(() => {
-        return signInWithEmailAndPassword(firebaseAuth, email, password)
+        signInWithEmailAndPassword(email, password)
       })
-      .then(({ user }) => {
-        console.log('uid: ', user.uid)
-        navigate('/responsive/')
-      })
-      .catch((err) => {
-        setError('Credenciais inválidas. Verifique seu email e senha.')
-      })
+      .catch((error) => console.error(error))
   }
+
+  async function signInWithGoogleFirebase() {
+    try {
+      await signInWithGoogle()
+    } catch (err) {}
+  }
+
+  async function signInWithFacebookFirebase() {
+    try {
+      await signInWithFacebook()
+    } catch (err) {}
+  }
+
+  function renderErrorMessage() {
+    console.log(error)
+    return error?.message || 'I guess something is wrong ...'
+  }
+
+  // function handleSignUp() {
+  //   console.log('MOTHERFUCKER')
+  //   navigate('/responsive/sign-up')
+  // }
+
   return (
     <ResponsiveLayout options={{ header: true, tabBar: false }}>
       <section className='flex flex-col'>
@@ -106,7 +135,7 @@ export const LoginPage = () => {
           />
           {error && (
             <Typography variant={'subtitle1'} color={'error'}>
-              {error}
+              {renderErrorMessage()}
             </Typography>
           )}
           <Button type='submit' size='large' fullWidth variant='contained' sx={{ mt: 8, mb: 2 }}>
@@ -120,12 +149,12 @@ export const LoginPage = () => {
           <span className='relative top-0 z-20 px-3 bg-white'>Or Login With</span>
         </div>
         <section className='flex justify-center gap-14'>
-          <SocialButton src={svgFacebookSrc} />
-          <SocialButton src={svgGoogleSrc} />
+          <SocialButton src={svgFacebookSrc} onClick={signInWithFacebookFirebase} />
+          <SocialButton src={svgGoogleSrc} onClick={signInWithGoogleFirebase} />
         </section>
         <span className='text-lg '>
-          Don{'\''}t have an account ?{' '}
-          <Link href={'responsive/sign-up'}>
+          Don{"'"}t have an account ?{' '}
+          <Link href={ROUTES.RESPONSIVE.SIGNUP}>
             {/* eslint-disable-next-line react/no-unescaped-entities */}
             Sign Up
           </Link>

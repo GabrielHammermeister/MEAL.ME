@@ -11,6 +11,7 @@ import { Add } from '@mui/icons-material'
 import { ResponsiveLayout } from '@/templates/ResponsiveLayout/ResponsiveLayout'
 import { PageTitle } from '@/components/PageTitle/PageTitle'
 import DailyWeightTracker from '@/components/DailyWeightTracker/DailyWeightTracker'
+import { firebaseAuth } from '@/services/firebase/initializer'
 
 const MOCK_MACROS = {
   calories: 123,
@@ -108,7 +109,9 @@ export const HomePage = () => {
 
   return (
     <ResponsiveLayout>
-      <PageTitle text={`Bem vindo ${currentUser?.displayName?.toLocaleUpperCase()}!`} />
+      <PageTitle
+        text={`Bem vindo ${firebaseAuth.currentUser?.displayName?.toLocaleUpperCase()}!`}
+      />
 
       <section className={'flex flex-col gap-8'}>
         <div className='Summary'>
