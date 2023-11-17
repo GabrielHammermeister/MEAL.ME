@@ -32,6 +32,9 @@ import emptyBoxSrc from '@/assets/empty-box.svg'
 import { ResponsiveLayout } from '@/templates/ResponsiveLayout/ResponsiveLayout'
 import { PageTitle } from '@/components/PageTitle/PageTitle'
 import { Ingredient } from '@/context/Ingredient.provider'
+import { createMeals } from '@/services/mealApi/mealsService';
+import { Meal } from '@/services/mealApi/models/Meal';
+
 
 const MOCK_MACROS = {
   calories: 123,
@@ -75,8 +78,10 @@ export const CreateMealPage = () => {
   const [mealState, dispatch] = useReducer<Reducer<MealStateType, Action>>(
     mealReducer,
     mealStateInit,
-  )
+  );
   const [open, setOpen] = useState(false)
+
+  type IngredientType = typeof selectedIngredient;
 
   // useEffect(() => {
   //   const fetchData = async () => {
@@ -99,30 +104,72 @@ export const CreateMealPage = () => {
     handleClickOpen()
     setSelectedIngredient(ingredient)
   }
-  async function handleAddIngredient(newIngredient: Ingredient) {
-    // realizar request de nutrients
-    const {
-      data: { nutrition },
-    } = await getInformationByIdWithAmount(selectedIngredient?.id.toString(), selectedAmount)
-    // filtrar resultado da request (calculateMacros)
-    const { macros } = calculateTotalMacros(nutrition)
-    // adicionar no state o novo ingredient COM os macros
+  async function handleAddIngredient() {
+    if (!selectedIngredient) return;
+
+    // Supondo que você obtenha os dados nutricionais do ingrediente aqui
+    const { data: { nutrition } } = await getInformationByIdWithAmount(selectedIngredient.id.toString(), selectedAmount);
+    
+    // Calcular os macros usando sua função calculateTotalMacros
+    const { macros } = calculateTotalMacros(nutrition);
+
+    // Adicionar o ingrediente com os macros calculados ao estado da refeição
     dispatch({
       type: 'add-ingredient',
       payload: {
         ingredient: {
-          ...newIngredient,
+          ...selectedIngredient,
           amount: selectedAmount,
           unit: 'g',
           macros,
         },
       },
-    })
-    // re-calcular macros totais da refeicao
-    handleClose()
+    });
 
-    dispatch({ type: 'update-macros' })
+    // Fechar o diálogo de seleção de ingredientes
+    handleClose();
+
+    // Recalcular os macros totais da refeição se necessário
+    // Isso pode envolver somar os macros de todos os ingredientes no estado da refeição
   }
+
+  const handleCreateMeal = async () => {
+    // Suponha que você colete os ingredientes de algum lugar do seu estado
+    const ingredientsObject: Record<string, Ingredient> = {};
+    mealState.ingredients.forEach(ingredient => {
+      ingredientsObject[ingredient.id] = ingredient;
+    });
+  
+    // Suponha que você também colete os checkpoints de algum lugar do seu estado
+    // ou os gere aqui. Vou criar um exemplo de checkpoints
+    const checkpointsObject: Record<string, Checkpoint> = {
+      'checkpoint1': { timestamp: new Date().toISOString() },
+      // ... outros checkpoints
+    };
+  
+    // Agora você vai construir o objeto de refeição baseado na interface Meal
+    const mealData: Meal = {
+      id: 'new-meal-id', // Um ID de refeição que você deve gerar ou obter de alguma forma
+      calories: totalMacros.calories, // O total de calorias que você calculou
+      checkpoints: checkpointsObject,
+      ingredients: ingredientsObject,
+      macroNutrients: {
+        protein: totalMacros.protein,
+        carbohydrate: totalMacros.carbohydrate,
+        fat: totalMacros.fat,
+      },
+      name: mealState.name, // O nome da refeição que você obteve do usuário
+    };
+  
+    try {
+      await createMeals(mealData, 'userId'); // Substitua 'userId' pelo ID do usuário real
+      // Adicione lógica após a criação da refeição
+    } catch (error) {
+      console.error('Error creating meal:', error);
+      // Lide com erros aqui
+    }
+  };
+  
 
   async function selectedIngredientChanged(amount: number) {
     setSelectedAmount(amount)

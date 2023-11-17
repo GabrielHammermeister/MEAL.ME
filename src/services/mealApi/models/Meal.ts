@@ -1,4 +1,5 @@
 export interface Meal {
+  id: string
   calories: number
   checkpoints: Record<string, Checkpoint>
   ingredients: Record<string, Ingredient>
