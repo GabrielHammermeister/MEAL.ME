@@ -1,6 +1,7 @@
 export interface Goal {
-  type: 'WEIGHT_GAIN' | 'WEIGHT_LOSS'
+  type: 'WEIGHT_GAIN' | 'WEIGHT_LOSS' | undefined
   dailyCalories: number
+  initialDate: string
   deadline: string
   initialWeight: number
   weightGoal: number

@@ -9,9 +9,12 @@ import { UserSettingsTab } from '@/pages/Responsive/Profile/components/UserSetti
 import { UserGoalsTab } from '@/pages/Responsive/Profile/components/UserGoalsTab'
 import { UserInfoTab } from '@/pages/Responsive/Profile/components/UserInfoTab'
 import { Avatar, Tabs } from '@mui/material'
+import useCurrentUser from '@/hooks/useCurrentUser'
+import { firebaseAuth } from '@/services/firebase/initializer'
 
 export const UserProfilePage = () => {
   const [value, setValue] = React.useState(0)
+  const { currentUser } = useCurrentUser()
   const handleChange = (event, newValue) => {
     setValue(newValue)
   }
@@ -22,14 +25,14 @@ export const UserProfilePage = () => {
         <div className='container mx-auto text-center'>
           <Avatar
             alt='Gabriel Hammer Avatar'
-            src='/profile-pic.png'
+            src='/avatar.png'
             sx={{ width: 140, height: 140 }}
             className={'mx-auto outline-[#34d39938] outline-opacity-80 outline-8 outline'}
           />
           <Typography variant='h4' className='mt-4'>
-            Gabriel Hammer
+            {currentUser?.name}
           </Typography>
-          <Typography variant='body2'>gabriel@example.com</Typography>
+          <Typography variant='body2'>{firebaseAuth.currentUser?.email}</Typography>
         </div>
       </header>
 
@@ -41,9 +44,9 @@ export const UserProfilePage = () => {
           textColor='primary'
           variant={'fullWidth'}
         >
-          <Tab label='Informações' icon={<InfoIcon />} />
-          <Tab label='Metas' icon={<FlagIcon />} />
-          <Tab label='Configurações' icon={<SettingsIcon />} />
+          <Tab label='Information' icon={<InfoIcon />} />
+          <Tab label='Goals' icon={<FlagIcon />} />
+          <Tab label='Settings' icon={<SettingsIcon />} />
         </Tabs>
 
         <TabPanel value={value} index={0}>

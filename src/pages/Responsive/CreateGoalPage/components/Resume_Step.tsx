@@ -20,19 +20,26 @@ export default function Resume_Step({
   const navigate = useNavigate()
   const { currentUser } = useCurrentUser()
 
+  function calculateDeadlineDate(currentDate: Date, deadlineInMonths: number): Date {
+    const millisecondsPerDay = 24 * 60 * 60 * 1000 // Milliseconds in a day
+    const currentTimestamp = currentDate.getTime() // Current timestamp in milliseconds
+
+    // Calculate the deadline date based on the current date and the specified deadline in months
+    const deadlineTimestamp = currentTimestamp + millisecondsPerDay * 30.44 * deadlineInMonths // Approximate months as 30.44 days
+    const deadlineDate = new Date(deadlineTimestamp)
+
+    return deadlineDate
+  }
+
   const handleSubmit = async (event) => {
     event.preventDefault()
     const currentDate = new Date() // Current date
     // @ts-ignore
-    const deadlineDate = new Date(
-      currentDate.getFullYear(),
-      currentDate.getMonth() + createdGoal.deadline,
-      1,
-    )
+    const deadlineDate = calculateDeadlineDate(currentDate, createdGoal.deadline)
 
     const newGoal = {
       ...createdGoal,
-      deadline: deadlineDate,
+      deadline: deadlineDate.toISOString(),
       dailyCalories: calculateCalorieDifference(
         createdGoal.dailyCalories,
         createdGoal.deadline,

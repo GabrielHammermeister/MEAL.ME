@@ -20,6 +20,7 @@ import { ROUTES } from '@/router/Router'
 import { deleteGoal as requestDeleteGoal, getGoals } from '@/services/mealApi/goalsService'
 import { Goal } from '@/models'
 import { GoalType } from '@/consntants/enums/GoalType'
+import { convertDateFormat } from '@/utils/convertDateFormat'
 
 export const UserGoalsTab = () => {
   const [goal, setGoal] = useState<Goal | null>()
@@ -67,7 +68,7 @@ export const UserGoalsTab = () => {
     const timeDifference = deadlineDate.getTime() - currentDate.getTime()
 
     const millisecondsInMonth = 1000 * 60 * 60 * 24 * 30 // Approximate milliseconds in a month
-    const monthsDifference = Math.ceil(timeDifference / millisecondsInMonth)
+    const monthsDifference = Math.floor(timeDifference / millisecondsInMonth)
 
     let message = `${monthsDifference} month${monthsDifference > 1 && 's'}`
     if (monthsDifference === 0) {
@@ -110,6 +111,10 @@ export const UserGoalsTab = () => {
                     Type:
                     <span>{GoalType[goal.type]}</span>
                   </Typography>
+                  <Typography className={'flex justify-between mb-6'} variant='subtitle1'>
+                    Start Date:
+                    <span>{convertDateFormat(goal.initialDate)}</span>
+                  </Typography>
                   <Typography variant={'overline'}>
                     Daily calories recommended
                     <Typography variant={'subtitle1'}>{goal.dailyCalories} kcal</Typography>
@@ -131,20 +136,20 @@ export const UserGoalsTab = () => {
         )}
 
         <Dialog open={isDeleteModalOpen} onClose={closeDeleteModal}>
-          <DialogTitle>Confirmar Exclusão de Meta</DialogTitle>
+          <DialogTitle>Confirm Goal Deletion</DialogTitle>
           <DialogContent>
             <DialogContentText>
               <Typography variant='body1' id='modal-description' className='mb-3'>
-                Tem certeza de que deseja excluir esta meta?
+                Are you sure you want to delete your goal? This action can not be reversed.
               </Typography>
             </DialogContentText>
           </DialogContent>
           <DialogActions>
             <Button variant='text' color='error' onClick={deleteGoal}>
-              Excluir
+              Delete
             </Button>
             <Button variant='text' onClick={closeDeleteModal} className='ml-2'>
-              Cancelar
+              Cancel
             </Button>
           </DialogActions>
         </Dialog>

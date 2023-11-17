@@ -1,5 +1,6 @@
 import apiService from './apiService'
 import { Goal } from '@/models'
+import { Undefined } from '@/types'
 
 export const getGoals = async (userId?: string): Promise<Goal | null> => {
   try {
@@ -11,7 +12,7 @@ export const getGoals = async (userId?: string): Promise<Goal | null> => {
   }
 }
 
-export const createGoal = async (data: Goal, userId?: string): Promise<void> => {
+export const createGoal = async (data: Undefined<Goal>, userId?: string): Promise<void> => {
   try {
     await apiService.post(`/goals/create?userId=${userId}`, data)
   } catch (error) {
@@ -19,7 +20,12 @@ export const createGoal = async (data: Goal, userId?: string): Promise<void> => 
   }
 }
 
-export const updateGoal = async (data: Goal, userId?: string): Promise<void> => {
+export const updateGoal = async (
+  data: {
+    checkpoint: { date: string; weight: number }[] | undefined
+  },
+  userId?: string | undefined,
+): Promise<void> => {
   try {
     await apiService.put(`/goals/update?userId=${userId}`, data)
   } catch (error) {

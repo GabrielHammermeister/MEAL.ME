@@ -55,18 +55,6 @@ export const MealsPage = () => {
               // key={generateKey()}
               mealData={{ id: '3', name: 'Chicken and Rice', calories: 630, type: 'solid' }}
             />
-            <Meal
-              // key={generateKey()}
-              mealData={{ id: '4', name: 'Green Juice', calories: 230, type: 'liquid' }}
-            />
-            <Meal
-              // key={generateKey()}
-              mealData={{ id: '5', name: 'Meat Balls', calories: 800, type: 'solid' }}
-            />
-            <Meal
-              // key={generateKey()}
-              mealData={{ id: '6', name: 'Purple Smothie', calories: 320, type: 'liquid' }}
-            />
           </div>
           <section className='mt-8'>
             <Button

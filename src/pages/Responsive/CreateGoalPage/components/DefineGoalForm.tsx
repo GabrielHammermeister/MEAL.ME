@@ -37,6 +37,7 @@ export default function DefineGoalForm({
     setGoal((prev: any) => ({
       ...prev,
       deadline: deadline,
+      initialDate: new Date().toISOString(),
       weightGoal: weightGoal,
     }))
     handleNextStep()

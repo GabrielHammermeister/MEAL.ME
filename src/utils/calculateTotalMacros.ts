@@ -6,7 +6,7 @@ type MacroNutrient = {
 
 interface MacroSummary {
   macros: {
-    calories: number
+    calories?: number
     fats: MacroNutrient
     carbs: MacroNutrient
     proteins: MacroNutrient
@@ -14,10 +14,10 @@ interface MacroSummary {
 }
 
 type Nutrient = {
-  name: string
-  amount: number
-  unit: string
-  percentOfDailyNeeds: number
+  name?: string
+  amount?: number
+  unit?: string
+  percentOfDailyNeeds?: number
 }
 
 interface Nutrition {
@@ -31,20 +31,32 @@ interface CaloricBreakdown {
   percentCarbs: number
 }
 
-export function calculateTotalMacros(nutrition: Nutrition): MacroSummary {
-  const calories = nutrition.nutrients.find((el) => el.name === 'Calories')
+export function calculateTotalMacros(
+  nutrition: Nutrition,
+  prevMacros?: MacroSummary,
+): MacroSummary {
+  const { calories, fats, proteins, carbs } = prevMacros
+  if (prevMacros) {
+    const proteins = prevMacros.macros.proteins.amount * 4
+    const carbs = (calories.amount * (caloricBreakdown.percentCarbs / 100)) / 4
+    const fats = (calories.amount * (caloricBreakdown.percentFat / 100)) / 9
+  }
+
+  const newCalories = nutrition.nutrients.find((el) => el.name === 'Calories')
+  const Protein = nutrition.nutrients.find((el) => el.name === 'Protein')
+  const Carbohydrates = nutrition.nutrients.find((el) => el.name === 'Carbohydrates')
+  const Fat = nutrition.nutrients.find((el) => el.name === 'Fat')
+
   const { caloricBreakdown } = nutrition
   if (!calories) throw Error('Erro de servico')
   else {
-    const proteins = (calories.amount * (caloricBreakdown.percentProtein / 100)) / 4
-    const carbs = (calories.amount * (caloricBreakdown.percentCarbs / 100)) / 4
-    const fats = (calories.amount * (caloricBreakdown.percentFat / 100)) / 9
+    //
     return {
       macros: {
-        calories: calories.amount,
-        proteins: { amount: proteins, unit: 'g', percent: caloricBreakdown.percentProtein },
-        fats: { amount: fats, unit: 'g', percent: caloricBreakdown.percentFat },
-        carbs: { amount: carbs, unit: 'g', percent: caloricBreakdown.percentCarbs },
+        calories: newCalories.amount,
+        proteins: { amount: Protein?.amount, unit: 'g', percent: caloricBreakdown.percentProtein },
+        fats: { amount: Fat?.amount, unit: 'g', percent: caloricBreakdown.percentFat },
+        carbs: { amount: Carbohydrates?.amount, unit: 'g', percent: caloricBreakdown.percentCarbs },
       },
     }
   }

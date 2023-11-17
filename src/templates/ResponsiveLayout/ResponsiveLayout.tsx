@@ -77,7 +77,7 @@ export function ResponsiveLayout({
           <h1 className={'text-center text-green-950 font-black text-3xl'}>Meal.me</h1>
         </header>
       )}
-      <main className={'flex flex-col px-3.5 flex-grow max-w-xl mx-auto'}>{children}</main>
+      <main className={'flex flex-col px-3.5 flex-grow max-w-2xl mx-auto w-full'}>{children}</main>
       <div className={'min-h-[4rem] mt-4'}></div>
       {options.tabBar && (
         <nav

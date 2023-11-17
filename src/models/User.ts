@@ -1,15 +1,14 @@
 import { Meal } from '@/models/Meal'
 import { Goal } from '@/models/Goal'
-import { Undefined } from '@/types'
 
 export interface ApiUser {
   uid: string
   activityLevel?: 'Light' | 'Moderate' | 'Active'
   basalMetabolicRate?: number
   birthDate?: string
-  goals?: Record<string, Undefined<Goal>>
+  goals?: Goal
   height?: number
-  meals?: Record<string, Meal>
+  meals?: Meal[]
   name?: string
   sex?: 'Male' | 'Female' | 'Other'
   weight?: number

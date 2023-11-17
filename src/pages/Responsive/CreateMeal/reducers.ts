@@ -36,12 +36,15 @@ function updateMacros(ingredients: Array<IngredientType>) {
 export function mealReducer(state: MealStateType, action: Action) {
   switch (action.type) {
     case 'add-ingredient': {
+      console.log('ADD-INGREDIENT', state, action)
       return {
         ...state,
         ingredients: [...state.ingredients, action.payload.ingredient],
       }
     }
     case 'update-macros': {
+      console.log('UPDATE-MACROS', state, action)
+
       const newMacroNutrients = updateMacros(state.ingredients)
       return {
         ...state,

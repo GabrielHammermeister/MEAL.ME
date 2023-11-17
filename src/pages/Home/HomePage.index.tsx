@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 // Components
 import DefaultTemplate from '@/templates/Default/Default.index'
 // Contexts
@@ -8,7 +8,6 @@ import {
   CardActions,
   CardContent,
   CardHeader,
-  Icon,
   IconButton,
   InputAdornment,
   TextField,
@@ -20,11 +19,11 @@ import useCurrentUser from '@/hooks/useCurrentUser'
 import UserGoalChart from '@/components/UserGoalChart/UserGoalChart.index'
 import { MacroSummary } from '@/components/MacroSummary/MacroSummary'
 import { Add } from '@mui/icons-material'
-import { firebaseApp } from '@/services/firebase/initializer'
 import firebase from 'firebase/compat'
-import firestore = firebase.firestore
 import CheckCircleIcon from '@mui/icons-material/CheckCircle'
 import EditIcon from '@mui/icons-material/Edit'
+import WaterTracker from '@/components/WaterTracker/WaterTracker'
+import firestore = firebase.firestore
 
 const MOCK_MACROS = {
   calories: 123,
@@ -71,6 +70,25 @@ const HomePage = () => {
       </Typography>
 
       <section className={'dashboard-home grid grid-cols-10 gap-y-4'}>
+        <div className='Summary col-span-10 md:col-span-7'>
+          <Card sx={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
+            <CardHeader
+              title={'Daily Macro Summary'}
+              subheader={'Your daily nutrient consumption'}
+            />
+            <CardContent>
+              <MacroSummary macros={MOCK_MACROS} />
+            </CardContent>
+            <CardActions sx={{ p: 2, marginTop: 'auto' }}>
+              <Button startIcon={<Add />} variant={'contained'}>
+                Add food Consumption
+              </Button>
+            </CardActions>
+          </Card>
+        </div>
+        <div className='col-span-10 md:col-span-7'>
+          <WaterTracker />
+        </div>
         <div className='chart col-span-10 md:col-span-7'>
           <UserGoalChart
             chartData={[
@@ -92,22 +110,6 @@ const HomePage = () => {
         {/* <div className={' bg-violet-950 min-h-[300px] row-span-2 col-span-10 md:col-span-7'}></div> */}
         {/* <div className={' bg-violet-950 min-h-[200px] row-span-1 col-span-10 md:col-span-7'}></div> */}
         {/* <div className={' bg-violet-950 min-h-[200px] row-span-1 col-span-10 md:col-span-7'}></div> */}
-        <div className='Summary col-span-10 md:col-span-7'>
-          <Card sx={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
-            <CardHeader
-              title={'Daily Macro Summary'}
-              subheader={'Your daily nutrient consumption'}
-            />
-            <CardContent>
-              <MacroSummary macros={MOCK_MACROS} />
-            </CardContent>
-            <CardActions sx={{ p: 2, marginTop: 'auto' }}>
-              <Button startIcon={<Add />} variant={'contained'}>
-                Add food Consumption
-              </Button>
-            </CardActions>
-          </Card>
-        </div>
         <div className='checkout col-span-10 md:col-span-7'>
           <Card sx={{ height: '100%' }}>
             <CardHeader

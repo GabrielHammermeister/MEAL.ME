@@ -1,5 +1,4 @@
-import React, { Reducer, useEffect, useReducer, useState } from 'react'
-import DefaultTemplate from '@/templates/Default/Default.index'
+import React, { useEffect, useState } from 'react'
 import {
   Button,
   Dialog,
@@ -15,26 +14,22 @@ import {
 } from '@mui/material'
 import { Box } from '@mui/system'
 import './CreateMealPage.styles.css'
-
-import DisplayIngredients from '@/components/DisplayIngredients/DisplayIngredients'
-import SearchIngredient from '@/components/SearchIngredient/SearchIngredient'
-import { MealTypeSelect } from '@/components/MealTypeSelect/MealTypeSelect'
-import { MacroSummary } from '@/components/MacroSummary/MacroSummary'
-import useIngredients from '@/hooks/useIngredients'
-import { Add } from '@mui/icons-material'
-import { Action, MealStateType } from './types'
-import { mealReducer } from '@/pages/CreateMeal/reducers'
+import { Ingredient } from '@/context/Ingredient.provider'
 import { generateKey } from '@/utils/generateKey'
-import { calculateTotalMacros } from '@/utils/calculateTotalMacros'
-import { getInformationByIdWithAmount } from '@/services/spoonacular/spoonacular.service'
-import EmptyState from '@/components/EmptyState/EmptyState.index'
-import emptyBoxSrc from '@/assets/empty-box.svg'
+import useIngredients from '@/hooks/useIngredients'
+import { MealStateType } from './types'
+import { MealTypeSelect } from '@/components/MealTypeSelect/MealTypeSelect'
+import SearchIngredient from '@/components/SearchIngredient/SearchIngredient'
+import DisplayIngredients from '@/components/DisplayIngredients/DisplayIngredients'
 import { ResponsiveLayout } from '@/templates/ResponsiveLayout/ResponsiveLayout'
 import { PageTitle } from '@/components/PageTitle/PageTitle'
-import { Ingredient } from '@/context/Ingredient.provider'
-import { createMeals } from '@/services/mealApi/mealsService';
-import { Meal } from '@/services/mealApi/models/Meal';
-
+import EmptyState from '@/components/EmptyState/EmptyState.index'
+import emptyBoxSrc from '@/assets/empty-box.svg'
+import useCurrentUser from '@/hooks/useCurrentUser'
+import { Add } from '@mui/icons-material'
+import { getInformationByIdWithAmount } from '@/services/spoonacular/spoonacular.service'
+import { calculateTotalMacros } from '@/utils/calculateTotalMacros'
+import { MacroSummary } from '@/components/MacroSummary/MacroSummary'
 
 const MOCK_MACROS = {
   calories: 123,
@@ -70,116 +65,76 @@ export const CreateMealPage = () => {
   const { setIngredients } = useIngredients()
   const [selectedIngredient, setSelectedIngredient] = useState<Ingredient | null>(null)
   const [selectedAmount, setSelectedAmount] = useState(100)
-
+  const { currentUser } = useCurrentUser()
   const [ingredientMacros, setIngredientMacros] = useState()
   const [totalMacros, setTotalMacros] = useState(null)
   const [loadingIngredientMacros, setLoadingIngredientMacros] = useState(true)
 
-  const [mealState, dispatch] = useReducer<Reducer<MealStateType, Action>>(
-    mealReducer,
-    mealStateInit,
-  );
   const [open, setOpen] = useState(false)
+  // const [mealState, dispatch] = useReducer<Reducer<MealStateType, Action>>(
+  //   mealReducer,
+  //   mealStateInit,
+  // )
+  const [mealState, setMealState] = useState<any>()
+  const [mealName, setMealName] = useState('')
 
-  type IngredientType = typeof selectedIngredient;
-
-  // useEffect(() => {
-  //   const fetchData = async () => {
-  //     const {
-  //       data: { nutrition },
-  //     } = await getInformationByIdWithAmount('1015006', 100)
-  //     // } = await getInformationByIdWithAmount(selectedIngredient.id.toString(), selectedAmount)
-  //     // filtrar resultado da request (calculateMacros)
-  //     const macros = calculateTotalMacros(nutrition)
-  //   }
-  //
-  //   fetchData()
-  // }, [])
-
-  const handleClickOpen = () => {
-    setOpen(true)
+  const handleMealNameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setMealName(event.target.value)
   }
+  // console.log('MEAL STATE', mealState)
+  //
+  // type IngredientType = typeof selectedIngredient
+  //
+
+  //
+
+  //
+
+  //
+
+  const handleCreateMeal = () => {
+    const storedMeals = localStorage.getItem('meals')
+    let mealsToSave = []
+
+    if (storedMeals) {
+      // If meals exist in localStorage, parse them and append the new meal
+      mealsToSave = JSON.parse(storedMeals)
+      mealsToSave.push({ ...mealState, name: mealName })
+    } else {
+      // If no meals exist, save the new meal as the only meal
+      mealsToSave = [{ ...mealState, name: mealName }]
+    }
+
+    // Save the updated meals array back to localStorage
+    localStorage.setItem('meals', JSON.stringify(mealsToSave))
+  }
+  //
+  // async function selectedIngredientChanged(amount: number) {
+  //   setSelectedAmount(amount)
+  //   const {
+  //     data: { nutrition },
+  //   } = await getInformationByIdWithAmount(selectedIngredient?.id.toString(), amount)
+  //
+  //   // @ts-ignore
+  //   setIngredientMacros()
+  //   setLoadingIngredientMacros(false)
+  // }
+  //
+
+  //
+  useEffect(() => {
+    return () => {
+      setIngredients([])
+    }
+  }, [])
 
   function handleSelectIngredient(ingredient: Ingredient) {
     handleClickOpen()
     setSelectedIngredient(ingredient)
   }
-  async function handleAddIngredient() {
-    if (!selectedIngredient) return;
 
-    // Supondo que você obtenha os dados nutricionais do ingrediente aqui
-    const { data: { nutrition } } = await getInformationByIdWithAmount(selectedIngredient.id.toString(), selectedAmount);
-    
-    // Calcular os macros usando sua função calculateTotalMacros
-    const { macros } = calculateTotalMacros(nutrition);
-
-    // Adicionar o ingrediente com os macros calculados ao estado da refeição
-    dispatch({
-      type: 'add-ingredient',
-      payload: {
-        ingredient: {
-          ...selectedIngredient,
-          amount: selectedAmount,
-          unit: 'g',
-          macros,
-        },
-      },
-    });
-
-    // Fechar o diálogo de seleção de ingredientes
-    handleClose();
-
-    // Recalcular os macros totais da refeição se necessário
-    // Isso pode envolver somar os macros de todos os ingredientes no estado da refeição
-  }
-
-  const handleCreateMeal = async () => {
-    // Suponha que você colete os ingredientes de algum lugar do seu estado
-    const ingredientsObject: Record<string, Ingredient> = {};
-    mealState.ingredients.forEach(ingredient => {
-      ingredientsObject[ingredient.id] = ingredient;
-    });
-  
-    // Suponha que você também colete os checkpoints de algum lugar do seu estado
-    // ou os gere aqui. Vou criar um exemplo de checkpoints
-    const checkpointsObject: Record<string, Checkpoint> = {
-      'checkpoint1': { timestamp: new Date().toISOString() },
-      // ... outros checkpoints
-    };
-  
-    // Agora você vai construir o objeto de refeição baseado na interface Meal
-    const mealData: Meal = {
-      id: 'new-meal-id', // Um ID de refeição que você deve gerar ou obter de alguma forma
-      calories: totalMacros.calories, // O total de calorias que você calculou
-      checkpoints: checkpointsObject,
-      ingredients: ingredientsObject,
-      macroNutrients: {
-        protein: totalMacros.protein,
-        carbohydrate: totalMacros.carbohydrate,
-        fat: totalMacros.fat,
-      },
-      name: mealState.name, // O nome da refeição que você obteve do usuário
-    };
-  
-    try {
-      await createMeals(mealData, 'userId'); // Substitua 'userId' pelo ID do usuário real
-      // Adicione lógica após a criação da refeição
-    } catch (error) {
-      console.error('Error creating meal:', error);
-      // Lide com erros aqui
-    }
-  };
-  
-
-  async function selectedIngredientChanged(amount: number) {
-    setSelectedAmount(amount)
-    const {
-      data: { nutrition },
-    } = await getInformationByIdWithAmount(selectedIngredient?.id.toString(), amount)
-
-    // @ts-ignore
-    setIngredientMacros()
-    setLoadingIngredientMacros(false)
+  const handleClickOpen = () => {
+    setOpen(true)
   }
 
   const handleClose = () => {
@@ -187,12 +142,77 @@ export const CreateMealPage = () => {
     setOpen(false)
   }
 
-  useEffect(() => {
-    return () => {
-      setIngredients([])
-    }
-  }, [])
+  async function handleAddIngredient() {
+    if (!selectedIngredient) return
+    const {
+      data: { nutrition },
+    } = await getInformationByIdWithAmount(selectedIngredient.id.toString(), selectedAmount)
 
+    const { macros } = calculateTotalMacros(nutrition)
+
+    console.log('macros', macros)
+    setMealState((prevState) => {
+      const prevMacros = prevState?.macroNutrients
+      const prevCalories = prevState?.calories
+      const prevIngredients = prevState?.ingredients
+      console.log('prevState', prevState)
+      let newState = {}
+
+      if (prevMacros && prevIngredients.length > 0) {
+        newState = {
+          name: mealName,
+          checkpoints: [],
+          ingredients: [...prevIngredients, selectedIngredient],
+          calories: prevCalories + macros.calories,
+          macroNutrients: {
+            protein: {
+              amount: prevMacros.protein.amount + macros.proteins,
+            },
+            fat: prevMacros.fat + macros.fats,
+            carbohydrate: prevMacros.carbohydrate + macros.carbs,
+          },
+        }
+      } else {
+        newState = {
+          name: mealName,
+          checkpoints: [],
+          ingredients: [selectedIngredient],
+          calories: macros.calories,
+          macroNutrients: {
+            protein: macros.proteins,
+            fat: macros.fats,
+            carbohydrate: macros.carbs,
+          },
+        }
+      }
+
+      console.log('newState', newState)
+
+      return newState
+    })
+
+    handleClose()
+  }
+
+  const extractMacroData = () => {
+    const { calories, macroNutrients } = mealState
+    const { protein, fat, carbohydrate } = macroNutrients
+
+    console.log('macroNutrients', macroNutrients)
+
+    return {
+      calories,
+      fats: {
+        ...fat,
+      },
+      proteins: {
+        ...protein,
+      },
+      carbs: {
+        ...carbohydrate,
+      },
+    }
+  }
   return (
     <ResponsiveLayout>
       <PageTitle text={'Create a Meal'} />
@@ -210,7 +230,7 @@ export const CreateMealPage = () => {
             justifyContent='space-between'
             height='100%'
           >
-            {mealState?.ingredients.length <= 0 ? (
+            {!mealState ? (
               <>
                 <EmptyState
                   imgSrc={emptyBoxSrc}
@@ -225,7 +245,7 @@ export const CreateMealPage = () => {
                   Macro Nutrients
                 </Typography>
 
-                <MacroSummary macros={mealState.macroNutrients} />
+                <MacroSummary macros={extractMacroData()} />
                 <Divider variant='fullWidth' />
                 <Typography variant='h6' mt={2} paddingBottom={1}>
                   Ingredients
@@ -237,8 +257,14 @@ export const CreateMealPage = () => {
                     {ingredient.name} {ingredient.amount} {ingredient.unit}
                   </h6>
                 ))}
+                <TextField
+                  label='Meal Name'
+                  variant='outlined'
+                  value={mealName}
+                  onChange={handleMealNameChange}
+                />
                 <Box mt={1} width='100%'>
-                  <Button variant='contained' fullWidth>
+                  <Button variant='contained' fullWidth onClick={handleCreateMeal}>
                     create meal
                   </Button>
                 </Box>

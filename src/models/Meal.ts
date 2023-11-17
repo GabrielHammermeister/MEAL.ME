@@ -17,6 +17,7 @@ interface MacroNutrients {
 
 export interface Meal {
   name: string
+  type?: 'solid' | 'liquid'
   checkpoints: Record<string, MealCheckpoint>
   ingredients: Record<string, Ingredient>
   calories: number

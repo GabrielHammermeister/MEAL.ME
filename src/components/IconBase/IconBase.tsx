@@ -5,10 +5,14 @@ type Type = 'rounded' | 'rectangle'
 interface IconBaseProps {
   type?: Type
   children: ReactElement
+  color?: string
 }
 
-const StyleInjector = ({ children }: { children: any }) => {
-  const classList = 'fill-m-gray'
+const StyleInjector = ({ children, color }: { children: any; color?: string }) => {
+  let classList = 'fill-m-gray'
+  if (color) {
+    classList = color
+  }
   const StyledChildren = () =>
     Children.map(children, (child) =>
       cloneElement(child, {
@@ -19,7 +23,7 @@ const StyleInjector = ({ children }: { children: any }) => {
   return <StyledChildren />
 }
 
-export const IconBase = ({ type = 'rectangle', children }: IconBaseProps) => {
+export const IconBase = ({ type = 'rectangle', children, color }: IconBaseProps) => {
   function changeType(type: Type) {
     if (type === 'rectangle') {
       return 'rounded-lg'
@@ -30,7 +34,7 @@ export const IconBase = ({ type = 'rectangle', children }: IconBaseProps) => {
 
   return (
     <div className={`inline-flex  p-2 ${changeType(type)} bg-m-gray bg-opacity-30`}>
-      <StyleInjector>{children}</StyleInjector>
+      <StyleInjector color={color}>{children}</StyleInjector>
     </div>
   )
 }

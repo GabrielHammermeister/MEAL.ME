@@ -18,6 +18,7 @@ interface MacroSummaryProps {
   }
   loading?: boolean
 }
+
 export function MacroSummary({
   macros: { calories, fats, proteins, carbs },
   loading = false,
@@ -25,7 +26,7 @@ export function MacroSummary({
   if (loading) {
     return <CircularProgress />
   }
-  console.log('Macros: ', { calories, fats, proteins, carbs })
+  console.log('macros', { calories, fats, proteins, carbs })
   return (
     <>
       <Box>

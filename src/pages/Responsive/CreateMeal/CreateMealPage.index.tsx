@@ -24,7 +24,7 @@ import useIngredients from '@/hooks/useIngredients'
 import { Ingredient } from '@/providers/Ingredient.provider'
 import { Add } from '@mui/icons-material'
 import { Action, MealStateType } from './types'
-import { mealReducer } from '@/pages/CreateMeal/reducers'
+import { mealReducer } from '@/pages/Responsive/CreateMeal/reducers'
 import { generateKey } from '@/utils/generateKey'
 import { calculateTotalMacros } from '@/utils/calculateTotalMacros'
 import { getInformationByIdWithAmount } from '@/services/spoonacular/spoonacular.service'
@@ -64,7 +64,7 @@ const mealStateInit: MealStateType = {
 const CreateMealPage = () => {
   const { setIngredients } = useIngredients()
   const [selectedIngredient, setSelectedIngredient] = useState<Ingredient | null>(null)
-  const [selectedAmount, setSelectedAmount] = useState(100)
+  const [selectedAmount, setSelectedAmount] = useState<number | undefined>(100)
 
   const [ingredientMacros, setIngredientMacros] = useState()
   const [totalMacros, setTotalMacros] = useState(null)
@@ -75,6 +75,8 @@ const CreateMealPage = () => {
     mealStateInit,
   )
   const [open, setOpen] = useState(false)
+
+  console.log('CURRENT MEAL', mealState)
 
   // useEffect(() => {
   //   const fetchData = async () => {
@@ -97,11 +99,12 @@ const CreateMealPage = () => {
     handleClickOpen()
     setSelectedIngredient(ingredient)
   }
+
   async function handleAddIngredient(newIngredient: Ingredient) {
     // realizar request de nutrients
     const {
       data: { nutrition },
-    } = await getInformationByIdWithAmount(selectedIngredient?.id.toString(), selectedAmount)
+    } = await getInformationByIdWithAmount(selectedIngredient?.id.toString(), selectedAmount || 0)
     // filtrar resultado da request (calculateMacros)
     const { macros } = calculateTotalMacros(nutrition)
     // adicionar no state o novo ingredient COM os macros

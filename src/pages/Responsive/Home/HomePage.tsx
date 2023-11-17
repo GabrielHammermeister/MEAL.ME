@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 // Components
 // Contexts
 import { Button, Card, CardActions, CardContent, CardHeader } from '@mui/material'
@@ -11,6 +11,8 @@ import { Add } from '@mui/icons-material'
 import { ResponsiveLayout } from '@/templates/ResponsiveLayout/ResponsiveLayout'
 import { PageTitle } from '@/components/PageTitle/PageTitle'
 import DailyWeightTracker from '@/components/DailyWeightTracker/DailyWeightTracker'
+import { LoadingSpinner } from '@/components/LoadingSpinner/LoadingSpinner.index'
+import { generateDecimalArrayWithDates } from '@/utils/generateDecimalArrayWithDates'
 
 const MOCK_MACROS = {
   calories: 123,
@@ -31,128 +33,112 @@ const MOCK_MACROS = {
   },
 }
 
-function calculateProjectedWeights(
-  initialWeight: number,
-  basalMetabolicRate: number,
-  goalWeight: number,
-  recommendedDailyCalories: number,
-  deadline: Date,
-): number[] {
-  const weights: number[] = []
-  const dates: string[] = []
-
-  const millisecondsInDay = 24 * 60 * 60 * 1000 // Milliseconds in a day
-
-  let currentDate = new Date()
-  let currentWeight = initialWeight
-
-  const caloricDiff = recommendedDailyCalories - basalMetabolicRate
-
-  weights.push(currentWeight)
-  dates.push(
-    currentDate.toLocaleDateString('en-US', { month: '2-digit', day: '2-digit', year: 'numeric' }),
-  )
-
-  while (currentDate < deadline) {
-    const dailyWeightChange = caloricDiff / 7700
-    currentWeight += dailyWeightChange
-
-    weights.push(currentWeight.toFixed(2))
-
-    currentDate = new Date(currentDate.getTime() + millisecondsInDay)
-    dates.push(
-      currentDate.toLocaleDateString('en-US', {
-        month: '2-digit',
-        day: '2-digit',
-        year: 'numeric',
-      }),
-    )
-  }
-
-  // while (currentDate < deadline) {
-  //   // Calculate the change in weight based on calorie intake and metabolism
-  //   const daysDifference = (deadline.getTime() - currentDate.getTime()) / millisecondsInDay
-  //   const calorieDifference = daysDifference * recommendedDailyCalories
-  //   const weightDifference = calorieDifference / 7700 // Assuming 7700 calories per kg change
-  //
-  //   // Adjust weight based on metabolic rate
-  //   const metabolicRateWeightChange = (basalMetabolicRate / 7700) * (daysDifference / 30) // Assuming 30 days in a month
-  //
-  //   currentWeight += weightDifference - metabolicRateWeightChange
-  //   weights.push(parseFloat(currentWeight.toFixed(2))) // Round to 2 decimal places
-  //
-  //   currentDate = new Date(currentDate.getTime() + millisecondsInDay)
-  // }
-
-  return { weights }
-}
-
 // Example usage:
-const initialWeight = 85 // Initial weight in kg
-const basalMetabolicRate = 1966 // Basal Metabolic Rate in calories
-const goalWeight = 95 // Goal weight in kg
-const recommendedDailyCalories = 2394 // Recommended daily calories
-const deadline = new Date('2024-05-01') // Deadline date
-
-const projectedWeights = calculateProjectedWeights(
-  initialWeight,
-  basalMetabolicRate,
-  goalWeight,
-  recommendedDailyCalories,
-  deadline,
-)
-console.log('Projected Weights:', projectedWeights)
-
-const chartLabels = ['Gorduras', 'Carboidratos', 'Proteínas']
-
-const chartData = [
-  MOCK_MACROS.fats.percent,
-  MOCK_MACROS.carbs.percent,
-  MOCK_MACROS.proteins.percent,
-]
+// const initialWeight = 85 // Initial weight in kg
+// const goalWeight = 90 // Goal weight in kg
+// const startDate = new Date('2024-02-01') // Deadline date
+// const deadline = new Date('2024-03-01') // Deadline date
+//
+// const projectedGoalValues = generateDecimalArrayWithDates(
+//   startDate,
+//   deadline,
+//   initialWeight,
+//   goalWeight,
+// )
+// console.log('generateDecimalArrayWithDates', projectedGoalValues)
+// const chartLabels = ['Gorduras', 'Carboidratos', 'Proteínas']
+//
+// const chartData = [
+//   MOCK_MACROS.fats.percent,
+//   MOCK_MACROS.carbs.percent,
+//   MOCK_MACROS.proteins.percent,
+// ]
 
 export const HomePage = () => {
   const { currentUser } = useCurrentUser()
+  const [projectedGoalValues, setProjectedGoalValues] = useState<any>()
+
+  const extractWeightValues = (
+    checkpoints: { date: string; weight: number }[] | undefined,
+  ): number[] => {
+    if (!checkpoints) return [] // If checkpoints array is undefined or empty, return an empty array
+
+    return checkpoints.map((checkpoint) => checkpoint.weight)
+  }
+
+  useEffect(() => {
+    if (!currentUser?.goals) return
+    console.log('NOW USER', currentUser)
+    const { initialWeight, weightGoal, deadline, initialDate } = currentUser.goals
+
+    console.log('NOW GOAL', { initialWeight, weightGoal, deadline, initialDate })
+    setProjectedGoalValues(() => {
+      return generateDecimalArrayWithDates(
+        new Date(initialDate),
+        new Date(deadline),
+        initialWeight,
+        weightGoal,
+      )
+    })
+  }, [currentUser])
 
   return (
     <ResponsiveLayout>
-      <PageTitle text={`Bem vindo ${currentUser?.displayName?.toLocaleUpperCase()}!`} />
+      <PageTitle text={`Welcome ${currentUser?.name}!`} />
 
       <section className={'flex flex-col gap-8'}>
         <div className='Summary'>
           <Card sx={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
-            <CardHeader
-              title={'Daily Macro Summary'}
-              subheader={'Your daily nutrient consumption'}
-            />
-            <CardContent>
-              <MacroSummary macros={MOCK_MACROS} />
-            </CardContent>
-            <CardActions sx={{ p: 2, marginTop: 'auto' }}>
-              <Button startIcon={<Add />} variant={'contained'}>
-                Add food Consumption
-              </Button>
-            </CardActions>
+            {/* @ts-ignore */}
+            {currentUser?.meals?.length > 0 ? (
+              <CardHeader
+                title={'Daily Macro Summary'}
+                subheader={'Your daily nutrient consumption'}
+              />
+            ) : (
+              <CardHeader
+                title={'No meals made'}
+                subheader={'You have no eaten today. Create a new meal.'}
+              />
+            )}
+            {/* @ts-ignore */}
+            {currentUser?.meals?.length > 0 && (
+              <>
+                <CardContent>
+                  <MacroSummary macros={MOCK_MACROS} />
+                </CardContent>
+                <CardActions sx={{ p: 2, marginTop: 'auto' }}>
+                  <Button startIcon={<Add />} variant={'contained'}>
+                    Add food Consumption
+                  </Button>
+                </CardActions>
+              </>
+            )}
           </Card>
         </div>
 
         <div className='chart'>
-          <UserGoalChart
-            chartData={[
-              {
-                name: 'Weight Goal',
-                type: 'line',
-                fill: 'solid',
-                data: [110, 109, 107, 105, 103, 100, 99, 98, 97, 95],
-              },
-              {
-                name: 'Current Weight',
-                type: 'area',
-                fill: 'gradient',
-                data: [115, 111, 105, 104, 103, 102, 101, 100],
-              },
-            ]}
-          />
+          {projectedGoalValues?.values ? (
+            <UserGoalChart
+              dates={projectedGoalValues.dates}
+              chartData={[
+                {
+                  name: 'Weight Goal',
+                  type: 'line',
+                  fill: 'solid',
+                  data: projectedGoalValues.values,
+                },
+                {
+                  name: 'Current Weight',
+                  type: 'area',
+                  fill: 'gradient',
+                  data: extractWeightValues(currentUser?.goals?.checkpoint),
+                },
+              ]}
+            />
+          ) : (
+            <LoadingSpinner />
+          )}
         </div>
         <div className='checkout'>
           {/* <Card sx={{ height: '100%' }}>*/}
