@@ -1,14 +1,17 @@
+import { User } from '@/models'
 import { firebaseAuth } from '@/services/firebase/initializer'
-import { User } from 'firebase/auth'
 import React, { useEffect, useState } from 'react'
 
 export const UserContext = React.createContext<UserContextValues | null>({
   currentUser: null,
+  setCurrentUser: () => {},
 })
 
 export interface UserContextValues {
   currentUser: User | null
+  setCurrentUser: React.Dispatch<User | null>
 }
+
 type UserProviderProps = {
   children: React.ReactNode
 }
@@ -30,6 +33,7 @@ export const UserProvider = ({ children }: UserProviderProps) => {
     <UserContext.Provider
       value={{
         currentUser,
+        setCurrentUser,
       }}
     >
       {children}

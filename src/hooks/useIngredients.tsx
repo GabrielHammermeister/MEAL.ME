@@ -1,4 +1,4 @@
-import { IngredientContext, IngredientContextValues } from '@/providers/Ingredient.provider'
+import { IngredientContext, IngredientContextValues } from '@/context/Ingredient.provider'
 import { useContext } from 'react'
 
 const useIngredients = () => {

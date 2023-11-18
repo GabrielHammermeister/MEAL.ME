@@ -1,4 +1,4 @@
-import { Ingredient } from '@/providers/Ingredient.provider'
+import { Ingredient } from '@/context/Ingredient.provider'
 import { MacroNutrient } from '@/components/MacroSummary/MacroSummary'
 
 export interface IngredientType extends Ingredient {

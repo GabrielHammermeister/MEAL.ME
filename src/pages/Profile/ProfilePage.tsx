@@ -30,6 +30,7 @@ import GoalTypeForm from '@/pages/Profile/components/GoalTypeForm'
 import DefineGoalForm from '@/pages/Profile/components/DefineGoalForm'
 import BMRForm from '@/pages/Profile/components/BMR_Form'
 import calculateBMR from '@/utils/calculateBMR'
+import { isEmpty } from '@/utils/isEmpty'
 
 const steps = ['Goal Type', 'Basal Metabolic Rate', 'Define Goal']
 
@@ -39,7 +40,6 @@ export function ProfilePage() {
   const [displayUserGoalStepper, setDisplayUserGoalStepper] = useState(false)
   const [bmrValue, setBmrValue] = useState(0)
   const navigate = useNavigate()
-
   const isLastStep = activeStep === steps.length - 1
   const userGoal = false
 
@@ -86,6 +86,8 @@ export function ProfilePage() {
     setDisplayUserGoalStepper(true)
   }
 
+
+
   return (
     <>
       <DefaultTemplate>
@@ -97,7 +99,7 @@ export function ProfilePage() {
         </section>
 
         <section className={'profile-section'}>
-          {userGoal ? (
+          {isEmpty(currentUser?.goals) ? (
             <DisplayUserGoal />
           ) : (
             <>

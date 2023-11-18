@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment */
 import { Box, LinearProgress, LinearProgressProps, Typography } from '@mui/material'
 import React, { useEffect } from 'react'
+import './styles.css'
 
 export interface MacroNutrientProps {
   name: string
@@ -31,7 +32,7 @@ export const LinearProgressWithLabel = (props: LinearProgressProps & { value: nu
     return () => {
       clearInterval(timer)
     }
-  }, [])
+  }, [props.value])
 
   return (
     <Box sx={{ display: 'flex', alignItems: 'center' }}>
@@ -51,7 +52,9 @@ function MacroProgressBar({ name, macroNutrient, percent }: MacroNutrientProps) 
     <div>
       <Typography variant='caption'>
         {name}:{' '}
-        {macroNutrient.amount < 0.1 ? ' - ' : `${macroNutrient.amount} ${macroNutrient.unit}`}
+        {macroNutrient.amount < 0.1
+          ? ' - '
+          : `${macroNutrient.amount.toFixed(2)} ${macroNutrient.unit}`}
       </Typography>
       <LinearProgressWithLabel value={percent} />
     </div>

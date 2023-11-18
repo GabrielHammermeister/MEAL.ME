@@ -1,5 +1,3 @@
-import { Ingredient } from '@/providers/Ingredient.provider'
-
 type MacroNutrient = {
   amount: number
   unit: string
@@ -8,7 +6,7 @@ type MacroNutrient = {
 
 interface MacroSummary {
   macros: {
-    calories: number
+    calories?: number
     fats: MacroNutrient
     carbs: MacroNutrient
     proteins: MacroNutrient
@@ -16,10 +14,10 @@ interface MacroSummary {
 }
 
 type Nutrient = {
-  name: string
-  amount: number
-  unit: string
-  percentOfDailyNeeds: number
+  name?: string
+  amount?: number
+  unit?: string
+  percentOfDailyNeeds?: number
 }
 
 interface Nutrition {
@@ -33,21 +31,50 @@ interface CaloricBreakdown {
   percentCarbs: number
 }
 
-export function calculateTotalMacros(nutrition: Nutrition): MacroSummary {
-  const calories = nutrition.nutrients.find((el) => el.name === 'Calories')
+export function calculateTotalMacros(
+  nutrition: Nutrition,
+  prevMacros?: MacroSummary,
+): MacroSummary {
+  let Calories = nutrition.nutrients.find((el) => el.name === 'Calories')
   const { caloricBreakdown } = nutrition
-  if (!calories) throw Error('Erro de servico')
-  else {
-    const proteins = (calories.amount * (caloricBreakdown.percentProtein / 100)) / 4
-    const carbs = (calories.amount * (caloricBreakdown.percentCarbs / 100)) / 4
-    const fats = (calories.amount * (caloricBreakdown.percentFat / 100)) / 9
+
+  const Protein = nutrition.nutrients.find((el) => el.name === 'Protein')
+  const Carbohydrates = nutrition.nutrients.find((el) => el.name === 'Carbohydrates')
+  const Fat = nutrition.nutrients.find((el) => el.name === 'Fat')
+  if (prevMacros) {
+    console.log()
+    const {
+      macros: { calories, fats, proteins, carbs },
+    } = prevMacros
+    const sumProtein = proteins.amount + Protein?.amount
+    const sumFat = fats.amount + Fat?.amount
+    const sumCarbs = carbs.amount + Carbohydrates?.amount
+    const prevCalories = calories
+
+    console.log('Before', Calories)
+    const newTotalCalories = Calories?.amount + prevCalories
+    const newProteinPercent = ((sumProtein * 4) / newTotalCalories) * 100
+    const newFatPercent = ((sumFat * 9) / newTotalCalories) * 100
+    const newCarbsPercent = ((sumCarbs * 4) / newTotalCalories) * 100
+    // @ts-ignore
+    console.log('After', Calories)
+
     return {
       macros: {
-        calories: calories.amount,
-        proteins: { amount: proteins, unit: 'g', percent: caloricBreakdown.percentProtein },
-        fats: { amount: fats, unit: 'g', percent: caloricBreakdown.percentFat },
-        carbs: { amount: carbs, unit: 'g', percent: caloricBreakdown.percentCarbs },
+        calories: newTotalCalories,
+        proteins: { amount: sumProtein, unit: 'g', percent: newProteinPercent },
+        fats: { amount: sumFat, unit: 'g', percent: newFatPercent },
+        carbs: { amount: sumCarbs, unit: 'g', percent: newCarbsPercent },
       },
     }
+  }
+
+  return {
+    macros: {
+      calories: Calories.amount,
+      proteins: { amount: Protein?.amount, unit: 'g', percent: caloricBreakdown.percentProtein },
+      fats: { amount: Fat?.amount, unit: 'g', percent: caloricBreakdown.percentFat },
+      carbs: { amount: Carbohydrates?.amount, unit: 'g', percent: caloricBreakdown.percentCarbs },
+    },
   }
 }

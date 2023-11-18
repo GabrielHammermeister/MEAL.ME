@@ -2,7 +2,6 @@ import { Box, Card, CardHeader } from '@mui/material'
 import ReactApexChart from 'react-apexcharts'
 
 import React from 'react'
-import { ApexOptions } from 'apexcharts'
 import useChart from '@/hooks/useChart'
 
 const dates = [
@@ -20,7 +19,16 @@ const dates = [
   // '12/01/2003',
 ]
 
-export default function UserGoalChart({ chartData }: any) {
+// // Example usage:
+// const initialDate = new Date('2023-01-01')
+// const endDate = new Date('2023-01-10')
+// const initialValue = 25
+// const finalValue = 10
+//
+// const result = generateDecimalArray(initialDate, endDate, initialValue, finalValue)
+// console.log(result)
+
+export default function UserGoalChart({ chartData, dates }: any) {
   const chartOptions = useChart({
     plotOptions: { bar: { columnWidth: '16%' } },
     fill: { type: chartData.map((i: any) => i.fill) },
@@ -36,7 +44,7 @@ export default function UserGoalChart({ chartData }: any) {
       y: {
         formatter: (y: any) => {
           if (typeof y !== 'undefined') {
-            return `${y.toFixed(0)} kg`
+            return `${y.toFixed(2)} kg`
           }
           return y
         },

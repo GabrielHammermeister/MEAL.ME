@@ -1,4 +1,3 @@
-import Sidebar from '@/components/Sidebar/Sidebar.index'
 import React from 'react'
 import './Default.styles.css'
 

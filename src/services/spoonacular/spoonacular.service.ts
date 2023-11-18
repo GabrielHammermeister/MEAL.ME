@@ -1,14 +1,27 @@
-import axios from 'axios'
+import { axiosAPI } from '@/services/spoonacular/spoonacularApi'
 
-const BASE_URL = 'https://api.spoonacular.com/food/ingredients'
-const AUTH = `&apiKey=${import.meta.env.VITE_SPOONACULAR_API_KEY}`
 export function getIngredients(ingredient: string) {
-  return axios.get(BASE_URL + `/search?query=${ingredient}&number=6` + AUTH)
+  return axiosAPI.get('/search', {
+    params: {
+      query: ingredient,
+      number: 6,
+    },
+  })
 }
 
 export function getInformationById(id: string | undefined) {
-  return axios.get(BASE_URL + `/${id}/information?amount=100&unit=grams` + AUTH)
+  return axiosAPI.get(`/${id}/information`, {
+    params: {
+      amount: 100,
+      unit: 'grams',
+    },
+  })
 }
 export function getInformationByIdWithAmount(id: string | undefined, amount: number) {
-  return axios.get(BASE_URL + `/${id}/information?amount=${amount}&unit=grams` + AUTH)
+  return axiosAPI.get(`/${id}/information`, {
+    params: {
+      amount,
+      unit: 'grams',
+    },
+  })
 }

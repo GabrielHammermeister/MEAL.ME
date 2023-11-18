@@ -7,7 +7,7 @@ import { generateKey } from '@/utils/generateKey'
 import useIngredients from '@/hooks/useIngredients'
 import EmptyState from '@/components/EmptyState/EmptyState.index'
 import searchSrc from '@/assets/search-ingredient.svg'
-import { Ingredient } from '@/providers/Ingredient.provider'
+import { Ingredient } from '@/context/Ingredient.provider'
 
 interface DisplayIngredientsProps {
   variant: 'small' | 'large'

@@ -1,4 +1,4 @@
-import { Button, StepProps, Typography } from '@mui/material'
+import { Button } from '@mui/material'
 
 type GoalTypeFormProps = {
   handleNextStep: () => void
@@ -7,7 +7,6 @@ type GoalTypeFormProps = {
 export default function GoalTypeForm({ handleNextStep }: GoalTypeFormProps) {
   return (
     <div className={'step-container'}>
-      <Typography></Typography>
       <Button size={'large'} variant={'outlined'} onClick={handleNextStep} sx={{ mb: 3 }}>
         Gain Weight
       </Button>

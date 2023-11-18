@@ -18,6 +18,7 @@ interface MacroSummaryProps {
   }
   loading?: boolean
 }
+
 export function MacroSummary({
   macros: { calories, fats, proteins, carbs },
   loading = false,
@@ -25,23 +26,24 @@ export function MacroSummary({
   if (loading) {
     return <CircularProgress />
   }
+  console.log('macros', { calories, fats, proteins, carbs })
   return (
     <>
       <Box>
         <MacroProgressBar
           name={'Proteins'}
           macroNutrient={{ amount: proteins.amount, unit: proteins.unit }}
-          percent={proteins.percent}
+          percent={Math.floor(proteins.percent)}
         />
         <MacroProgressBar
           name={'Carbohydrates'}
           macroNutrient={{ amount: carbs.amount, unit: carbs.unit }}
-          percent={carbs.percent}
+          percent={Math.floor(carbs.percent)}
         />
         <MacroProgressBar
           name={'Fats'}
           macroNutrient={{ amount: fats.amount, unit: fats.unit }}
-          percent={fats.percent}
+          percent={Math.floor(fats.percent)}
         />
       </Box>
       <Typography variant='overline' mb={2}>
