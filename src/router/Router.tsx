@@ -10,6 +10,7 @@ import {
   MealsPage as RMealsPage,
   SignUpPage as RSignUpPage,
   UserProfilePage as RProfilePage,
+  SelectedMeal as RSelectedMeal,
 } from '@/pages/Responsive'
 import Validator from '@/router/Validator/Validator.index'
 
@@ -34,6 +35,7 @@ export const ROUTES = {
     SIGNUP: '/responsive/sign-up',
     CREATE_GOAL: '/responsive/create-goal',
     PROFILE: '/responsive/profile',
+    SELECTED_MEAL: '/responsive/selected-meal',
   },
 } as const
 
@@ -82,6 +84,9 @@ function Router() {
           </Route>
           <Route path={ROUTES.RESPONSIVE.CREATE_GOAL}>
             <Route index element={<RCreateGoalPage />} />
+          </Route>
+          <Route path={ROUTES.RESPONSIVE.SELECTED_MEAL}>
+            <Route index element={<RSelectedMeal />} />
           </Route>
         </Route>
 

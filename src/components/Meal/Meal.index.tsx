@@ -21,6 +21,7 @@ import { FlatIcon } from '../FlatIcon/FlatIcon'
 import AddIcon from '@mui/icons-material/Add'
 import RemoveIcon from '@mui/icons-material/Remove'
 import DeleteIcon from '@mui/icons-material/Delete'
+import { ROUTES } from '@/router/Router'
 
 const StyledCardActions = styled(CardActions)`
   display: flex;
@@ -71,6 +72,10 @@ const Meal = ({ mealData }: MealProps) => {
     setOpenDialog(false)
   }
 
+  function handleNavigate() {
+    navigate(ROUTES.RESPONSIVE.SELECTED_MEAL);
+  }
+
   return (
     <>
       <Badge
@@ -82,7 +87,10 @@ const Meal = ({ mealData }: MealProps) => {
         }}
         invisible={mealCounter === 0}
       >
-        <Card className='flex w-full gap-3 px-6 py-3 border-gray-300 shadow-md border-[1px] border-solid rounded-2xl h-28 cursor-pointer hover:bg-slate-100'>
+        <Card
+          className='flex w-full gap-3 px-6 py-3 border-gray-300 shadow-md border-[1px] border-solid rounded-2xl h-28 cursor-pointer hover:bg-slate-100'
+          onClick={handleNavigate}
+        >
           {/* <CardContent>
           <header className={'card-header'}>
             {mealData.type === 'liquid' ? <img src={'/water.svg'} /> : <img src={'/plate.svg'} />}
