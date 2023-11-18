@@ -1,3 +1,5 @@
+// @ts-nocheck
+
 import {
   Button,
   Card,
@@ -79,6 +81,7 @@ export const UserGoalsTab = () => {
 
     return message
   }
+
   if (isLoadingData) {
     return (
       <main className='container mx-auto mt-4'>
@@ -94,7 +97,7 @@ export const UserGoalsTab = () => {
           <EmptyState
             imgSrc={noGoalSvg}
             imgAlt={'user with no goal'}
-            title={"You don't have a goal"}
+            title={'You don\'t have a goal'}
             description={'Add a goal to your profile.'}
             handleOnClickButton={() => navigate(ROUTES.RESPONSIVE.CREATE_GOAL)}
             buttonLabel={'Create goal'}

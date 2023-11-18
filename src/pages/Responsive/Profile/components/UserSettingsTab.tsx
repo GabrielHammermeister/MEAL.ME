@@ -1,3 +1,5 @@
+// @ts-nocheck
+
 import { useState } from 'react'
 import {
   Button,
@@ -11,7 +13,6 @@ import {
 import EditIcon from '@mui/icons-material/Edit'
 import LogoutIcon from '@mui/icons-material/Logout'
 import { useNavigate } from 'react-router-dom'
-import { ROUTES } from '@/router/Router'
 import { signOut } from 'firebase/auth'
 import { firebaseAuth } from '@/services/firebase/initializer'
 

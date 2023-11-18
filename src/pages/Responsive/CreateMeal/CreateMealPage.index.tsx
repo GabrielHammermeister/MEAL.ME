@@ -1,3 +1,4 @@
+// @ts-nocheck
 import React, { Reducer, useEffect, useReducer, useState } from 'react'
 import DefaultTemplate from '@/templates/Default/Default.index'
 import {

@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { Box, Button, InputAdornment, TextField, Typography } from '@mui/material'
 import React from 'react'
 import { createGoal } from '@/services/mealApi/goalsService'

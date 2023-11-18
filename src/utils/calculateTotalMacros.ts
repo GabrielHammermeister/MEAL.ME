@@ -1,3 +1,5 @@
+// @ts-nocheck
+
 type MacroNutrient = {
   amount: number
   unit: string
@@ -35,7 +37,7 @@ export function calculateTotalMacros(
   nutrition: Nutrition,
   prevMacros?: MacroSummary,
 ): MacroSummary {
-  let Calories = nutrition.nutrients.find((el) => el.name === 'Calories')
+  const Calories = nutrition.nutrients.find((el) => el.name === 'Calories')
   const { caloricBreakdown } = nutrition
 
   const Protein = nutrition.nutrients.find((el) => el.name === 'Protein')

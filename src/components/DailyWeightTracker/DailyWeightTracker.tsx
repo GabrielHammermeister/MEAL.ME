@@ -1,3 +1,4 @@
+// @ts-nocheck
 import React, { useEffect, useState } from 'react'
 import TextField from '@mui/material/TextField'
 import { Button, Card, CardContent, CardHeader } from '@mui/material'

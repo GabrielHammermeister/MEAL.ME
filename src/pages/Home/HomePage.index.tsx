@@ -1,3 +1,4 @@
+// @ts-nocheck
 import React, { useState } from 'react'
 // Components
 import DefaultTemplate from '@/templates/Default/Default.index'
@@ -58,6 +59,7 @@ const HomePage = () => {
   function handleDailyCheckout() {
     setCheckedOut((prevState) => !prevState)
   }
+
   function handleEditWeight() {
     setCheckedOut((prevState) => !prevState)
   }

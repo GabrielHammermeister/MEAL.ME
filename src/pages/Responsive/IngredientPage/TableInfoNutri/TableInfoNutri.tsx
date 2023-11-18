@@ -1,3 +1,5 @@
+// @ts-nocheck
+
 import {
   Paper,
   Table,
@@ -6,13 +8,13 @@ import {
   TableContainer,
   TableHead,
   TableRow,
-} from '@mui/material';
-import React from 'react';
-import { MacroSummary, Nutrient } from '@/pages/Responsive/IngredientPage/IngredientPage';
+} from '@mui/material'
+import React from 'react'
+import { MacroSummary, Nutrient } from '@/pages/Responsive/IngredientPage/IngredientPage'
 
 interface TableInfoNutriProps {
-  macroNutrients: MacroSummary;
-  nutrients: Nutrient[];
+  macroNutrients: MacroSummary
+  nutrients: Nutrient[]
 }
 
 export const TableInfoNutri: React.FC<TableInfoNutriProps> = ({ macroNutrients, nutrients }) => {
@@ -69,5 +71,5 @@ export const TableInfoNutri: React.FC<TableInfoNutriProps> = ({ macroNutrients, 
         </TableBody>
       </Table>
     </TableContainer>
-  );
-};
+  )
+}

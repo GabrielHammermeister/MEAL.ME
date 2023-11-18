@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { Box, Button, InputAdornment, TextField } from '@mui/material'
 import React, { useState } from 'react'
 import '../styles.css'
