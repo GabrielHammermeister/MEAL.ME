@@ -86,7 +86,7 @@ export function ResponsiveLayout({
             'fixed bottom-0 right-0 left-0 border-t-2 border-slate-200 border-opacity-20 h-16 z-20'
           }
         >
-          <div className='relative z-50 flex items-center justify-between h-full px-12 bg-white'>
+          <div className='relative z-50 flex items-center justify-center h-full bg-white gap-2 sm:gap-3 md:gap-4 lg:gap-5 xl:gap-6 2xl:gap-7'>
             {LINKS.map((link) => (
               <NavButton {...link} key={generateKey()} />
             ))}

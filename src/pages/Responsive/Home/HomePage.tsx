@@ -15,6 +15,11 @@ import { generateDecimalArrayWithDates } from '@/utils/generateDecimalArrayWithD
 import WaterTracker from '@/components/WaterTracker/WaterTracker'
 import useMealListFromLocalStorage from '@/hooks/useMealListFromLocalStorage'
 import { sumMacroNutrients } from '@/utils/sumMacroNutrients'
+import { isEmpty } from '@/utils/isEmpty'
+import EmptyState from '@/components/EmptyState/EmptyState.index'
+import emptyBoxSrc from '@/assets/empty-box.svg'
+import { useNavigate } from 'react-router-dom'
+import { ROUTES } from '@/router/Router'
 
 const MOCK_MACROS = {
   calories: 123,
@@ -61,6 +66,7 @@ export const HomePage = () => {
   const [projectedGoalValues, setProjectedGoalValues] = useState<any>()
   const [mealList, setMealList] = useMealListFromLocalStorage()
   const [totalMacroNutrients, setTotalMacroNutrients] = useState()
+  const navigate = useNavigate()
 
   useEffect(() => {
     // @ts-ignore
@@ -129,33 +135,48 @@ export const HomePage = () => {
         <div>
           <WaterTracker />
         </div>
-        <div className='chart'>
-          {projectedGoalValues?.values ? (
-            <UserGoalChart
-              dates={projectedGoalValues.dates}
-              chartData={[
-                {
-                  name: 'Weight Goal',
-                  type: 'line',
-                  fill: 'solid',
-                  data: projectedGoalValues.values,
-                },
-                {
-                  name: 'Current Weight',
-                  type: 'area',
-                  fill: 'gradient',
-                  data: extractWeightValues(currentUser?.goals?.checkpoint),
-                },
-              ]}
+        {isEmpty(currentUser?.goals) ? (
+          <div className={'py-24 pt-12'}>
+            <EmptyState
+              imgSrc={emptyBoxSrc}
+              imgAlt={'No goals found'}
+              title={'You have no goals yet...'}
+              description={'Prepare yourself for a new journey!'}
+              handleOnClickButton={() => navigate(ROUTES.RESPONSIVE.CREATE_GOAL)}
+              buttonLabel={'Create a goal'}
             />
-          ) : (
-            <LoadingSpinner />
-          )}
-        </div>
+          </div>
+        ) : (
+          <>
+            <div className='chart'>
+              {projectedGoalValues?.values ? (
+                <UserGoalChart
+                  dates={projectedGoalValues.dates}
+                  chartData={[
+                    {
+                      name: 'Weight Goal',
+                      type: 'line',
+                      fill: 'solid',
+                      data: projectedGoalValues.values,
+                    },
+                    {
+                      name: 'Current Weight',
+                      type: 'area',
+                      fill: 'gradient',
+                      data: extractWeightValues(currentUser?.goals?.checkpoint),
+                    },
+                  ]}
+                />
+              ) : (
+                <LoadingSpinner />
+              )}
+            </div>
 
-        <div className='checkout'>
-          <DailyWeightTracker />
-        </div>
+            <div className='checkout'>
+              <DailyWeightTracker />
+            </div>
+          </>
+        )}
       </section>
     </ResponsiveLayout>
   )

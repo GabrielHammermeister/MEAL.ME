@@ -8,6 +8,7 @@ import {
   IngredientPage as RIngredientPage,
   LoginPage as RLoginPage,
   MealsPage as RMealsPage,
+  SelectedMeal as RSelectedMeal,
   SignUpPage as RSignUpPage,
   UserProfilePage as RProfilePage,
 } from '@/pages/Responsive'
@@ -34,6 +35,7 @@ export const ROUTES = {
     SIGNUP: '/responsive/sign-up',
     CREATE_GOAL: '/responsive/create-goal',
     PROFILE: '/responsive/profile',
+    SELECTED_MEAL: '/responsive/selected-meal',
     MEALS: '/responsive/meals',
   },
 } as const
@@ -68,6 +70,7 @@ function Router() {
           </Route>
           <Route path={ROUTES.RESPONSIVE.MEALS}>
             <Route index element={<RMealsPage />} />
+            <Route path={':id'} element={<RSelectedMeal />} />
           </Route>
           <Route path={ROUTES.RESPONSIVE.PROFILE}>
             <Route index element={<RProfilePage />} />
@@ -84,6 +87,8 @@ function Router() {
           <Route path={ROUTES.RESPONSIVE.CREATE_GOAL}>
             <Route index element={<RCreateGoalPage />} />
           </Route>
+          {/* <Route path={ROUTES.RESPONSIVE.SELECTED_MEAL}> */}
+          {/* </Route> */}
         </Route>
 
         {/* /!* Public Routes *!/ */}

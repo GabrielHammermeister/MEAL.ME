@@ -22,6 +22,7 @@ import { FlatIcon } from '../FlatIcon/FlatIcon'
 import AddIcon from '@mui/icons-material/Add'
 import RemoveIcon from '@mui/icons-material/Remove'
 import DeleteIcon from '@mui/icons-material/Delete'
+import { ROUTES } from '@/router/Router'
 import { convertDateFormat } from '@/utils/convertDateFormat'
 
 const StyledCardActions = styled(CardActions)`
@@ -104,8 +105,12 @@ const Meal = ({ mealData, onMealDelete }: MealProps) => {
     }
   }
 
+  function handleNavigate() {
+    navigate(ROUTES.RESPONSIVE.MEALS + '/' + mealData.id)
+  }
+
   return (
-    <>
+    <div className={'flex gap-4'}>
       <Badge
         color='secondary'
         badgeContent={mealCounter}
@@ -114,29 +119,13 @@ const Meal = ({ mealData, onMealDelete }: MealProps) => {
           horizontal: 'left',
         }}
         invisible={mealCounter === 0}
+        className={'flex-1 '}
       >
-        <Card className='flex w-full gap-3 px-6 py-3 border-gray-300 shadow-md border-[1px] border-solid rounded-2xl  cursor-pointer hover:bg-slate-100'>
-          {/* <CardContent>
-          <header className={'card-header'}>
-            {mealData.type === 'liquid' ? <img src={'/water.svg'} /> : <img src={'/plate.svg'} />}
-            <Typography variant={'subtitle2'} gutterBottom align={'center'}>
-              {mealData.name}
-            </Typography>
-            <IconButton aria-label='add' onClick={handleAddMealCounter}>
-              <Check />
-            </IconButton>
-          </header>
-        </CardContent>
-        <StyledCardActions sx={{ p: 2 }}>
-          <Typography variant='overline' display='block' gutterBottom>
-            {mealData.calories} kcal
-          </Typography>
-          <Button size='small' onClick={handleSeeMore}>
-            See More
-          </Button>
-        </StyledCardActions> */}
-
-          <div className='flex flex-col w-10 gap-3'>
+        <Card
+          className='flex w-full gap-3 px-6 py-3 border-gray-300 shadow-md border-[1px] border-solid rounded-2xl cursor-pointer hover:bg-slate-100'
+          onClick={handleNavigate}
+        >
+          <div className='flex flex-col w-10 gap-3 justify-between'>
             {mealData.type === 'liquid' ? (
               <IconBase>
                 <FlatIcon src={svgDrinkSrc} size='sm' />
@@ -153,26 +142,25 @@ const Meal = ({ mealData, onMealDelete }: MealProps) => {
               <h4 className='my-2 font-medium'>
                 # <span className=''>{mealData.name}</span>
               </h4>
-              <IconButton onClick={handleDelete} size='small'>
-                <DeleteIcon />
-              </IconButton>
             </div>
             <span>calories: {mealData.calories} Kcal </span>
             <Typography variant={'overline'}>
               Created at {convertDateFormat(mealData.createdAt)}
             </Typography>
           </div>
-
-          <div className='flex flex-col justify-center items-end'>
-            <IconButton onClick={handleIncrement}>
-              <AddIcon />
-            </IconButton>
-            <IconButton onClick={handleDecrement}>
-              <RemoveIcon />
-            </IconButton>
-          </div>
         </Card>
       </Badge>
+      <div className='flex flex-col justify-center items-end'>
+        <IconButton onClick={handleIncrement}>
+          <AddIcon />
+        </IconButton>
+        <IconButton onClick={handleDecrement}>
+          <RemoveIcon />
+        </IconButton>
+        <IconButton onClick={handleDelete} className={'mt-2'}>
+          <DeleteIcon />
+        </IconButton>
+      </div>
 
       <Dialog
         open={openDialog}
@@ -193,7 +181,7 @@ const Meal = ({ mealData, onMealDelete }: MealProps) => {
           </Button>
         </DialogActions>
       </Dialog>
-    </>
+    </div>
   )
 }
 

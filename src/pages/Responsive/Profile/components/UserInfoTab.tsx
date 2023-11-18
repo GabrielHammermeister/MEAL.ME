@@ -29,103 +29,17 @@ export const UserInfoTab = () => {
   return (
     <main className='container mx-auto mt-4'>
       <div className='bg-white p-4 rounded-lg shadow-md flex flex-col gap-4'>
-        <UserInfo userProfileInfo={userProfile.name} label={'Nome'} />
+        <UserInfo userProfileInfo={userProfile.name} label={'Name'} />
         <Divider />
         <UserInfo userProfileInfo={userProfile.email} label={'Email'} />
         <Divider />
-        <UserInfo userProfileInfo={userProfile.weight} label={'Peso Atual'} />
+        <UserInfo userProfileInfo={userProfile.weight} label={'Current Weight'} />
         <Divider />
-        <UserInfo userProfileInfo={userProfile.age} label={'Idade'} />
+        <UserInfo userProfileInfo={userProfile.age} label={'Age'} />
         <Divider />
-        <UserInfo userProfileInfo={userProfile.height} label={'Altura'} />
+        <UserInfo userProfileInfo={userProfile.height} label={'Height'} />
         <Divider />
-        <UserInfo userProfileInfo={userProfile.sex} label={'Sexo'} />
-
-        {/* <div className={'flex'}>*/}
-        {/*  <Typography variant='subtitle1'>Peso Atual:</Typography>*/}
-        {/*  {isEditing ? (*/}
-        {/*    <TextField*/}
-        {/*      variant='outlined'*/}
-        {/*      size='small'*/}
-        {/*      value={userProfile.weight}*/}
-        {/*      onChange={(e) =>*/}
-        {/*        setUserProfile({*/}
-        {/*          ...userProfile,*/}
-        {/*          weight: Number(e.target.value),*/}
-        {/*        })*/}
-        {/*      }*/}
-        {/*    />*/}
-        {/*  ) : (*/}
-        {/*    <Typography variant='subtitle1' className={'ml-auto'}>*/}
-        {/*      {userProfile.weight} Kg*/}
-        {/*    </Typography>*/}
-        {/*  )}*/}
-        {/* </div>*/}
-        {/* <Divider />*/}
-        {/* <div className={'flex'}>*/}
-        {/*  <Typography variant='subtitle1'>Altura:</Typography>*/}
-        {/*  {isEditing ? (*/}
-        {/*    <TextField*/}
-        {/*      variant='outlined'*/}
-        {/*      size='small'*/}
-        {/*      value={userProfile.height}*/}
-        {/*      onChange={(e) =>*/}
-        {/*        setUserProfile({*/}
-        {/*          ...userProfile,*/}
-        {/*          height: Number(e.target.value),*/}
-        {/*        })*/}
-        {/*      }*/}
-        {/*    />*/}
-        {/*  ) : (*/}
-        {/*    <Typography variant='subtitle1' className={'ml-auto'}>*/}
-        {/*      {userProfile.height} cm*/}
-        {/*    </Typography>*/}
-        {/*  )}*/}
-        {/* </div>*/}
-
-        {/* <Divider />*/}
-        {/* <div className={'flex'}>*/}
-        {/*  <Typography variant='subtitle1'>Sexo:</Typography>*/}
-        {/*  {isEditing ? (*/}
-        {/*    <TextField*/}
-        {/*      variant='outlined'*/}
-        {/*      size='small'*/}
-        {/*      value={userProfile.height}*/}
-        {/*      onChange={(e) =>*/}
-        {/*        setUserProfile({*/}
-        {/*          ...userProfile,*/}
-        {/*          height: Number(e.target.value),*/}
-        {/*        })*/}
-        {/*      }*/}
-        {/*    />*/}
-        {/*  ) : (*/}
-        {/*    <Typography variant='subtitle1' className={'ml-auto'}>*/}
-        {/*      {userProfile.sex}*/}
-        {/*    </Typography>*/}
-        {/*  )}*/}
-        {/* </div>*/}
-
-        {/* <Divider />*/}
-        {/* <div className={'flex'}>*/}
-        {/*  <Typography variant='subtitle1'>Email:</Typography>*/}
-        {/*  {isEditing ? (*/}
-        {/*    <TextField*/}
-        {/*      variant='outlined'*/}
-        {/*      size='small'*/}
-        {/*      value={userProfile.height}*/}
-        {/*      onChange={(e) =>*/}
-        {/*        setUserProfile({*/}
-        {/*          ...userProfile,*/}
-        {/*          height: Number(e.target.value),*/}
-        {/*        })*/}
-        {/*      }*/}
-        {/*    />*/}
-        {/*  ) : (*/}
-        {/*    <Typography variant='subtitle1' className={'ml-auto'}>*/}
-        {/*      {userProfile.email}*/}
-        {/*    </Typography>*/}
-        {/*  )}*/}
-        {/* </div>*/}
+        <UserInfo userProfileInfo={userProfile.sex} label={'Sex'} />
 
         {isEditing && (
           <Button variant='contained' color='primary' onClick={handleSaveClick} className='mt-2'>

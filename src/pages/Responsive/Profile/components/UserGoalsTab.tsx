@@ -21,6 +21,7 @@ import { deleteGoal as requestDeleteGoal, getGoals } from '@/services/mealApi/go
 import { Goal } from '@/models'
 import { GoalType } from '@/consntants/enums/GoalType'
 import { convertDateFormat } from '@/utils/convertDateFormat'
+import { LoadingSpinner } from '@/components/LoadingSpinner/LoadingSpinner.index'
 
 export const UserGoalsTab = () => {
   const [goal, setGoal] = useState<Goal | null>()
@@ -28,7 +29,7 @@ export const UserGoalsTab = () => {
   const [selectedGoal, setSelectedGoal] = useState(null)
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false)
   const navigate = useNavigate()
-
+  const [isLoadingData, setIsLoadingData] = useState(true)
   useEffect(() => {
     const fetchdata = async () => {
       try {
@@ -36,6 +37,7 @@ export const UserGoalsTab = () => {
         // @ts-ignore
         console.log('response', goalsRes)
         setGoal(goalsRes)
+        setIsLoadingData(false)
       } catch (err) {}
     }
     fetchdata()
@@ -76,6 +78,13 @@ export const UserGoalsTab = () => {
     }
 
     return message
+  }
+  if (isLoadingData) {
+    return (
+      <main className='container mx-auto mt-4'>
+        <LoadingSpinner />
+      </main>
+    )
   }
 
   return (
