@@ -1,17 +1,18 @@
 import {
   Badge,
+  Button,
   Card,
   CardActions,
-  styled,
-  IconButton,
   Dialog,
   DialogActions,
   DialogContent,
   DialogContentText,
   DialogTitle,
-  Button,
+  IconButton,
+  styled,
+  Typography,
 } from '@mui/material'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import './styles.css'
 import { useNavigate } from 'react-router-dom'
 import { IconBase } from '../IconBase/IconBase'
@@ -21,6 +22,7 @@ import { FlatIcon } from '../FlatIcon/FlatIcon'
 import AddIcon from '@mui/icons-material/Add'
 import RemoveIcon from '@mui/icons-material/Remove'
 import DeleteIcon from '@mui/icons-material/Delete'
+import { convertDateFormat } from '@/utils/convertDateFormat'
 
 const StyledCardActions = styled(CardActions)`
   display: flex;
@@ -33,13 +35,39 @@ type MealProps = {
     name: string
     type: 'solid' | 'liquid'
     calories: number
+    createdAt: string
   }
 }
 
-const Meal = ({ mealData }: MealProps) => {
-  const [mealCounter, setMealCounter] = useState(0)
+const Meal = ({ mealData, onMealDelete }: MealProps) => {
+  const [mealCounter, setMealCounter] = useState(() => {
+    const storedMeals = localStorage.getItem('meals')
+    if (storedMeals) {
+      const parsedMeals = JSON.parse(storedMeals)
+
+      const savedMealCounter = parsedMeals.find((meal) => meal.id === mealData.id)
+      return savedMealCounter?.counter
+    }
+  })
   const [openDialog, setOpenDialog] = useState(false)
   const navigate = useNavigate()
+
+  useEffect(() => {
+    const storedMeals = localStorage.getItem('meals')
+    if (storedMeals) {
+      const parsedMeals = JSON.parse(storedMeals)
+      const updatedMeals = parsedMeals.map((meal) => {
+        if (meal.id === mealData.id) {
+          return {
+            ...meal,
+            counter: mealCounter,
+          }
+        }
+        return meal
+      })
+      localStorage.setItem('meals', JSON.stringify(updatedMeals))
+    }
+  }, [mealCounter])
 
   function handleAddMealCounter() {
     setMealCounter((prev) => prev + 1)
@@ -66,9 +94,14 @@ const Meal = ({ mealData }: MealProps) => {
   }
 
   function handleConfirmDelete() {
-    // colocar a logica de exclusao
-    console.log('SUMIII')
-    setOpenDialog(false)
+    const storedMeals = localStorage.getItem('meals')
+    if (storedMeals) {
+      const parsedMeals = JSON.parse(storedMeals)
+      const updatedMeals = parsedMeals.filter((meal) => meal.id !== mealData.id)
+      localStorage.setItem('meals', JSON.stringify(updatedMeals))
+      onMealDelete(updatedMeals)
+      setOpenDialog(false)
+    }
   }
 
   return (
@@ -82,7 +115,7 @@ const Meal = ({ mealData }: MealProps) => {
         }}
         invisible={mealCounter === 0}
       >
-        <Card className='flex w-full gap-3 px-6 py-3 border-gray-300 shadow-md border-[1px] border-solid rounded-2xl h-28 cursor-pointer hover:bg-slate-100'>
+        <Card className='flex w-full gap-3 px-6 py-3 border-gray-300 shadow-md border-[1px] border-solid rounded-2xl  cursor-pointer hover:bg-slate-100'>
           {/* <CardContent>
           <header className={'card-header'}>
             {mealData.type === 'liquid' ? <img src={'/water.svg'} /> : <img src={'/plate.svg'} />}
@@ -104,25 +137,30 @@ const Meal = ({ mealData }: MealProps) => {
         </StyledCardActions> */}
 
           <div className='flex flex-col w-10 gap-3'>
-            <IconBase>
-              <FlatIcon src={svgForkSrc} size='sm' />
-            </IconBase>
-            <IconBase>
-              <FlatIcon src={svgDrinkSrc} size='sm' />
-            </IconBase>
+            {mealData.type === 'liquid' ? (
+              <IconBase>
+                <FlatIcon src={svgDrinkSrc} size='sm' />
+              </IconBase>
+            ) : (
+              <IconBase>
+                <FlatIcon src={svgForkSrc} size='sm' />
+              </IconBase>
+            )}
           </div>
 
-          <div className='flex flex-col flex-grow h-full gap-3'>
+          <div className='flex flex-col flex-grow h-full gap-1'>
             <div className='flex justify-between items-center w-full'>
               <h4 className='my-2 font-medium'>
-                #12 <span className=''>{mealData.name}</span>
+                # <span className=''>{mealData.name}</span>
               </h4>
               <IconButton onClick={handleDelete} size='small'>
                 <DeleteIcon />
               </IconButton>
             </div>
-
-            <span>Created at 12/07/2020</span>
+            <span>calories: {mealData.calories} Kcal </span>
+            <Typography variant={'overline'}>
+              Created at {convertDateFormat(mealData.createdAt)}
+            </Typography>
           </div>
 
           <div className='flex flex-col justify-center items-end'>

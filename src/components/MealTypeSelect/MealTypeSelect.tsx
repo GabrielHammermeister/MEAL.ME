@@ -1,6 +1,6 @@
 import { Button, Menu, MenuItem, Typography } from '@mui/material'
 import Iconify from '../iconify/Iconify'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Box } from '@mui/system'
 
 const MEAL_TYPES = [
@@ -8,9 +8,13 @@ const MEAL_TYPES = [
   { value: 'liquid', label: 'Liquid' },
 ]
 
-export function MealTypeSelect() {
+export function MealTypeSelect({ setMealType }: any) {
   const [open, setOpen] = useState(null)
   const [mealTypeSelected, setMealTypeSelected] = useState('solid')
+
+  useEffect(() => {
+    setMealType('solid')
+  }, [])
 
   const handleOpen = (event: any) => {
     setOpen(event.currentTarget)
@@ -22,6 +26,7 @@ export function MealTypeSelect() {
 
   const handleSelectMealType = (option: any) => {
     setMealTypeSelected(option.value)
+    setMealType(option.value)
     setOpen(null)
   }
 

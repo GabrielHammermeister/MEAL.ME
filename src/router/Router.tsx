@@ -34,6 +34,7 @@ export const ROUTES = {
     SIGNUP: '/responsive/sign-up',
     CREATE_GOAL: '/responsive/create-goal',
     PROFILE: '/responsive/profile',
+    MEALS: '/responsive/meals',
   },
 } as const
 
@@ -65,7 +66,7 @@ function Router() {
             <Route index element={<RFindIngredientsPage />} />
             <Route path={':id'} element={<RIngredientPage />} />
           </Route>
-          <Route path={'meals'}>
+          <Route path={ROUTES.RESPONSIVE.MEALS}>
             <Route index element={<RMealsPage />} />
           </Route>
           <Route path={ROUTES.RESPONSIVE.PROFILE}>

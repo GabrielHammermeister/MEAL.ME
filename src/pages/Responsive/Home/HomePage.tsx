@@ -1,18 +1,20 @@
 import React, { useEffect, useState } from 'react'
 // Components
 // Contexts
-import { Button, Card, CardActions, CardContent, CardHeader } from '@mui/material'
+import { Card, CardContent, CardHeader } from '@mui/material'
 
 import './HomePage.styles.css'
 import useCurrentUser from '@/hooks/useCurrentUser'
 import UserGoalChart from '@/components/UserGoalChart/UserGoalChart.index'
 import { MacroSummary } from '@/components/MacroSummary/MacroSummary'
-import { Add } from '@mui/icons-material'
 import { ResponsiveLayout } from '@/templates/ResponsiveLayout/ResponsiveLayout'
 import { PageTitle } from '@/components/PageTitle/PageTitle'
 import DailyWeightTracker from '@/components/DailyWeightTracker/DailyWeightTracker'
 import { LoadingSpinner } from '@/components/LoadingSpinner/LoadingSpinner.index'
 import { generateDecimalArrayWithDates } from '@/utils/generateDecimalArrayWithDates'
+import WaterTracker from '@/components/WaterTracker/WaterTracker'
+import useMealListFromLocalStorage from '@/hooks/useMealListFromLocalStorage'
+import { sumMacroNutrients } from '@/utils/sumMacroNutrients'
 
 const MOCK_MACROS = {
   calories: 123,
@@ -57,6 +59,16 @@ const MOCK_MACROS = {
 export const HomePage = () => {
   const { currentUser } = useCurrentUser()
   const [projectedGoalValues, setProjectedGoalValues] = useState<any>()
+  const [mealList, setMealList] = useMealListFromLocalStorage()
+  const [totalMacroNutrients, setTotalMacroNutrients] = useState()
+
+  useEffect(() => {
+    // @ts-ignore
+    const total = sumMacroNutrients(mealList)
+    setTotalMacroNutrients(total)
+    console.log('totalMacroNutrients', totalMacroNutrients)
+    console.log('mealList', mealList)
+  }, [mealList])
 
   const extractWeightValues = (
     checkpoints: { date: string; weight: number }[] | undefined,
@@ -68,10 +80,8 @@ export const HomePage = () => {
 
   useEffect(() => {
     if (!currentUser?.goals) return
-    console.log('NOW USER', currentUser)
     const { initialWeight, weightGoal, deadline, initialDate } = currentUser.goals
 
-    console.log('NOW GOAL', { initialWeight, weightGoal, deadline, initialDate })
     setProjectedGoalValues(() => {
       return generateDecimalArrayWithDates(
         new Date(initialDate),
@@ -90,7 +100,7 @@ export const HomePage = () => {
         <div className='Summary'>
           <Card sx={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
             {/* @ts-ignore */}
-            {currentUser?.meals?.length > 0 ? (
+            {totalMacroNutrients?.calories > 0 ? (
               <CardHeader
                 title={'Daily Macro Summary'}
                 subheader={'Your daily nutrient consumption'}
@@ -102,21 +112,23 @@ export const HomePage = () => {
               />
             )}
             {/* @ts-ignore */}
-            {currentUser?.meals?.length > 0 && (
+            {totalMacroNutrients?.calories > 0 && (
               <>
                 <CardContent>
-                  <MacroSummary macros={MOCK_MACROS} />
+                  <MacroSummary macros={totalMacroNutrients} />
                 </CardContent>
-                <CardActions sx={{ p: 2, marginTop: 'auto' }}>
-                  <Button startIcon={<Add />} variant={'contained'}>
-                    Add food Consumption
-                  </Button>
-                </CardActions>
+                {/* <CardActions sx={{ p: 2, marginTop: 'auto' }}> */}
+                {/*   <Button startIcon={<Add />} variant={'contained'}> */}
+                {/*     Add food Consumption */}
+                {/*   </Button> */}
+                {/* </CardActions> */}
               </>
             )}
           </Card>
         </div>
-
+        <div>
+          <WaterTracker />
+        </div>
         <div className='chart'>
           {projectedGoalValues?.values ? (
             <UserGoalChart
@@ -140,25 +152,8 @@ export const HomePage = () => {
             <LoadingSpinner />
           )}
         </div>
+
         <div className='checkout'>
-          {/* <Card sx={{ height: '100%' }}>*/}
-          {/*  <CardHeader title={'Daily Weight Check'} subheader={'Check your body weight daily'} />*/}
-          {/*  /!* <CardContent> *!/*/}
-          {/*  /!*    *!/*/}
-          {/*  /!* </CardContent> *!/*/}
-          {/*  <CardActions sx={{ p: 3, display: 'flex', justifyContent: 'space-between' }}>*/}
-          {/*    <TextField*/}
-          {/*      variant={'outlined'}*/}
-          {/*      type={'number'}*/}
-          {/*      InputProps={{*/}
-          {/*        endAdornment: <InputAdornment position='start'>kg</InputAdornment>,*/}
-          {/*      }}*/}
-          {/*    />*/}
-          {/*    <Button size='large' variant={'outlined'}>*/}
-          {/*      save*/}
-          {/*    </Button>*/}
-          {/*  </CardActions>*/}
-          {/* </Card>*/}
           <DailyWeightTracker />
         </div>
       </section>

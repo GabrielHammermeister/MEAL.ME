@@ -1,9 +1,7 @@
-import React, { useState } from 'react'
-import Button from '@mui/material/Button'
+import React, { useEffect, useState } from 'react'
 import TextField from '@mui/material/TextField'
-import Card from '@mui/material/Card'
-import CardContent from '@mui/material/CardContent'
 import Typography from '@mui/material/Typography'
+import { Button, Card, CardActions, CardContent, CardHeader } from '@mui/material'
 
 interface WaterConsumption {
   timestamp: string
@@ -13,11 +11,18 @@ interface WaterConsumption {
 const WaterTracker: React.FC = () => {
   const [waterQuantity, setWaterQuantity] = useState<number>(0)
   const [waterConsumptionList, setWaterConsumptionList] = useState<WaterConsumption[]>([])
-
+  const [waterHistory, setWaterHistory] = useState([])
+  const [showHistory, setShowHistory] = useState(false)
   const handleWaterInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const value = parseInt(event.target.value)
     setWaterQuantity(value || 0)
   }
+
+  useEffect(() => {
+    const history = JSON.parse(localStorage.getItem('waterConsumption') || '[]')
+    setWaterConsumptionList(history)
+    // setWaterQuantity(history.reduce((acc, value) => acc + value))
+  }, [])
 
   const handleWaterSubmit = () => {
     const currentTime = new Date().toISOString()
@@ -41,17 +46,16 @@ const WaterTracker: React.FC = () => {
 
   const showWaterHistory = () => {
     const history = JSON.parse(localStorage.getItem('waterConsumption') || '[]')
-    console.log('Water Consumption History:', history)
-    // Display the history using a dialog or another UI component
+
+    setWaterHistory(history)
+    setShowHistory((prev) => !prev)
   }
 
   return (
     <Card>
+      <CardHeader title={'Water Consumption Tracker'} subheader={'Stay hydrated'} />
       <CardContent>
-        <Typography variant='h5' gutterBottom>
-          Water Consumption Tracker
-        </Typography>
-        <Typography variant='body1' gutterBottom>
+        <Typography variant='body1' className={'mb-4'}>
           Total Water Consumed: {getTotalWaterConsumed()} ml
         </Typography>
         <TextField
@@ -61,13 +65,29 @@ const WaterTracker: React.FC = () => {
           value={waterQuantity}
           onChange={handleWaterInputChange}
         />
+        {waterConsumptionList.length > 0 && showHistory && (
+          <div className={'pt-6 flex flex-col gap-2'}>
+            {waterHistory.map((val, index) => (
+              <div className={'flex justify-between'}>
+                <span>{val.quantity} ml</span>
+                <span>
+                  {new Date(val.timestamp).toISOString().slice(0, 16).replace('T', ' * ')}
+                </span>
+              </div>
+            ))}
+          </div>
+        )}
+      </CardContent>
+      <CardActions>
         <Button variant='contained' onClick={handleWaterSubmit}>
           Add Water
         </Button>
-        <Button variant='outlined' onClick={showWaterHistory}>
-          Show History
-        </Button>
-      </CardContent>
+        {waterConsumptionList.length > 0 && (
+          <Button variant='outlined' onClick={showWaterHistory}>
+            {showHistory ? 'Hide History' : 'Show History'}
+          </Button>
+        )}
+      </CardActions>
     </Card>
   )
 }

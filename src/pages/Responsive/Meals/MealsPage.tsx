@@ -1,7 +1,7 @@
 import EmptyState from '@/components/EmptyState/EmptyState.index'
 import Meal from '@/components/Meal/Meal.index'
 import { Button } from '@mui/material'
-import React, { useState } from 'react'
+import React from 'react'
 
 import './MealsPage.styles.css'
 import emptyBoxSrc from '@/assets/empty-box.svg'
@@ -9,17 +9,18 @@ import { useNavigate } from 'react-router-dom'
 import { Add } from '@mui/icons-material'
 import { ResponsiveLayout } from '@/templates/ResponsiveLayout/ResponsiveLayout'
 import { PageTitle } from '@/components/PageTitle/PageTitle'
+import { generateKey } from '@/utils/generateKey'
+import useMealListFromLocalStorage from '@/hooks/useMealListFromLocalStorage'
 
 export const MealsPage = () => {
   const navigate = useNavigate()
-  const [mealList, setMealList] = useState([1, 2, 3])
+  const [mealList, setMealList] = useMealListFromLocalStorage()
 
   const goToCreateMeal = () => {
     return navigate('/responsive/createMeal')
   }
 
   function handleAddMeal() {
-    setMealList((prevState) => [...prevState, 1])
     navigate('/responsive/createMeal')
   }
 
@@ -39,22 +40,19 @@ export const MealsPage = () => {
         <>
           {/* <div className='grid-dashboard-meals'> */}
           <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4'>
-            {/* {mealList.map(() => ( */}
-            {/*   <Meal key={generateKey()} mealData={{ id: 'iasdf' }} /> */}
-            {/* ))} */}
-
-            <Meal
-              // key={generateKey()}
-              mealData={{ id: '1', name: 'Red Smothie', calories: 540, type: 'liquid' }}
-            />
-            <Meal
-              // key={generateKey()}
-              mealData={{ id: '2', name: 'Pasta and Chicken', calories: 710, type: 'solid' }}
-            />
-            <Meal
-              // key={generateKey()}
-              mealData={{ id: '3', name: 'Chicken and Rice', calories: 630, type: 'solid' }}
-            />
+            {mealList.map((value, index) => (
+              <Meal
+                key={generateKey()}
+                mealData={{
+                  id: value.id,
+                  name: value.name,
+                  calories: value.calories,
+                  type: value.type,
+                  createdAt: value.createdAt,
+                }}
+                onMealDelete={setMealList}
+              />
+            ))}
           </div>
           <section className='mt-8'>
             <Button

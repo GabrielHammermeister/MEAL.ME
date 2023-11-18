@@ -70,7 +70,7 @@ export const UserGoalsTab = () => {
     const millisecondsInMonth = 1000 * 60 * 60 * 24 * 30 // Approximate milliseconds in a month
     const monthsDifference = Math.floor(timeDifference / millisecondsInMonth)
 
-    let message = `${monthsDifference} month${monthsDifference > 1 && 's'}`
+    let message = `${monthsDifference} month${monthsDifference > 1 ? 's' : ''}`
     if (monthsDifference === 0) {
       message = 'Current Month'
     }

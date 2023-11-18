@@ -30,6 +30,8 @@ import { Add } from '@mui/icons-material'
 import { getInformationByIdWithAmount } from '@/services/spoonacular/spoonacular.service'
 import { calculateTotalMacros } from '@/utils/calculateTotalMacros'
 import { MacroSummary } from '@/components/MacroSummary/MacroSummary'
+import { useNavigate } from 'react-router-dom'
+import { ROUTES } from '@/router/Router'
 
 const MOCK_MACROS = {
   calories: 123,
@@ -63,12 +65,14 @@ const mealStateInit: MealStateType = {
 
 export const CreateMealPage = () => {
   const { setIngredients } = useIngredients()
+  const navigate = useNavigate()
   const [selectedIngredient, setSelectedIngredient] = useState<Ingredient | null>(null)
   const [selectedAmount, setSelectedAmount] = useState(100)
   const { currentUser } = useCurrentUser()
   const [ingredientMacros, setIngredientMacros] = useState()
   const [totalMacros, setTotalMacros] = useState(null)
   const [loadingIngredientMacros, setLoadingIngredientMacros] = useState(true)
+  const [mealType, setMealType] = useState()
 
   const [open, setOpen] = useState(false)
   // const [mealState, dispatch] = useReducer<Reducer<MealStateType, Action>>(
@@ -99,14 +103,17 @@ export const CreateMealPage = () => {
     if (storedMeals) {
       // If meals exist in localStorage, parse them and append the new meal
       mealsToSave = JSON.parse(storedMeals)
-      mealsToSave.push({ ...mealState, name: mealName })
+      mealsToSave.push({ ...mealState, name: mealName, type: mealType, createdAt: new Date() })
     } else {
       // If no meals exist, save the new meal as the only meal
-      mealsToSave = [{ ...mealState, name: mealName }]
+      mealsToSave = [{ ...mealState, name: mealName, type: mealType, createdAt: new Date() }]
     }
 
     // Save the updated meals array back to localStorage
+
+    console.log('mealsToSave', mealsToSave)
     localStorage.setItem('meals', JSON.stringify(mealsToSave))
+    navigate(ROUTES.RESPONSIVE.MEALS)
   }
   //
   // async function selectedIngredientChanged(amount: number) {
@@ -148,10 +155,17 @@ export const CreateMealPage = () => {
       data: { nutrition },
     } = await getInformationByIdWithAmount(selectedIngredient.id.toString(), selectedAmount)
 
-    const { macros } = calculateTotalMacros(nutrition)
-
-    console.log('macros', macros)
     setMealState((prevState) => {
+      // {
+      //   macros: {
+      //     calories: prevState.calories,
+      //       proteins: prevState.macroNutrients.protein,
+      //       carbs: prevState.macroNutrients.protein,
+      //       fats: prevState.macroNutrients.protein,
+      //   }
+      // }
+      const { macros } = calculateTotalMacros(nutrition)
+      setTotalMacros(macros)
       const prevMacros = prevState?.macroNutrients
       const prevCalories = prevState?.calories
       const prevIngredients = prevState?.ingredients
@@ -160,7 +174,9 @@ export const CreateMealPage = () => {
 
       if (prevMacros && prevIngredients.length > 0) {
         newState = {
+          id: generateKey(),
           name: mealName,
+          counter: 0,
           checkpoints: [],
           ingredients: [...prevIngredients, selectedIngredient],
           calories: prevCalories + macros.calories,
@@ -174,7 +190,9 @@ export const CreateMealPage = () => {
         }
       } else {
         newState = {
+          id: generateKey(),
           name: mealName,
+          counter: 0,
           checkpoints: [],
           ingredients: [selectedIngredient],
           calories: macros.calories,
@@ -185,8 +203,7 @@ export const CreateMealPage = () => {
           },
         }
       }
-
-      console.log('newState', newState)
+      console.log('NEW MEAL', newState)
 
       return newState
     })
@@ -219,7 +236,8 @@ export const CreateMealPage = () => {
       <main className='dashboard-container'>
         <Box>
           <SearchIngredient />
-          <MealTypeSelect />
+
+          <MealTypeSelect setMealType={setMealType} />
           <DisplayIngredients variant='small' handleSelectIngredient={handleSelectIngredient} />
         </Box>
         <Paper>
@@ -245,7 +263,7 @@ export const CreateMealPage = () => {
                   Macro Nutrients
                 </Typography>
 
-                <MacroSummary macros={extractMacroData()} />
+                <MacroSummary macros={totalMacros} />
                 <Divider variant='fullWidth' />
                 <Typography variant='h6' mt={2} paddingBottom={1}>
                   Ingredients
