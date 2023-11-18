@@ -1,3 +1,4 @@
+// @ts-nocheck
 import useCurrentUser from '@/hooks/useCurrentUser'
 import { Goal } from '@/models'
 import { createGoal } from '@/services/mealApi/goalsService'

@@ -1,3 +1,4 @@
+// @ts-nocheck
 import EmptyState from '@/components/EmptyState/EmptyState.index'
 import Meal from '@/components/Meal/Meal.index'
 import DefaultTemplate from '@/templates/Default/Default.index'

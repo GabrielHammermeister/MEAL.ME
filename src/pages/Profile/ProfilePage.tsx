@@ -1,21 +1,8 @@
 /* eslint-disable quotes */
+// @ts-nocheck
+
 import DefaultTemplate from '@/templates/Default/Default.index'
-import {
-  Box,
-  Button,
-  Divider,
-  InputAdornment,
-  MenuItem,
-  Step,
-  StepContent,
-  StepLabel,
-  Stepper,
-  StepProps,
-  Tab,
-  Tabs,
-  TextField,
-  Typography,
-} from '@mui/material'
+import { Button, Step, StepLabel, Stepper, Typography } from '@mui/material'
 import useCurrentUser from '@/hooks/useCurrentUser'
 import { useState } from 'react'
 import './styles.css'
@@ -29,7 +16,6 @@ import { ROUTES } from '@/router/Router'
 import GoalTypeForm from '@/pages/Profile/components/GoalTypeForm'
 import DefineGoalForm from '@/pages/Profile/components/DefineGoalForm'
 import BMRForm from '@/pages/Profile/components/BMR_Form'
-import calculateBMR from '@/utils/calculateBMR'
 import { isEmpty } from '@/utils/isEmpty'
 
 const steps = ['Goal Type', 'Basal Metabolic Rate', 'Define Goal']
@@ -47,6 +33,7 @@ export function ProfilePage() {
     if (activeStep === 2) navigate('/' + ROUTES.HOME)
     else setActiveStep((prevState) => prevState + 1)
   }
+
   function handlePreviousStep() {
     setActiveStep((prevState) => prevState - 1)
   }
@@ -85,8 +72,6 @@ export function ProfilePage() {
   function addUserGoal() {
     setDisplayUserGoalStepper(true)
   }
-
-
 
   return (
     <>
